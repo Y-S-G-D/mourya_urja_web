@@ -2,7 +2,7 @@ import React from 'react'
 import { IoCheckmarkDoneSharp } from 'react-icons/io5'
 import Image from 'next/image'
 import Login from '../assets/matrimonial_login.png'
-import LoginForm from '@/components/LoginForm'
+import LoginForm from '../../components/LoginForm'
 
 const LoginPage = () => {
   return (

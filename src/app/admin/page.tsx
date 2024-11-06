@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { User ,Users,ClipboardCheck } from 'lucide-react'
-import { title } from 'process'
 import { GenderRatioChart } from '@/components/gender-ratio-chart'
 import { AgeDistributionChart } from '@/components/age-distribution-chart'
 import { TopLocationsChart } from '@/components/top-locations-chart'
@@ -36,7 +35,7 @@ const Dashboard = () => {
         <div className=" pt-20 flex flex-1 flex-col gap-4 p-4">
           <div className="grid auto-rows-min gap-4 sm:grid-cols-2 md:grid-cols-3">
             {
-              topSectionData.map((data,index)=>{
+              topSectionData.map((data,index)=> {
                 return <div 
                  key={index}
                 className="border-2 border-border rounded-xl bg-muted p-6">
