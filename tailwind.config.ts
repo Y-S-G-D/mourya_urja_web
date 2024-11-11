@@ -9,7 +9,17 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		animation: {
+			fadeIn: 'fadeIn 0.5s ease-in-out forwards',
+		  },
+		  keyframes: {
+			fadeIn: {
+			  '0%': { opacity: '0' },
+			  '100%': { opacity: '1' },
+			},
+		  },
   		colors: {
+			offwhite: '#f8f8f8', // Define your off-white color
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

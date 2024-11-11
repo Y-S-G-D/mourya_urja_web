@@ -7,14 +7,14 @@ import {
 } from "@/components/ui/sidebar";
 import Header from "@/components/header";
 
-const Layout = ({
+const ManagementLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
   return (
     <SidebarProvider>
-      <AppSidebar isAdmin={true}/>
+      <AppSidebar isAdmin={false} />
       <SidebarInset>
         <Header />
         {/* <div className="flex flex-1 flex-col gap-4 p-4"> */}
@@ -26,4 +26,4 @@ const Layout = ({
   );
 };
 
-export default Layout;
+export default ManagementLayout;

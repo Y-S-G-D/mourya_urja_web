@@ -1,7 +1,5 @@
 import * as React from "react"
 
-import { SearchForm } from "@/components/search-form"
-import { VersionSwitcher } from "@/components/version-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -14,71 +12,70 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEnd } from "lucide-react"
-import path from "path"
-import { title } from "process"
-import { Home, User, Users, ClipboardCheck, HelpCircle, Lock, LogOut ,FileText, Shield} from 'lucide-react';
+import { Home, User, Users, ClipboardCheck, HelpCircle, LogOut ,FileText, Shield} from 'lucide-react';
 import { Separator } from "./ui/separator"
 
 
 
-const menus = [
-  {
-    title:'Dashboard',
-    path:'/admin',
-    isActive:true,
-    icon:Home
-  },
-  {
-    title:'Profile',
-    path:'/admin/profile',
-    icon:User
-  },
-  {
-    title:'Employees',
-    path:'/admin/employees',
-    icon:Users
-  },
-  {
-    title:'Users',
-    path:'/admin/users',
-    icon:Users
-  },
-  {
-    title:'Approval',
-    path:'/admin/approval',
-    icon: ClipboardCheck
-  },
-  {
-    title:'Enquiry',
-    path:'/admin/enquiry',
-    icon:HelpCircle
-  },
 
-  {
-    title:'FAQs',
-    path:'/admin/faq',
-    icon:HelpCircle
-  },
-  {
-    title:'Privacy Policy',
-    path:'/privacy-policy',
-    icon:Shield
-  },
-  {
-    title:'Terms & Conditions',
-    path:'/terms-conditions',
-    icon:FileText
-  },
-  {
-    title:'Logout',
-    path:'/',
-    icon:LogOut
-  }
-];
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({isAdmin}:{isAdmin:boolean}) {
+  const menus = [
+    {
+      title:'Dashboard',
+      path:'/admin',
+      isActive:true,
+      icon:Home
+    },
+    {
+      title:'Profile',
+      path:'/admin/profile',
+      icon:User
+    },
+    {
+      title:'Employees',
+      path:'/admin/employees',
+      icon:Users
+    },
+    {
+      title:'Users',
+      path:`${isAdmin?'/management/users':'/admin/users'}`,
+      icon:Users
+    },
+    {
+      title:'Approval',
+      path:'/admin/approval',
+      icon: ClipboardCheck
+    },
+    {
+      title:'Enquiry',
+      path:'/admin/enquiry',
+      icon:HelpCircle
+    },
+  
+    {
+      title:'FAQs',
+      path:'/admin/faq',
+      icon:HelpCircle
+    },
+    {
+      title:'Privacy Policy',
+      path:'/privacy-policy',
+      icon:Shield
+    },
+    {
+      title:'Terms & Conditions',
+      path:'/terms-conditions',
+      icon:FileText
+    },
+    {
+      title:'Logout',
+      path:'/',
+      icon:LogOut
+    }
+  ];
+  
   return (
-    <Sidebar {...props} >
+    <Sidebar >
       <SidebarHeader >
           <SidebarMenu>
           <div className="flex items-center justify-start my-4">
@@ -87,7 +84,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </div>
               <div className="mx-2 flex flex-col gap-0.5 leading-none">
                 <span className="font-semibold text-xl">John Doe</span>
-                <span className="text-sm">Admin</span>
+                <span className="text-sm">{isAdmin ? 'Admin' : 'Management'}</span>
               </div>
               </div>
               
