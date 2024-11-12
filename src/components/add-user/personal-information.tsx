@@ -21,7 +21,7 @@ import { Textarea } from "../ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { userPersonalInfoSchema } from "@/schema/user-personal-info-schema";
-import Button from '../ui/button'
+import { Button } from '../ui/button'
 
 const PersonalInformation = () => {
 

@@ -7,13 +7,13 @@ import RingLogo from "@/app/assets/ring-logo.png";
 import { FaTimes } from "react-icons/fa";
 import { RiMenu3Fill } from "react-icons/ri";
 
-const Navbar = () => {
+const Navbar = ({ bgColor }: { bgColor: string | null }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const handleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
   return (
-    <header className="bg-black/30 px-8 w-full fixed z-50 text-accent flex items-center justify-between h-20">
+    <header className={`${bgColor || 'bg-black/30'} px-8 w-full fixed z-50 text-accent flex items-center justify-between h-20`}>
       <div className="flex items-center">
         <Image alt="Logo-Image" src={RingLogo.src} width={70} height={80} />
         <h1 className="text-xl md:hidden lg:flex font-bold  mx-2 opacity-80">

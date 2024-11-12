@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Ubuntu } from 'next/font/google'
+import Navbar from "@/components/home-page/navbar";
 
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en" >
       <body className={ubuntu.className}
       >
+
         {children}
       </body>
     </html>
