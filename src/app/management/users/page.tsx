@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator'
 import { useRouter } from 'next/navigation'
 import { usersData } from '@/utils/users-data'
 
-const UsersPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
+const UsersPage = () => {
   const router = useRouter()
   return (
     <div className=" pt-20 flex flex-1 flex-col gap-4 p-4">
@@ -34,7 +34,7 @@ const UsersPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
         <Input placeholder='Search here..' className='w-1/2'/>
         <Button 
           onClick={()=>{
-            router.push(`${isAdmin?'/admin/add-user':'/management/add-users'}`)
+            router.push('/management/add-users')
           }}
           ><Plus/>Add New User</Button>
         <Button variant='secondary'>
