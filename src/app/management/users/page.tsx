@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator'
 import { useRouter } from 'next/navigation'
 import { usersData } from '@/utils/users-data'
 
-const UsersPage = ({isAdmin}:{isAdmin:boolean}) => {
+const UsersPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
   const router = useRouter()
   return (
     <div className=" pt-20 flex flex-1 flex-col gap-4 p-4">
