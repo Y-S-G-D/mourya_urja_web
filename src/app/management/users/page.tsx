@@ -8,7 +8,6 @@ import { Filter, Plus } from 'lucide-react'
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
 import { useRouter } from 'next/navigation'
-
 import { usersData } from '@/utils/users-data'
 
 const UsersPage = ({isAdmin}:{isAdmin:boolean}) => {

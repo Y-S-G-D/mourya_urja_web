@@ -33,7 +33,7 @@ export default function ProfileCard({ likeType }: { likeType: LikeType }) {
               <Home size={14} className="mr-2" /> Lives in Amritsar
             </li>
             <li className="flex items-center">
-              <Ruler size={14} className="mr-2" /> 5.9", Fair
+              <Ruler size={14} className="mr-2" /> 5.9&quot;, Fair
             </li>
             <li className="flex items-center">
               <Briefcase size={14} className="mr-2" /> Engineer

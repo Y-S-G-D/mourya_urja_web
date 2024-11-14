@@ -5,7 +5,6 @@ import {
   MessageSquarePlus,
 } from "lucide-react";
 import { FaHeart } from "react-icons/fa6"; // Filled Heart icon
-import { FaRegHeart } from "react-icons/fa"; // Outline Hea
 import {
   Sheet,
   SheetTrigger,

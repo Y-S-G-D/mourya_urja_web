@@ -4,14 +4,14 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 
 
-const steps = ['Personal Details', 'Contact Info', 'Educational $ Professional','Cultural & Religious','Family Details',"Spouse Expectations","Partner Expectations","Review & Submit"];
+// const steps = ['Personal Details', 'Contact Info', 'Educational $ Professional','Cultural & Religious','Family Details',"Spouse Expectations","Partner Expectations","Review & Submit"];
 const AddUserStepper = ({activeStep, steps}:{activeStep:number,steps:string[]}) => {
   return (
     <div>
       <Stepper 
         activeStep={activeStep}
         alternativeLabel={true}>
-        {steps.map((label, index) => (
+        {steps.map((label, ) => (
           <Step 
             key={label}>
             <StepLabel 

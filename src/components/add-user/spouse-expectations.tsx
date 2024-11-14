@@ -11,7 +11,7 @@ const spouseExpectationsSchema = z.object({
     spouseExpectations: z.string({message: 'Spouse expectations is required'}).min(10, {message: 'Spouse expectations should be atleast 10 characters long'}).max(500, {message: 'Spouse expectations should not exceed 500 characters'})
 })
 
-const spouseExpectations = () => {
+const SpouseExpectations = () => {
     const form = useForm<z.infer<typeof spouseExpectationsSchema>>({
         resolver: zodResolver(spouseExpectationsSchema),
         defaultValues: {
@@ -39,4 +39,4 @@ const spouseExpectations = () => {
   )
 }
 
-export default spouseExpectations
+export default SpouseExpectations

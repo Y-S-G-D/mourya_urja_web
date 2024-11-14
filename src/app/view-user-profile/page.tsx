@@ -30,7 +30,7 @@ const ViewUserProfile = () => {
             <h1 className="text-2xl font-bold">Sahil Kumar 27 <Badge className="ml-2 text-green-500">Verified</Badge></h1>
             <ul className="mt-2 space-y-1 text-gray-700">
               <li className="flex items-center"><Home className="mr-2" /> Lives in Amritsar</li>
-              <li className="flex items-center"><Circle className="mr-2" /> 5'9", Fair</li>
+              <li className="flex items-center"><Circle className="mr-2" /> 5&quot;9&quot;, Fair</li>
               <li className="flex items-center"><Briefcase className="mr-2" /> Engineer</li>
               <li className="flex items-center"><User className="mr-2" /> Hinduism</li>
               <li className="flex items-center"><User className="mr-2" /> Unmarried</li>

@@ -8,11 +8,11 @@ const Footer = () => {
       <div className="grid md:grid-cols-3  grid-cols-1gap-8">
         <div className="mb-8 ">
           <div className="flex items-center justify-start">
-            <img
+            {/* <img
               src="/images/logo.png"
               alt="Logo Image"
               className="h-28 w-32 rounded-full mr-4"
-            />
+            /> */}
             <h1 className="text-2xl font-semibold uppercase">Veliciae</h1>
           </div>
           <p className="mt-2">

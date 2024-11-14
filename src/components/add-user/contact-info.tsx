@@ -62,7 +62,7 @@ const ContactInfo = () => {
             const residenceAddress = form.watch('residenceAddress');
             form.setValue('permanentAddress', residenceAddress);
         }
-    }, [watchCopyAddress, form.watch, form.setValue]);
+    }, [watchCopyAddress, form]);
 
     return (
         <FormProvider {...form}>

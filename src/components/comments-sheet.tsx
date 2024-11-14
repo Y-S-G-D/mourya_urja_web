@@ -3,14 +3,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
-  Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet"
 import { SendHorizonal } from 'lucide-react'
 import { Separator } from './ui/separator'
@@ -23,7 +19,7 @@ const CommentsSection = () => {
       <SheetHeader>
           <SheetTitle className='text-4xl'>Comments</SheetTitle>
           <SheetDescription>
-          Feel free to leave your comments below. Click save when you're done.
+          Feel free to leave your comments below. Click save when you&apos;re done.
           </SheetDescription>
         </SheetHeader>
         <div className="py-4">
