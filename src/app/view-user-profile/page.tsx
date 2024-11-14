@@ -121,10 +121,9 @@ const ViewUserProfile = () => {
           <p className="text-gray-600">I am looking for a life partner who believes in family values and enjoys togetherness. She
             should be well-educated, understanding, and caring. I am looking for someone who can be a true friend for life.</p>
         </CardContent>
-
       </Card>
 
-        </section>
+      </section>
     </main>
   )
 }
