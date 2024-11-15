@@ -23,7 +23,6 @@ export const description = "A pie chart with a label list"
 const chartData = [
   { gender: "male", visitors: 275, fill: "var(--color-male)" },
   { gender: "female", visitors: 200, fill: "var(--color-female)" },
-  
 ]
 
 const chartConfig = {
@@ -38,12 +37,11 @@ const chartConfig = {
     label: "Female",
     color: "hsl(var(--chart-4))",
   },
-  
 } satisfies ChartConfig
 
 export function GenderRatioChart() {
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col ">
       <CardHeader className="items-center pb-0">
         <CardTitle>Gender Ratio </CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -51,7 +49,7 @@ export function GenderRatioChart() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
+          className=" mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
             <ChartTooltip

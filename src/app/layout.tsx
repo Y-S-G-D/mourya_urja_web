@@ -21,8 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" >
-      <body className={ubuntu.className}
-      >
+      <body className={ubuntu.className}>
         {children}
       </body>
     </html>

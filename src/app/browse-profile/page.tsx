@@ -1,5 +1,6 @@
+'use client';
 import Navbar from "@/components/home-page/navbar";
-import { SearchForm } from "@/components/search-form";
+import SearchForm from "@/components/search-form";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -12,9 +13,18 @@ import UserBasicInfo from "@/components/user-basic-info";
 import { connectionData } from "@/utils/connection-data";
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart , FaRegHeart } from "react-icons/fa";
+import { Sheet ,SheetTrigger,} from "@/components/ui/sheet";
+import FilterSheet from "@/components/filter-sheet";
+import { PaginationButton } from "@/components/pagination";
 
 const BrowseProfilePage = () => {
+  const [isLiked, setIsLiked] = React.useState(false);
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+  }
+
   return (
     <main>
       <Navbar bgColor={"bg-primary"} />
@@ -34,9 +44,16 @@ const BrowseProfilePage = () => {
 
           <div className="flex justify-between">
             <SearchForm />
-            <Button className="ml-4" variant={"secondary"}>
+            <Sheet>
+              
+             <SheetTrigger asChild >
+             <Button className="ml-4" variant={"secondary"}>
               Filter
             </Button>
+            </SheetTrigger>
+
+            <FilterSheet></FilterSheet>
+            </Sheet>
           </div>
         </div>
 
@@ -47,12 +64,15 @@ const BrowseProfilePage = () => {
               className="relative p-4 bg-white border border-secondary rounded-2xl shadow-lg  group hover:bg-primary hover:text-accent transition duration-500"
             >
               <UserBasicInfo data={connection} />
-                <div className="absolute  top-5 rigtp-2 cursor-pointer bg-accent rounded-full border border-border">
-                  <FaHeart className="text-red-500" />
+                <div 
+                  onClick={handleLike}
+                  className="absolute  top-6 right-6 p-2 cursor-pointer bg-accent rounded-full border border-border">
+                  {isLiked?<FaHeart className="text-red-500" />:<FaRegHeart  className="text-foreground" />}
                  </div>
             </div>
           ))}
         </div>
+        <PaginationButton/>
       </section>
     </main>
   );

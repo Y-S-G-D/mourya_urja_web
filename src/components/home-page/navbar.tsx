@@ -1,14 +1,17 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button"; // Import Shadcn Button component
-// import Link from 'next/link';
+import Link from 'next/link';
 import Image from "next/image";
 import RingLogo from "@/app/assets/ring-logo.png";
 import { FaTimes } from "react-icons/fa";
 import { RiMenu3Fill } from "react-icons/ri";
+import { useRouter } from "next/navigation";
 
 const Navbar = ({ bgColor }: { bgColor: string | null }) => {
+  const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const handleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
@@ -24,14 +27,18 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
         {/* Desktop Menus */}
         <div className=" lg:w-8/12  md:flex hidden items-center justify-around">
           <ul className="text-base rounded-3xl flex md:space-x-6 lg:space-x-8  bg-accent/80 py-3 px-6 text-foreground ">
-            <li className="text-nowrap">Home</li>
-            <li className="text-nowrap">About Us</li>
-            <li className="text-nowrap">Why Us</li>
-            <li className="text-nowrap">Our Stories</li>
+            <li className="text-nowrap"><Link href={"/"}>Home</Link></li>
+            <li className="text-nowrap"><Link href={"/browse-profile"}>Profiles</Link></li>
+            <li className="text-nowrap"><Link href={"/connections"}>Connections</Link></li>
+            <li className="text-nowrap"><Link href={"/favourites"}>Favourites</Link></li>
+            <li className="text-nowrap"><Link href={"/user-profile"}>My Profile</Link></li>
             <li className="text-nowrap">Contact Us</li>
           </ul>
           <Button
-            className="ml-6  py-3 px-6 text-base rounded-3xl"
+            onClick={() => {
+              router.push("/login");
+            }}
+            className="ml-6  py-3 px-6 text-base rounded-3xl border-2 border-sidebar-primary "
             variant={"secondary"}
           >
             Log In
@@ -44,14 +51,14 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
         {/* Mobile Menus */}
         <div className={`${isDrawerOpen?'animate-fadeIn  transition duration-700  absolute inset-0 top-20  md:hidden flex flex-col ':'hidden'}`}>
           <ul className="text-base  flex flex-col justify-center items-center  md:space-x-6 lg:space-x-8  bg-accent/80 py-3 px-6 text-foreground ">
-            <li className="py-2 text-xl text-nowrap">Home</li>
-            <li className="py-2 text-xl text-nowrap">About Us</li>
-            <li className="py-2 text-xl text-nowrap">Why Us</li>
-            <li className="py-2 text-xl text-nowrap">Our Stories</li>
+            <li className="py-2 text-xl text-nowrap"><Link href={"/"}>Home</Link></li>
+            <li className="py-2 text-xl text-nowrap"><Link href={"/browse-profile"}>Profiles</Link></li>
+            <li className="py-2 text-xl text-nowrap"><Link href={"/connections"}>Connections</Link></li>
+            <li className="py-2 text-xl text-nowrap"><Link href={"/favourites"}>Favourites</Link></li>
+            <li className="py-2 text-xl text-nowrap"><Link href={"/user-profile"}>My Profile</Link></li>
+
             <li className="py-2 text-xl text-nowrap">Contact Us</li>
-            <li className="py-2 text-xl text-nowrap">Log In</li>
-
-
+            <li className="py-2 text-xl text-nowrap"><Link href={"/login"}>Log in</Link></li>
           </ul>
           </div>
         

@@ -1,28 +1,21 @@
-import { Search } from "lucide-react"
+import { useState } from 'react';
+import { Input } from "@/components/ui/input";
+import { SearchIcon } from "lucide-react";
 
-import { Label } from "@/components/ui/label"
-import {
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarInput,
-} from "@/components/ui/sidebar"
+export default function SearchForm() {
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
-export function SearchForm({ ...props }: React.ComponentProps<"form">) {
   return (
-    <form {...props}>
-      <SidebarGroup className="py-0">
-        <SidebarGroupContent className="relative">
-          <Label htmlFor="search" className="sr-only">
-            Search
-          </Label>
-          <SidebarInput
-            id="search"
-            placeholder="Search the docs..."
-            className="pl-8"
-          />
-          <Search className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50" />
-        </SidebarGroupContent>
-      </SidebarGroup>
-    </form>
-  )
+    <div className="relative w-96 mx-auto">
+      <Input
+        id="search"
+        type="text"
+        placeholder="Search here"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-0 focus:outline-none placeholder-gray-500"
+      />
+      <SearchIcon className="w-5 h-5 text-gray-500 absolute top-1/2 left-3 transform -translate-y-1/2" />
+    </div>
+  );
 }
