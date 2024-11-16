@@ -6,7 +6,7 @@ export default function SearchForm() {
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   return (
-    <div className="relative w-96 mx-auto">
+    <div className="relative mx-auto">
       <Input
         id="search"
         type="text"

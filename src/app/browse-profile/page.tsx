@@ -29,13 +29,13 @@ const BrowseProfilePage = () => {
     <main>
       <Navbar bgColor={"bg-primary"} />
       <section className="bg-accent max-w-7xl w-full mx-auto pt-24 md:px-8 px-4 flex flex-col">
-        <div className="px-6 lg:px-12 flex items-center justify-between ">
-          <Breadcrumb>
+        <div className="px-6 lg:px-12 flex md:flex-row flex-col  items-center justify-between ">
+          <Breadcrumb className="md:mb-0 mb-2">
             <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
+              <BreadcrumbItem className="">
                 <BreadcrumbLink href="#">Home</BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbSeparator className="" />
               <BreadcrumbItem>
                 <BreadcrumbPage>Browse Profiles</BreadcrumbPage>
               </BreadcrumbItem>
