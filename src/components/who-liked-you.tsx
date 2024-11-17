@@ -1,6 +1,6 @@
 import React from 'react'
 import ProfileCard from './profile-card'
-import { LikeType } from '@/utils/enums/liketype-enum'
+import { LikeType } from '@/utils/enums/likeType-enum'
 
 const WhoLikedYouContent = () => {
   return (

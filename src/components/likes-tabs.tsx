@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/tabs"
 import WhoLikedYouContent from './who-liked-you'
 import ProfileCard from './profile-card'
-import { LikeType } from '@/utils/enums/liketype-enum'
+import { LikeType } from '@/utils/enums/likeType-enum'
 const LikesTabs = () => {
     // let likeType: LikeType = LikeType.WhoLikedYou
   

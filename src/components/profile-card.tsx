@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Person from "@/app/assets/person.jpeg";
 import { Home, Ruler, Briefcase, Sun, CheckCircle } from "lucide-react";
-import { LikeType } from "@/utils/enums/liketype-enum";
+import { LikeType } from "@/utils/enums/likeType-enum";
 import { FaHeart } from "react-icons/fa6";
 
 export default function ProfileCard({ likeType }: { likeType: LikeType }) {

@@ -7,8 +7,9 @@ import RingLogo from "@/app/assets/ring-logo.png";
 import { FaTimes } from "react-icons/fa";
 import { RiMenu3Fill } from "react-icons/ri";
 import { useRouter } from "next/navigation";
+import { UserType } from "@/utils/enums/userType-enum";
 
-const Navbar = ({ bgColor }: { bgColor: string | null }) => {
+const Navbar = ({ bgColor , type}: { bgColor: string | null ,type:string }) => {
   const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -23,7 +24,7 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
           Mourya Urja Matrimonial
         </h1>
       </div>
-      <nav  className="flexrelative ">
+      {type==UserType.user?<nav  className="flex relative ">
         {/* Desktop Menus */}
         <div className=" lg:w-8/12  md:flex hidden items-center justify-around">
           <ul className="text-base rounded-3xl flex md:space-x-6 lg:space-x-8  bg-accent/80 py-3 px-6 text-foreground ">
@@ -61,8 +62,7 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
             <li className="py-2 text-xl text-nowrap"><Link href={"/login"}>Log in</Link></li>
           </ul>
           </div>
-        
-      </nav>
+      </nav>:<div></div>}
     </header>
   );
 };

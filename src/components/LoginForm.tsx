@@ -30,7 +30,7 @@ const LoginForm = () => {
   }
 
   return (
-    <div className='bg-background px-6 py-4'>
+    <div className='bg-background px-6 py-4 rounded-md'>
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
                 <FormField 

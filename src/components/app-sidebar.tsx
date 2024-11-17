@@ -62,18 +62,13 @@ export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
       icon: HelpCircle
     },
     {
-      title: 'FAQs',
-      path: '/admin/faq',
-      icon: HelpCircle
-    },
-    {
       title: 'Privacy Policy',
-      path: '/privacy-policy',
+      path: '/privacy-policy/[admin]',
       icon: Shield
     },
     {
       title: 'Terms & Conditions',
-      path: '/terms-conditions',
+      path: '/terms-conditions/[admin]',
       icon: FileText
     },
     {

@@ -23,7 +23,7 @@ const RoleSelectionCheckbox = () => {
         name="authentications"
         render={({  }) => (
           <FormItem>
-            <FormLabel htmlFor="role">Role</FormLabel>
+            <FormLabel htmlFor="role">Permission</FormLabel>
             <div className='flex  flex-wrap  space-x-4'>
               {authentications.map((item) => (
                 <FormField
