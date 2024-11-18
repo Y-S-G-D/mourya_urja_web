@@ -63,12 +63,12 @@ export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
     },
     {
       title: 'Privacy Policy',
-      path: '/privacy-policy/admin',
+      path: '/privacy-policy',
       icon: Shield
     },
     {
       title: 'Terms & Conditions',
-      path: '/terms-conditions/admin',
+      path: '/terms-conditions',
       icon: FileText
     },
     {
