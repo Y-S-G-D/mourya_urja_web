@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer'
 import Navbar from '@/components/home-page/navbar'
 import LikesTabs from '@/components/likes-tabs'
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb'
@@ -27,6 +28,7 @@ const LikesPage = () => {
 
 
       </section>
+      <Footer/>
     </div>
   )
 }

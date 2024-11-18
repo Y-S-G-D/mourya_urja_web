@@ -13,6 +13,10 @@ interface IUserType{
 
 const userTypes: IUserType[] = [
   {
+    id:"user",
+    type:UserType.user
+  },
+  {
     id:"admin",
     type:UserType.admin
   },
@@ -20,10 +24,7 @@ const userTypes: IUserType[] = [
     id:"management",
     type:UserType.management
   },
-  {
-    id:"user",
-    type:UserType.user
-  }
+  
 ]
 
 const LoginPage = () => {

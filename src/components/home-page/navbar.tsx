@@ -33,7 +33,7 @@ const Navbar = ({ bgColor , type = UserType.user}: { bgColor: string | null ,typ
             <li className="text-nowrap"><Link href={"/connections"}>Connections</Link></li>
             <li className="text-nowrap"><Link href={"/favourites"}>Favourites</Link></li>
             <li className="text-nowrap"><Link href={"/user-profile"}>My Profile</Link></li>
-            <li className="text-nowrap">Contact Us</li>
+            <li className="text-nowrap"><Link href={"/contact-us"}>Contact Us</Link></li>
           </ul>
           <Button
             onClick={() => {
@@ -58,7 +58,7 @@ const Navbar = ({ bgColor , type = UserType.user}: { bgColor: string | null ,typ
             <li className="py-2 text-xl text-nowrap"><Link href={"/favourites"}>Favourites</Link></li>
             <li className="py-2 text-xl text-nowrap"><Link href={"/user-profile"}>My Profile</Link></li>
 
-            <li className="py-2 text-xl text-nowrap">Contact Us</li>
+            <li className="py-2 text-xl text-nowrap"><Link href={"/contact-us"}>Contact Us</Link></li>
             <li className="py-2 text-xl text-nowrap"><Link href={"/login"}>Log in</Link></li>
           </ul>
           </div>

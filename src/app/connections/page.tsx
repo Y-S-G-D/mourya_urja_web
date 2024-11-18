@@ -12,6 +12,7 @@ import {
 import CommentsSection from "@/components/comments-sheet";
 import UserBasicInfo from "@/components/user-basic-info";
 import { connectionData } from "@/utils/connection-data";
+import Footer from "@/components/Footer"
 
 
 
@@ -51,6 +52,7 @@ const ConnectionsPage = () => {
           ))}
         </div>
       </section>
+      <Footer/>
     </main>
   );
 };

@@ -7,6 +7,7 @@ import HobbiesCard from '@/components/user-profile/hobbies'
 import EducationAndProfessionCard from '@/components/user-profile/education-profession-info'
 import { FamilyDetailsCard,CulturalReligiousDetailsCard } from '@/components/user-profile/family-details'
 import ContactInfoCard from '@/components/user-profile/contact-info-card'
+import Footer from '@/components/Footer'
 
 
 const ViewUserProfile = () => {
@@ -32,8 +33,8 @@ const ViewUserProfile = () => {
           <p className="text-gray-600">I am looking for a life partner who believes in family values and enjoys togetherness. She
             should be well-educated, understanding, and caring. I am looking for someone who can be a true friend for life.</p>
         </CardContent>
-
       </section>
+      <Footer/>
     </main>
   )
 }

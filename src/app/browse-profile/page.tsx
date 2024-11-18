@@ -17,6 +17,7 @@ import { FaHeart , FaRegHeart } from "react-icons/fa";
 import { Sheet ,SheetTrigger,} from "@/components/ui/sheet";
 import FilterSheet from "@/components/filter-sheet";
 import { PaginationButton } from "@/components/pagination";
+import Footer from "@/components/Footer";
 
 const BrowseProfilePage = () => {
   const [isLiked, setIsLiked] = React.useState(false);
@@ -74,6 +75,7 @@ const BrowseProfilePage = () => {
         </div>
         <PaginationButton/>
       </section>
+      <Footer/>
     </main>
   );
 };
