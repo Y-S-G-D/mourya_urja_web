@@ -1,11 +1,10 @@
 import Navbar from '@/components/home-page/navbar'
 import React from 'react'
 
-const TermsNdConditions = ({type}:{type:string}) => {
+const TermsNdConditions = () => {
   return (
     <main>
     <Navbar 
-     type={type}
      bgColor={"bg-primary"}/>
     <section className='max-w-7xl mx-auto px-8 pt-24 flex flex-col items-center justify-center'>
         <h1 className='text-5xl font-bold text-primary'>Terms & Conditions</h1>
