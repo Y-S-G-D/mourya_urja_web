@@ -9,7 +9,7 @@ import { RiMenu3Fill } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 import { UserType } from "@/utils/enums/userType-enum";
 
-const Navbar = ({ bgColor , type}: { bgColor: string | null ,type:string }) => {
+const Navbar = ({ bgColor , type = UserType.user}: { bgColor: string | null ,type?:string }) => {
   const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
