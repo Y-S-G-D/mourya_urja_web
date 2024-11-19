@@ -14,19 +14,26 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useAuthStore } from '@/stores/auth-store'
+import {useLoginTypeStore } from '@/stores/login-type-store'
 
-const LoginForm = () => {
+const LoginForm: React.FC = () => {
+
+  const {login}  = useAuthStore()
+  const { selectedLoginType, } = useLoginTypeStore()
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: { 
-        username: "",
-        password: ""
+        email: "",
+        password: "",
     }
   })
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
-     console.log(values)
+    const type = selectedLoginType.toLowerCase()
+    login(values.email, values.password,type)
+    // form.reset()  // Clear the form values after successful submission.
   }
 
   return (
@@ -35,14 +42,14 @@ const LoginForm = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
                 <FormField 
                     control={form.control}
-                    name='username'
+                    name='email'
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel htmlFor='username'>Username</FormLabel>
+                            <FormLabel htmlFor='email'>Email</FormLabel>
                             <FormControl>
-                            <Input {...field} id='username' placeholder="Enter your username" type='text' />
+                            <Input {...field} id='email' placeholder="Enter your Email" type='text' />
                             </FormControl>
-                            <FormMessage>{form.formState.errors.username?.message}</FormMessage>
+                            <FormMessage>{form.formState.errors.email?.message}</FormMessage>
                         </FormItem>
                     )}
                 />

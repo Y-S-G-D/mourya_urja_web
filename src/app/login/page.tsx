@@ -5,31 +5,25 @@ import Image from 'next/image'
 import Login from '../assets/matrimonial_login.png'
 import LoginForm from '../../components/LoginForm'
 import { UserType } from '@/utils/enums/userType-enum'
+import { useLoginTypeStore } from '@/stores/login-type-store'
 
-interface IUserType{
-  id:string
-  type:UserType
-}
+// interface IUserType{
+//   id:string
+//   type:UserType
+// }
 
-const userTypes: IUserType[] = [
-  {
-    id:"user",
-    type:UserType.user
-  },
-  {
-    id:"admin",
-    type:UserType.admin
-  },
-  {
-    id:"management",
-    type:UserType.management
-  },
+
+// const userTypes: UserType[] = [
+//   UserType.User,
+//   UserType.Admin,
+//   UserType.Management
   
-]
+// ]
 
 const LoginPage = () => {
 
-  const [userType , setUserType] =  React.useState(UserType.user)
+  const { selectedLoginType, setLoginType,loginTypes } = useLoginTypeStore()
+  // const [userType , setUserType] =  React.useState(UserType.User)
   return (
     <div className='bg-background h-screen md:px-12 px-1 md:py-2 flex items-center '>
         <div className="max-w-7xl w-full bg-[#84A98C] mx-auto  flex  sm:flex-row flex-col justify-center border-2 border-yellow-600 items-center h-max rounded-3xl">
@@ -46,16 +40,16 @@ const LoginPage = () => {
         {/* User Type Tab */}
         <div className="flex">
           {
-            userTypes.map((user:IUserType) => {
+            loginTypes.map((user:UserType) => {
                return (
                 <div 
                  onClick={()=>{
-                  setUserType(user.type)
+                  setLoginType(user)
                  }}
-                 key={user.id}
-                 className={userType === user.type?"bg-background md:px-6 px-3 py-2 shadow-sm rounded-t-md font-semibold text-primary cursor-pointer":" cursor-pointer md:px-6 px-3 py-2"}>
-                  {userType === user.type?<IoCheckmarkDoneSharp className="inline-block mr-2"/>:<></>}
-                  {user.type}</div>
+                 key={user}
+                 className={selectedLoginType === user?"bg-background md:px-6 px-3 py-2 shadow-sm rounded-t-md font-semibold text-primary cursor-pointer":" cursor-pointer md:px-6 px-3 py-2"}>
+                  {selectedLoginType === user?<IoCheckmarkDoneSharp className="inline-block mr-2"/>:<></>}
+                  {user}</div>
 
                )
             }) 

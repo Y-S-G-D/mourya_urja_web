@@ -9,7 +9,7 @@ import { RiMenu3Fill } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 import { UserType } from "@/utils/enums/userType-enum";
 
-const Navbar = ({ bgColor , type = UserType.user}: { bgColor: string | null ,type?:string }) => {
+const Navbar = ({ bgColor , type = UserType.User}: { bgColor: string | null ,type?:string }) => {
   const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -24,7 +24,7 @@ const Navbar = ({ bgColor , type = UserType.user}: { bgColor: string | null ,typ
           Mourya Urja Matrimonial
         </h1>
       </div>
-      {type==UserType.user?<nav  className="flex relative ">
+      {type==UserType.User?<nav  className="flex relative ">
         {/* Desktop Menus */}
         <div className=" lg:w-8/12  md:flex hidden items-center justify-around">
           <ul className="text-base rounded-3xl flex md:space-x-6 lg:space-x-8  bg-accent/80 py-3 px-6 text-foreground ">
