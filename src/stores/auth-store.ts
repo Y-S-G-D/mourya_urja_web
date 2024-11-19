@@ -24,6 +24,8 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
             // Add your login logic here
         set({ isLoading: true, errorMsg: null, isSuccess: false })
         const response = await axios.post(loginEndPoint,{email, password, accessType})
+        console.log(response.data)
+        console.log(response.headers['set-cookie'])
         if(response.status === 200){
             const date = response.data as string | null;
             set({ data: date, isLoading: false, isSuccess: true })
