@@ -1,9 +1,19 @@
+'use client'
+
 import AddEmployeeForm from '@/components/add-employee-form'
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
-import React from 'react'
+import { useEmployeeStore } from '@/stores/employee-store'
+import React, { useEffect } from 'react'
 
 const Profile = () => {
+  const {getEmployeeProfile} = useEmployeeStore()
+
+  useEffect(()=>{
+    getEmployeeProfile()
+
+  },[getEmployeeProfile])
+  
   return (
     <div className=" pt-20 flex flex-1 flex-col gap-4 p-4">
       <h1 className="text-3xl font-semibold">Profile</h1>

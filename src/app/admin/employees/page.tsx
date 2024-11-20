@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Employees, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { Button } from "@/components/ui/button";
@@ -156,6 +156,13 @@ const data: Employees[] = [
 ];
 const EmployeesPage = () => {
   const router = useRouter();
+ 
+
+  useEffect(()=>{
+   
+  
+   
+  },)
   return (
     <div className=" pt-20 flex flex-1 flex-col gap-4 p-4">
       <h1 className="text-3xl font-semibold">Manage Employees</h1>

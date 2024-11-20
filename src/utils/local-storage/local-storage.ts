@@ -34,6 +34,14 @@ export default class LocalStorage{
         return "NA";
     }
 
+    public getLoginInfo():UserLoginInfo | null {
+        const info = localStorage.getItem("loginInfo");
+        if(info){
+            return JSON.parse(info);
+        }
+        return null;
+    }
+
     public removeLoginInfo():void {
         localStorage.removeItem("loginInfo")
     }

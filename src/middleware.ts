@@ -9,9 +9,9 @@ export function middleware(request: NextRequest) {
   const role = request.cookies.get('role')
   const url = request.nextUrl.pathname
 
-  console.log("Role ",role?.value)
-  console.log("URL ",url)
-  console.log("access_token ",access_token)
+  // console.log("Role ",role?.value)
+  // console.log("URL ",url)
+  // console.log("access_token ",access_token)
   if(access_token && role && url.startsWith('/login')){
     if(role.value === 'admin'){
       
@@ -25,7 +25,7 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  console.log(access_token,role,url)
+  // console.log(access_token,role,url)
 
 
 
