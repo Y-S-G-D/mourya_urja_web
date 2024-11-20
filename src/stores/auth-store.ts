@@ -1,6 +1,8 @@
 import {create} from 'zustand'
 import axios from 'axios';
 import { loginEndPoint } from '@/shared/endpoints';
+import Cookies from 'js-cookie'
+import LocalStorage from '../utils/local-storage/local-storage'
 
 
 export interface IAuthStore{
@@ -24,11 +26,17 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
             // Add your login logic here
         set({ isLoading: true, errorMsg: null, isSuccess: false })
         const response = await axios.post(loginEndPoint,{email, password, accessType})
-        console.log(response.data)
-        console.log(response.headers['set-cookie'])
+                
         if(response.status === 200){
-            const date = response.data as string | null;
+
+            const date = response.data.message;
+            Cookies.set('access_token',response.data.data.access_token
+            )
+            const role = response.data.data.role;
+            Cookies.set("role",role)
+            LocalStorage.getInstance().addLoginInfo(response.data.data)
             set({ data: date, isLoading: false, isSuccess: true })
+            window.location.reload()
         }
         }catch(err: unknown){
             console.log(err)
@@ -40,6 +48,9 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
         }
     },
     logout: () => {
-        // Implementation here
+        Cookies.remove("access_token")
+        Cookies.remove("role")
+        LocalStorage.getInstance().removeLoginInfo();
+        window.location.reload();
     }
 }))

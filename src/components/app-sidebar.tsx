@@ -15,8 +15,12 @@ import {
 import { Home, User, Users, ClipboardCheck, HelpCircle, LogOut, FileText, Shield } from 'lucide-react';
 import { Separator } from "./ui/separator"
 
+import { useAuthStore } from "@/stores/auth-store";
+
 export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
   const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
+
+  const {logout} = useAuthStore()
 
   React.useEffect(() => {
     const savedActiveMenu = localStorage.getItem('activeMenu');
@@ -102,7 +106,13 @@ export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
               {menus.map((item) => (
                 <SidebarMenuItem key={item.title} className="text-lg font-semibold">
                   <SidebarMenuButton asChild isActive={item.path === activeMenu}>
-                    <a href={item.path} onClick={() => handleMenuClick(item.path)}>
+                    <a href={item.path} onClick={() => {
+                      if(item.title === 'Logout'){
+                        logout()
+                        return false;  // to prevent the default link behavior to navigate to the logout page
+                      }
+                      handleMenuClick(item.path)
+                    }}>
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
