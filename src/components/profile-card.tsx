@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Person from "@/app/assets/person.jpeg";
 import { Home, Ruler, Briefcase, Sun, CheckCircle } from "lucide-react";
@@ -8,11 +8,12 @@ import { FaHeart } from "react-icons/fa6";
 
 export default function ProfileCard({ likeType }: { likeType: LikeType }) {
   return (
-    <Card className="mx-auto rounded-xl p-2 shadow-lg overflow-hidden bg-primary text-accent">
-      <CardContent className="flex justify-start gap-4">
-        <div className="relative w-24 h-24 rounded-lg overflow-hidden">
+    <Card className="mx-auto rounded-xl p-2 shadow-sm overflow-hidden border border-secondary bg-background text-foreground">
+      <CardContent className="relative flex flex-col justify-start gap-4">
+        <div className="flex gap-4 ">
+        <div className="relative w-24 -left-4 h-28 rounded-lg overflow-hidden">
           <Image
-            src={Person.src} // Replace with the correct path or URL for the image
+            src={Person.src} 
             alt="Profile"
             layout="fill"
             objectFit="cover"
@@ -43,22 +44,23 @@ export default function ProfileCard({ likeType }: { likeType: LikeType }) {
             </li>
           </ul>
         </div>
+        </div>
+        {likeType === LikeType.WhoLikedYou ? (
+          <div className="mt-4 flex justify-around">
+            <Button className="w-24 bg-sidebar-primary">Accept</Button>
+            <Button variant={"destructive"}>
+              Remove
+            </Button>
+          </div>
+        ) : (
+          <div >
+            <div 
+              className="absolute bottom-4  right-2 px-2 py-1">
+              <FaHeart className="text-red-500 text-2xl" />
+            </div>
+          </div>
+        )}
       </CardContent>
-
-      {likeType === LikeType.WhoLikedYou ? (
-        <CardFooter className="mt-4 flex justify-around">
-          <Button className="w-24 bg-sidebar-primary">Accept</Button>
-          <Button variant={"outline"} className="w-24 bg-red-400">
-            Remove
-          </Button>
-        </CardFooter>
-      ) : (
-        <CardFooter>
-          <Button variant={"outline"} className="rounded-full px-2 py-1">
-            <FaHeart className="text-red-500" />
-          </Button>
-        </CardFooter>
-      )}
     </Card>
   );
 }

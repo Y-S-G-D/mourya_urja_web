@@ -18,8 +18,11 @@ import { Sheet ,SheetTrigger,} from "@/components/ui/sheet";
 import FilterSheet from "@/components/filter-sheet";
 import { PaginationButton } from "@/components/pagination";
 import Footer from "@/components/Footer";
+import { Eye } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const BrowseProfilePage = () => {
+  const router = useRouter();
   const [isLiked, setIsLiked] = React.useState(false);
 
   const handleLike = () => {
@@ -67,9 +70,18 @@ const BrowseProfilePage = () => {
               <UserBasicInfo data={connection} />
                 <div 
                   onClick={handleLike}
-                  className="absolute  top-6 right-6 p-2 cursor-pointer bg-accent rounded-full border border-border">
-                  {isLiked?<FaHeart className="text-red-500" />:<FaRegHeart  className="text-foreground" />}
-                 </div>
+                  className="absolute  top-6 right-6 p-2 cursor-pointer bg-accent rounded-full border border-border hover:bg-secondary">
+                  {isLiked?<FaHeart className="text-red-500" />:<FaRegHeart  className="text-primary hover:text-secondary-foreground" />}
+                </div>
+                <div 
+                  onClick={()=> {
+                    router.push('/user-profile')
+                  }}
+                  className="absolute  top-16 right-6 p-2 cursor-pointer bg-accent rounded-full border border-border hover:bg-sidebar-primary">
+                  <Eye className="text-primary hover:text-primary-foreground" size={18} />
+
+                </div>
+                
             </div>
           ))}
         </div>

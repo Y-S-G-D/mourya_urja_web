@@ -9,17 +9,17 @@ const LikesPage = () => {
     <div>
       <Navbar bgColor={'bg-primary'}/>
       <section className='bg-accent max-w-7xl w-full mx-auto pt-24 md:px-8 px-4 flex flex-col justify-center items-center'>
-        <h1 className='text-6xl font-bold text-primary mb-4'>Likes</h1>
+        <h1 className='text-6xl font-bold text-primary mb-4'>Favourites</h1>
         <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">
+              <BreadcrumbItem >
+                <BreadcrumbLink href="/">
                   Home
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbSeparator  />
               <BreadcrumbItem>
-                <BreadcrumbPage>Likes</BreadcrumbPage>
+                <BreadcrumbPage>Favourites</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
         </Breadcrumb>

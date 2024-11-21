@@ -20,7 +20,6 @@ import WhoLikedYouContent from './who-liked-you'
 import ProfileCard from './profile-card'
 import { LikeType } from '@/utils/enums/likeType-enum'
 const LikesTabs = () => {
-    // let likeType: LikeType = LikeType.WhoLikedYou
   
   return (
     <Tabs 

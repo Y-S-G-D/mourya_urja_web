@@ -1,6 +1,7 @@
 'use client';
 import React from "react";
 import Link from 'next/link';
+import { tagLine, websiteName } from "@/shared/constant";
 
 const Footer = () => {
   return (
@@ -13,10 +14,10 @@ const Footer = () => {
               alt="Logo Image"
               className="h-28 w-32 rounded-full mr-4"
             /> */}
-            <h1 className="text-2xl font-semibold uppercase">Mourya Urja Matrimonial</h1>
+            <h1 className="text-2xl font-semibold uppercase">{websiteName}</h1>
           </div>
           <p className="mt-2">
-            Make your wedding journey here.
+          {tagLine}
           </p>
           <p className="mt-4">© 2024 MUM  | All Rights Reserved</p>
 
