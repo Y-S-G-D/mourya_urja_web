@@ -1,18 +1,28 @@
 
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextRequest } from 'next/server'
+import { CookiesManger } from './utils/cookies-manager'
+
 
  
 // This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const access_token = request.cookies.get('access_token')
   const role = request.cookies.get('role')
   const url = request.nextUrl.pathname
 
-  // console.log("Role ",role?.value)
-  // console.log("URL ",url)
-  // console.log("access_token ",access_token)
+  const response = NextResponse.next();
+
+  if(!url.startsWith('/login') && access_token){
+    if(!(await CookiesManger.getInstance().verifyToken(access_token.value))){
+      response.cookies.set('access_token', '', { expires: new Date(0) });
+      response.cookies.set('role', '', { expires: new Date(0) });
+      return NextResponse.redirect(new URL("/login", request.url))
+    }
+  }
+ 
   if(access_token && role && url.startsWith('/login')){
+
     if(role.value === 'admin'){
       
       return NextResponse.redirect(new URL("/admin",request.url))
@@ -25,12 +35,17 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  // if((url.startsWith('/admin') || url.startsWith("/employee")) && access_token){
+    
+
+  // }
+  
   // console.log(access_token,role,url)
 
 
 
-  return NextResponse.next()
+  return response;
 }
 export const config = {
-    matcher: ['/login','/admin/:path*','/management/:path*'],
+    matcher: ['/','/login','/admin/:path*','/management/:path*'],
   };
