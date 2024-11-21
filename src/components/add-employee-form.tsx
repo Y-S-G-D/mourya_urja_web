@@ -11,8 +11,11 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import RoleSelectionCheckbox from "./role-selection-checkbox";
+import { Select,SelectTrigger,SelectValue,SelectContent,SelectItem } from "@/components/ui/select";
 import { useEmployeeStore } from "@/stores/employee-store";
+import { companyNames } from "@/shared/constant";
+import { Label } from "./ui/label";
+import PageSelectionCheckbox from "./page-selection-checkbox";
 
 const AddEmployeeForm = () => {
   const { employee } = useEmployeeStore();
@@ -20,6 +23,8 @@ const AddEmployeeForm = () => {
   // Initialize the form with defaultValues
   const form = useForm({
     defaultValues: {
+      employeeId: "",
+      companyName: "",
       firstname: "",
       lastname: "",
       email: "",
@@ -41,6 +46,8 @@ const AddEmployeeForm = () => {
   useEffect(() => {
     if (employee) {
       form.reset({
+        employeeId: employee.employeeId || "",
+        companyName: employee.companyName || "",
         firstname: employee.firstName || "",
         lastname: employee.lastName || "",
         email: employee.email || "",
@@ -58,9 +65,57 @@ const AddEmployeeForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="py-4 px-8 border border-border shadow-sm rounded-lg"
+        className="py-4 space-y-4 px-8 border border-border shadow-sm rounded-lg"
       >
         <div className="grid grid-cols-2 gap-8">
+          <FormField
+            control={form.control}
+            name="employeeId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="employeeId">Employee ID</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    id="employeeId"
+                    placeholder="Enter Employee ID"
+                    type="text"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="companyName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="companyName">Company Name</FormLabel>
+                <FormControl>
+                  <Select
+                   onValueChange={field.onChange} defaultValue={field.value} >
+                    <SelectTrigger>
+                       <SelectValue placeholder="Select Company Name"></SelectValue>
+                    <SelectContent>
+                      {
+                        companyNames.map((companyName,index) => {
+                          return (
+                            <SelectItem key={index} value={companyName.value}>
+                              {companyName.label}
+                            </SelectItem>
+                          )
+                        })
+                      }
+                    </SelectContent>
+                    </SelectTrigger>
+
+                  </Select>
+                </FormControl>
+              </FormItem>
+            )}
+
+          />
+
           <FormField
             control={form.control}
             name="firstname"
@@ -129,6 +184,8 @@ const AddEmployeeForm = () => {
               </FormItem>
             )}
           />
+        </div>
+         <div className="grid grid-cols-3 gap-8">
           <FormField
             control={form.control}
             name="post"
@@ -163,7 +220,6 @@ const AddEmployeeForm = () => {
               </FormItem>
             )}
           />
-          <RoleSelectionCheckbox />
           <FormField
             control={form.control}
             name="posting"
@@ -182,6 +238,17 @@ const AddEmployeeForm = () => {
             )}
           />
         </div>
+        <div>
+          <Label>Page Access</Label>
+          <div className="flex gap-4">
+            <PageSelectionCheckbox/>
+
+             
+          </div>
+        </div>
+
+
+         
         <div className="my-8 flex gap-4">
           <Button type="submit" className="w-28">
             Save

@@ -64,11 +64,11 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
         <div
           className={`${
             isDrawerOpen
-              ? " animate-fadeIn  transition duration-700  absolute  w-full top-20  left-0 justify-center items-center bg-accent   md:hidden flex flex-col"
+              ? " animate-fadeIn  transition duration-700  absolute  w-full top-20  left-0 justify-center items-center bg-sidebar-primary   md:hidden flex flex-col"
               : "hidden"
           }`}
         >
-          <ul className="text-base md:space-x-6 lg:space-x-8  py-3 px-6 text-center text-foreground ">
+          <ul className="text-base md:space-x-6 lg:space-x-8  py-3 px-6 text-center  font-semibold text-sidebar-primary-foreground ">
             {navMenus.map((menu, index) => (
               <li key={index} className="py-2 text-xl text-nowrap">
                 <Link href={menu.url}>{menu.title}</Link>
