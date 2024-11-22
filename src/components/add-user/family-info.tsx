@@ -7,6 +7,7 @@ import { Button } from '../ui/button'
 import { FormField ,FormLabel, FormItem , FormControl, FormMessage} from '../ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../ui/select'
+import SiblingsInfo from './siblings-info'
 
 const familyInfoSchema = z.object({
     fatherName: z.string({message: 'Father name is required'}),
@@ -98,7 +99,7 @@ const FamilyInfo = () => {
                            </FormItem>
                         )}
                       />
-                      <FormField
+                      {/* <FormField
                         control={form.control}
                         name='noOfSiblings'
                         render={({field}) => (
@@ -136,7 +137,7 @@ const FamilyInfo = () => {
                                   <FormMessage>{form.formState.errors.noOfSisters?.message}</FormMessage>
                                 </FormItem>
                               )}
-                            />
+                            /> */}
                             <FormField
                               control={form.control}
                               name='familyType'
@@ -160,6 +161,7 @@ const FamilyInfo = () => {
                                 )}
                               />
                 </div>
+                <SiblingsInfo/>
                 <Button type='submit'>Save</Button>
             </form>
             </CardContent>

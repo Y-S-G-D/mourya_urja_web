@@ -52,13 +52,7 @@ const Footer = () => {
           <p className="mx-2 py-1  ">Phone: +91 12345 67890</p>
           <p className="mx-2 py-1">Email: service@xyz.in,  info@xyz.com </p>
           <p className="mx-2 py-1">Address: XYZ Road, ABC City, 12345
-                {/* <br />
-                Hotel DRS Deluxe
-                <br />
-                Main Road, Purani Bazar
-                <br />
-                Lakhisarai-Bihar 811311 (India) */}
-                </p>
+          </p>
           </div>
           
         </div>
