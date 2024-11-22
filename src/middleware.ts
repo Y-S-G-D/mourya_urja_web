@@ -12,18 +12,12 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.pathname
 
 
-  // const seachedCookies = await cookies()
-
-  // console.log("==============================")
-  // console.log(seachedCookies)
-
   const response = NextResponse.next();
 
   if(!url.startsWith('/login') && access_token){
     if(!(await CookiesManger.getInstance().verifyToken(access_token.value))){
       response.cookies.set('access_token', '', { expires: new Date(0) });
       response.cookies.set('role', '', { expires: new Date(0) });
-      return NextResponse.redirect(new URL("/login", request.url))
     }else{
       console.log("Token verfied")
     }
