@@ -3,6 +3,9 @@ import { IEmployee } from "@/models/employee-model";
 import axios from "axios";
 import { employeeEndPoint, employeeProfileEndPoint } from "@/shared/endpoints";
 import LocalStorage from "@/utils/local-storage/local-storage";
+import Cookies from "js-cookie";
+
+
 
 interface IEmployeeStore {
   isProcessing: boolean;
@@ -26,6 +29,7 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
   employee: null,
   getEmployees: async () => {
     try {
+
       // set((state) => ({ processStatus: { ...state.processStatus, isLoading: true } }));
       const response = await axios.get(employeeEndPoint);
       console.log(response.data);
@@ -38,6 +42,7 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
 
   getEmployeeProfile: async (): Promise<IEmployee | null> => {
     try {
+      const access_token = Cookies.get('access_token')
       /// Get login info from local storage
       const loginInfo = LocalStorage.getInstance().getLoginInfo();
       if (!loginInfo) {
@@ -47,8 +52,12 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
       set({ isProcessing: true, errorMsg: null, successMsg: null });
       const response = await axios.get(`${employeeProfileEndPoint}/${id}`, {
         params: { role: loginInfo.role },
-        withCredentials:true
-      });
+        withCredentials: true,
+        headers:{
+          Authorization:`Bearer ${access_token}; role=${loginInfo.role}`,
+          
+        }
+        });
       const employeeData:IEmployee = response.data.data;
       set({
         isProcessing: false,

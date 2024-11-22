@@ -20,7 +20,7 @@ export const employeeSchema = z.object({
   posting: z.string()
     .min(1, { message: "Posting is required" }),
   access: z.array(z.string()).min(1, { message: "Access is required" }),
-    
+  companyName: z.string().min(2,{message:"Please enter company name"})  ,
   post: z.string()
     .min(1, { message: "Post is required" }),
 });

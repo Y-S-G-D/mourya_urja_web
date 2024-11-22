@@ -16,22 +16,21 @@ import { Home, User, Users, ClipboardCheck, HelpCircle, LogOut, FileText, Shield
 import { Separator } from "./ui/separator"
 
 import { useAuthStore } from "@/stores/auth-store";
+import { usePathname } from 'next/navigation';
 
 export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
-  const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
+
+  const pathname = usePathname();
+
 
   const {logout} = useAuthStore()
 
   React.useEffect(() => {
-    const savedActiveMenu = localStorage.getItem('activeMenu');
-    if (savedActiveMenu) {
-      setActiveMenu(savedActiveMenu);
-    }
+   
   }, []);
 
   const handleMenuClick = (path: string) => {
-    setActiveMenu(path);
-    localStorage.setItem('activeMenu', path);
+    console.log(path)
   };
 
   const menus = [
@@ -105,7 +104,7 @@ export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
             <SidebarMenu>
               {menus.map((item) => (
                 <SidebarMenuItem key={item.title} className="text-lg font-semibold">
-                  <SidebarMenuButton asChild isActive={item.path === activeMenu}>
+                  <SidebarMenuButton asChild isActive={item.path === pathname}>
                     <a href={item.path} onClick={() => {
                       if(item.title === 'Logout'){
                         logout()
