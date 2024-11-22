@@ -1,8 +1,10 @@
 'use client'
+import React from "react";
 import {
   Card,
   CardHeader,
   CardContent,
+  CardTitle,
 } from "../ui/card";
 import {
   Select,
@@ -12,29 +14,27 @@ import {
   SelectItem,
 } from "../ui/select";
 import { Input } from "../ui/input";
-import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { CardTitle } from "../ui/card";
-import { FormField, FormItem, FormLabel, FormMessage ,  FormControl,
-} from "../ui/form";
+import { FormField, FormItem, FormLabel, FormMessage, FormControl } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { userPersonalInfoSchema } from "@/schema/user-personal-info-schema";
-import { Button } from '../ui/button'
+import { Button } from '../ui/button';
+import ImageView from '@/components/add-user/image-view'; // Ensure the path is correct or create the module if it doesn't exist
 
 const PersonalInformation = () => {
 
   const form = useForm<z.infer<typeof userPersonalInfoSchema>>({
     resolver: zodResolver(userPersonalInfoSchema),
-    defaultValues:{
-
-    }
+    defaultValues: {},
   });
 
   const onSubmit = (data: z.infer<typeof userPersonalInfoSchema>) => {
     console.log(data);
   };
+
+  
   return (
     <Card className="my-6">
       <CardHeader>
@@ -271,13 +271,10 @@ const PersonalInformation = () => {
                 </FormItem>
               )}
             />
-            <div>
-              <FormLabel>Upload Images (up to 5)</FormLabel>
-              <input type="file" multiple accept="image/*" />
+             <ImageView/>
+             <div className="flex ">
+              <Button type="submit">Save</Button>
             </div>
-            <div className="flex justify-end">
-                <Button type="submit">Save</Button>
-              </div>
           </form>
         </FormProvider>
       </CardContent>
