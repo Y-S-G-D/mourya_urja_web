@@ -9,11 +9,14 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbS
 import { Separator } from '@/components/ui/separator'
 import { useRouter } from 'next/navigation'
 import { usersData } from '@/utils/users-data'
+import Navbar from '@/components/home-page/navbar'
 
 const UsersPage = () => {
   const router = useRouter()
   return (
-    <div className=" pt-20 flex flex-1 flex-col gap-4 p-4">
+    <section>
+      <Navbar bgColor={"bg-primary"}/>
+    <div className=" pt-24 flex flex-1 flex-col gap-4 p-4 px-8">
       <h1 className='text-3xl font-semibold'>Manage Users</h1>
       <Breadcrumb>
             <BreadcrumbList>
@@ -34,7 +37,7 @@ const UsersPage = () => {
         <Input placeholder='Search here..' className='w-1/2'/>
         <Button 
           onClick={()=>{
-            router.push('/management/add-users')
+            router.push('/add-users')
           }}
           ><Plus/>Add New User</Button>
         <Button variant='secondary'>
@@ -47,6 +50,7 @@ const UsersPage = () => {
         <DataTable columns={columns} data={usersData} />
       </div>
     </div>
+    </section>
 
   )
 }

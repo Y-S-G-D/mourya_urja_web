@@ -12,10 +12,11 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { Home, User, Users, ClipboardCheck, HelpCircle, LogOut, FileText, Shield } from 'lucide-react';
+import { Home, User, Users, ClipboardCheck, LogOut, FileText, Shield } from 'lucide-react';
 import { Separator } from "./ui/separator"
 
 import { useAuthStore } from "@/stores/auth-store";
+
 
 export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
   const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
@@ -52,7 +53,7 @@ export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
     },
     {
       title: 'Users',
-      path: `${isAdmin ? '/management/users' : '/admin/users'}`,
+      path: `/users`,
       icon: Users
     },
     {
@@ -61,9 +62,9 @@ export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
       icon: ClipboardCheck
     },
     {
-      title: 'Enquiry',
-      path: '/admin/enquiry',
-      icon: HelpCircle
+      title:"Forget Password",
+      path:"/forget-password",
+      icon:Shield,
     },
     {
       title: 'Privacy Policy',

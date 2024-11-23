@@ -1,4 +1,4 @@
-import { Users } from "@/app/management/users/columns";
+import { Users } from "@/app/users/columns";
 
 export const usersData: Users[] = [
     {
