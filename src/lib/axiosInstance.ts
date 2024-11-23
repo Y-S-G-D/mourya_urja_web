@@ -1,4 +1,4 @@
-import LocalStorage from "@/utils/local-storage/local-storage";
+// import LocalStorage from "@/utils/local-storage/local-storage";
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
 
@@ -13,20 +13,20 @@ const apiClient: AxiosInstance = axios.create({
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     try {
-      // Get login info from local storage (client-side only)
-      const loginInfo = LocalStorage.getInstance().getLoginInfo();
+      // // Get login info from local storage (client-side only)
+      // const loginInfo = LocalStorage.getInstance().getLoginInfo();
 
-      if (!loginInfo) {
-        console.warn("LoginInfo does not exist");
-        return config;
-      }
+      // if (!loginInfo) {
+      //   console.warn("LoginInfo does not exist");
+      //   return config;
+      // }
 
       // Get token from cookies
       const token =
         typeof window !== "undefined" ? Cookies.get("access_token") : null;
 
       if (token) {
-        config.headers.set('Authorization', `Bearer ${token}; role=${loginInfo.role}`);
+        config.headers.set('Authorization', `Bearer ${token}`);
       }
 
       return config;

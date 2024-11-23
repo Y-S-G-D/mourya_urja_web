@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { IEmployee } from "@/models/employee-model";
-import { employeeEndPoint, employeeProfileEndPoint,registerEmployeeEndPoint } from "@/shared/endpoints";
+import { allEmployeesEndpoint, employeeProfileEndPoint,registerEmployeeEndPoint } from "@/shared/endpoints";
 import LocalStorage from "@/utils/local-storage/local-storage";
 import apiClient from "@/lib/axiosInstance";
 import { errorMessage } from "@/shared/errorHandler";
@@ -30,7 +30,7 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
   getEmployees: async () => {
     try {
       set({isProcessing:true,errorMsg:null,successMsg:null})
-      const response = await apiClient.get(employeeEndPoint);
+      const response = await apiClient.get(allEmployeesEndpoint);
       if(response.status === 200){
         const fetchedEmployees:IEmployee[] = response.data.data;
         set({isProcessing:false,successMsg:response.data.message,employees:fetchedEmployees})
