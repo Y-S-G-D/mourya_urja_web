@@ -11,6 +11,7 @@ const ImageView = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
+      
       setSelectedImages((prevImages) => [...prevImages, ...filesArray]);
     }
   };
