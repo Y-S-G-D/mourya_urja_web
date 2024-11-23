@@ -22,7 +22,7 @@ export type Employees = {
 //   post: string;
   email: string;
   phoneNumber: string;
-  status: "Active" | "In-Active";
+  status: string;
 };
 
 export const columns: ColumnDef<Employees>[] = [

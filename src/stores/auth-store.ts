@@ -3,6 +3,7 @@ import axios from 'axios';
 import { loginEndPoint } from '@/shared/endpoints';
 import Cookies from 'js-cookie'
 import LocalStorage from '../utils/local-storage/local-storage'
+import apiClient from '@/lib/axiosInstance';
 
 
 export interface IAuthStore{
@@ -25,7 +26,7 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
         try{
             // Add your login logic here
         set({ isLoading: true, errorMsg: null, isSuccess: false })
-        const response = await axios.post(loginEndPoint,{email, password, accessType},
+        const response = await apiClient.post(loginEndPoint,{email, password, accessType},
             
         )
         
