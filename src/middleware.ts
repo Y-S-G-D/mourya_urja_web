@@ -2,14 +2,15 @@
 import { NextResponse } from 'next/server'
 import { NextRequest } from 'next/server'
 import { CookiesManger } from './utils/cookies-manager'
+// import { cookies } from 'next/headers'
 
 
- 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const access_token = request.cookies.get('access_token')
   const role = request.cookies.get('role')
   const url = request.nextUrl.pathname
+
 
   const response = NextResponse.next();
 
@@ -17,7 +18,8 @@ export async function middleware(request: NextRequest) {
     if(!(await CookiesManger.getInstance().verifyToken(access_token.value))){
       response.cookies.set('access_token', '', { expires: new Date(0) });
       response.cookies.set('role', '', { expires: new Date(0) });
-      return NextResponse.redirect(new URL("/login", request.url))
+    }else{
+      console.log("Token verfied")
     }
   }
  
@@ -33,6 +35,10 @@ export async function middleware(request: NextRequest) {
     if(role.value === 'user'){
       return NextResponse.redirect(new URL("/",request.url))
     }
+  }
+
+  if(!access_token && (url.startsWith('/admin')|| url.startsWith('/management'))){
+    return NextResponse.redirect(new URL("/login", request.url))
   }
 
   // if((url.startsWith('/admin') || url.startsWith("/employee")) && access_token){

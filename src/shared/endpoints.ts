@@ -1,8 +1,12 @@
-export const baseUrl = 'http://192.168.1.255:3000/v1'; 
 
-export const userEndPoint =  `${baseUrl}/users`;
 
-export const employeeEndPoint =  `${baseUrl}/employee`;
-export const employeeProfileEndPoint = `${employeeEndPoint}/profile`;
+export const userEndPoint =  '/users';
 
-export const loginEndPoint = `${baseUrl}/login`;
+export const employeeEndPoint =  '/employee';
+export const registerEmployeeEndPoint = `/register`
+export const employeeProfileEndPoint = `/profile`;
+
+// fetch all employees
+export const allEmployeesEndpoint = '/all-employee'
+
+export const loginEndPoint = '/login';
