@@ -17,6 +17,7 @@ import EducationNdProfessionalInfo from "@/components/add-user/education-profess
 import CulturalNdReligiousInfo from "@/components/add-user/cultural-religious-info";
 import FamilyInfo from "@/components/add-user/family-info";
 import SpouseExpectations from "@/components/add-user/spouse-expectations";
+import Navbar from "@/components/home-page/navbar";
 
 
 const AddUserForm = () => {
@@ -48,7 +49,9 @@ const AddUserForm = () => {
   }
 
   return (
-    <div className="pt-20 flex flex-1 flex-col gap-4 p-6">
+    <section>
+      <Navbar bgColor={"bg-primary"}/>
+    <div className="pt-24 flex flex-1 flex-col gap-4 p-6 px-8">
       <h1 className="text-3xl font-semibold">Add New User</h1>
       <Breadcrumb>
       <BreadcrumbList>
@@ -98,6 +101,7 @@ const AddUserForm = () => {
       </React.Fragment>
       )}
     </div>
+    </section>
   );
 };
 

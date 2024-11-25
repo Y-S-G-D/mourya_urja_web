@@ -40,7 +40,7 @@ const EducationNdProfessionalInfo = () => {
     <FormProvider {...form}>
       <Card>
          <CardHeader>
-            <CardTitle>Educational & Professional Information</CardTitle>
+            <CardTitle>Education & Profession Information</CardTitle>
          </CardHeader>
          <CardContent>
              <form  onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
