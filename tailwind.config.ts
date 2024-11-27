@@ -11,8 +11,14 @@ const config: Config = {
   	extend: {
 		animation: {
 			fadeIn: 'fadeIn 0.5s ease-in-out forwards',
+			ripple: 'ripple 2s cubic-bezier(0, 0.2, 0.8, 1) infinite',
 		  },
 		  keyframes: {
+			ripple:{
+              '0%': { transform: 'scale(0)' ,opacity: '1' },
+			  '100%': { transform: 'scale(4)', opacity: '0' },
+
+			},
 			fadeIn: {
 			  '0%': { opacity: '0' },
 			  '100%': { opacity: '1' },

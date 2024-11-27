@@ -11,8 +11,9 @@ import {
 import LocalStorage from "@/utils/local-storage/local-storage";
 import { create } from "zustand";
 import apiClient from "@/lib/axiosInstance";
-import { preSignedUrl, registerUser } from "@/shared/endpoints";
+import { getUsers, preSignedUrl, registerUser } from "@/shared/endpoints";
 import { generate12DigPassword } from "@/utils/services/password-generator";
+import { Users } from "@/app/users/columns";
 
 export interface IUserStore {
   /// fields for handling dbresponse
@@ -56,6 +57,8 @@ export interface IUserStore {
   saveUser: () => void;
   
 }
+
+
 
 const useUserStore = create<IUserStore>((set, get) => ({
   isProcessing: false,
@@ -286,3 +289,52 @@ const useUserStore = create<IUserStore>((set, get) => ({
 }));
 
 export default useUserStore;
+// +++++++++++++++++++++============================================================== ///
+
+export  interface IFetchUserStore {
+  isProcessing: boolean;
+  errorMsg: string;
+  users: IUser[];
+  getUsers: () => Promise<IUser[]>;
+  getUserTableData: ( users: IUser[] ) => Users[]
+}
+
+export const useFetchUserStore = create<IFetchUserStore>((set) => ({
+  isProcessing: false,
+  errorMsg: "",
+  users: [],
+  getUsers: async () => {
+    try {
+      set({ isProcessing: true });
+      const response = await apiClient.get(getUsers,{
+        params:{
+          limit:10,
+          skip:1
+        }
+      });
+      console.log(response);
+      if(response.status === 200){
+        const fetchedUsers: IUser[] = response.data.data;
+        set({users: fetchedUsers ,isProcessing:false });
+        return fetchedUsers;
+      }
+      return [];
+    } catch (e) {
+      console.log("Error fetching users", e);
+      set({ errorMsg: "Failed to get users. Please try again later." });
+      return [];
+    }
+  },
+  getUserTableData: (users: IUser[]): Users[] => {
+    // Implement the logic to convert IUser[] to Users[]
+    return users.map((user, index) => ({
+      id: (index + 1).toString(),
+      name: `${user.personalInfo.firstName} ${user.personalInfo.lastName}`,
+      email: user.contactInfo.email,
+      dob: user.personalInfo.dob,
+      phoneNumber: user.contactInfo.phoneNumber,
+      jobType: user.eduAndProfInfo.jobType,
+    }));
+  }
+    
+}));

@@ -17,7 +17,7 @@ interface IEmployeeStore {
   saveEmployee: (employee: IEmployee) => void;
   deleteEmployee: (employeeId: string) => void;
   getEmployeeProfile: () => Promise<IEmployee | null>;
-  getEmployeeTableData:(employees:IEmployee[])=>Employees[]
+  getEmployeeTableData:(employees:IEmployee[])=> Employees[]
 }
 
 // Just a minute a am guiding vinita for mobile app

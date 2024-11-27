@@ -4,7 +4,9 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
+
 } from "@tanstack/react-table"
 
 import {
@@ -33,8 +35,14 @@ export function DataTable<TData, TValue>({
     columns,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+
     state:{
         rowSelection,
+        pagination:{
+          pageIndex: 0,
+          pageSize: 1
+        }
     }
   })
 
@@ -87,7 +95,7 @@ export function DataTable<TData, TValue>({
           variant="outline"
           size="sm"
           onClick={() => table.previousPage()}
-          // disabled={!table.getCanPreviousPage()}
+          disabled={!table.getCanPreviousPage()}
         >
           Previous
         </Button>
@@ -95,7 +103,7 @@ export function DataTable<TData, TValue>({
           variant="outline"
           size="sm"
           onClick={() => table.nextPage()}
-          // disabled={!table.getCanNextPage()}
+          disabled={!table.getCanNextPage()}
         >
           Next
         </Button>
