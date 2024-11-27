@@ -1,35 +1,31 @@
 import React from 'react'
-import { z } from 'zod'
 import { Card, CardHeader, CardTitle, CardContent} from '../ui/card'
-import { useForm,FormProvider } from 'react-hook-form'
+import { useForm,FormProvider, FieldValues } from 'react-hook-form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { FormField ,FormLabel, FormItem , FormControl, FormMessage} from '../ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { culturalNdReligiousSchema } from '@/schema/cultural-religious-schema'
+import useUserStore from '@/stores/user-store'
+import { ICultureAndReligiousInfo } from '@/models/user-model'
 
-
-const culturalNdReligiousSchema = z.object({
-  religion: z.string(),
-  caste: z.string(),
-  subCaste: z.string(),
-  gotra: z.string(),
-  raasi: z.string(),
-})
 
 const CulturalNdReligiousInfo = () => {
-  const form = useForm<z.infer<typeof culturalNdReligiousSchema>>({
+  const { addCultureAndReligiousInfo,cultureAndReligiousInfo } = useUserStore()
+
+  const form = useForm({
       resolver: zodResolver(culturalNdReligiousSchema),
       defaultValues: {
-        religion: '',
-        caste: '',
-        subCaste: '',
-        gotra: '',
-        raasi: '',
+        religion: cultureAndReligiousInfo.religion || '',
+        caste:cultureAndReligiousInfo.caste || '',
+        subCaste: cultureAndReligiousInfo.subCaste || '',
+        gotra: cultureAndReligiousInfo.gotra || '',
+        raasi: cultureAndReligiousInfo.raasi || '',
       }
   })
 
-  const onSubmit = (data: z.infer<typeof culturalNdReligiousSchema>) => {
-    console.log(data)
+  const onSubmit = (data: FieldValues) => {
+    addCultureAndReligiousInfo(data as ICultureAndReligiousInfo)
   }
   return (
     <FormProvider {...form}>

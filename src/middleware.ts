@@ -22,6 +22,7 @@ export async function middleware(request: NextRequest) {
       console.log("Token verfied")
     }
   }
+
  
   if(access_token && role && url.startsWith('/login')){
 
@@ -29,8 +30,8 @@ export async function middleware(request: NextRequest) {
       
       return NextResponse.redirect(new URL("/admin",request.url))
     }
-    if(role.value === 'management'){
-      return NextResponse.redirect(new URL("/management",request.url))
+    if(role.value === 'employee'){
+      return NextResponse.redirect(new URL("/admin",request.url))
     }
     if(role.value === 'user'){
       return NextResponse.redirect(new URL("/",request.url))

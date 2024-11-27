@@ -1,9 +1,12 @@
 
 
 export const userEndPoint =  '/users';
+export const registerUser = `${userEndPoint}/register`
+export const preSignedUrl = `${userEndPoint}/presignedUrl`
+
 
 export const employeeEndPoint =  '/employee';
-export const registerEmployeeEndPoint = `/register`
+export const registerEmployeeEndPoint = '/register'
 export const employeeProfileEndPoint = `/profile`;
 
 // fetch all employees

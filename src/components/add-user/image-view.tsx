@@ -1,30 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaTimes } from "react-icons/fa";
 import Image from "next/image";
 import { Label } from "../ui/label";
 import { Plus } from "lucide-react";
 import { Button } from "../ui/button";
+import useUserStore from "@/stores/user-store";
 
 const ImageView = () => {
-  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const { profileImageFiles, addProfileImageFiles ,removeProfileImageFile} = useUserStore();
+  // const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const filesArray = Array.from(e.target.files);
+  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     const filesArray = Array.from(e.target.files);
       
-      setSelectedImages((prevImages) => [...prevImages, ...filesArray]);
-    }
-  };
+  //     setSelectedImages((prevImages) => [...prevImages, ...filesArray]);
+  //   }
+  // };
 
-  const handleDeleteImage = (index: number) => {
-    setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
-  };
+  // const handleDeleteImage = (index: number) => {
+  //   setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  // };
 
   return (
     <div className="my-4">
       <Label>Upload Images (up to 5)</Label>
       <div className="flex items-center space-x-4 my-4">
-        {selectedImages.map((image, index) => (
+        {profileImageFiles.map((image, index) => (
           <div
             key={index}
             className="relative w-24 h-24 rounded-lg border border-gray-300 overflow-hidden"
@@ -36,7 +38,7 @@ const ImageView = () => {
               objectFit="cover"
             />
             <Button
-              onClick={() => handleDeleteImage(index)}
+              onClick={() => removeProfileImageFile(index)}
               variant={"destructive"}
               className=" p-1 h-5 text-xs absolute top-0 right-0"
             >
@@ -55,7 +57,17 @@ const ImageView = () => {
             type="file"
             multiple
             accept="image/*"
-            onChange={handleImageChange}
+            onChange={(e) => {
+              if (e.target.files) {
+                try{
+                  addProfileImageFiles(Array.from(e.target.files));
+                }catch(e){
+                  console.log(e);
+                  //TODO: Show Toast UI when error happens
+                }
+                
+              }
+            }}
             className="hidden"
           />
         </label>

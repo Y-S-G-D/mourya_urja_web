@@ -85,6 +85,7 @@ export const userSchema = z.object({
   spouseExpctation: z.string().optional(),
 
   isApproved: z.boolean(),
+  password: z.string().min(6,"Password must have at least 6 characters").optional(),
 
   tags: z.array(z.string()).optional(),
 });

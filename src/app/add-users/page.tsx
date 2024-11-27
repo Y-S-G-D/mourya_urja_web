@@ -18,11 +18,16 @@ import CulturalNdReligiousInfo from "@/components/add-user/cultural-religious-in
 import FamilyInfo from "@/components/add-user/family-info";
 import SpouseExpectations from "@/components/add-user/spouse-expectations";
 import Navbar from "@/components/home-page/navbar";
-
+import useUserStore from "@/stores/user-store";
 
 const AddUserForm = () => {
+  const { saveUser } = useUserStore();
+
   const steps = ['Personal Details', 'Contact Info', 'Educational & Professional','Cultural & Religious','Family Details',"Spouse Expectations",];
+
   const [activeStep , setActiveStep] = useState(0)
+
+  
 
   const handleReset = (): void => {
     setActiveStep(0)
@@ -84,7 +89,8 @@ const AddUserForm = () => {
       ) : (
       <React.Fragment>
         <div className="mt-2 mb-1">{
-        renderComponent()}</div>
+        renderComponent()
+        }</div>
         <div className="flex flex-row  justify-between pt-2">
         <Button
           variant={'secondary'}
@@ -94,7 +100,12 @@ const AddUserForm = () => {
           Back
         </Button>
         
-        <Button className="btn" onClick={handleNext}>
+        <Button 
+          onClick={ activeStep ===steps.length-1 ? () =>{
+            saveUser()
+            handleNext()
+            
+          } : handleNext}>
           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
         </Button>
         </div>

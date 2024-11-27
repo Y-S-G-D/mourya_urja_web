@@ -13,14 +13,7 @@ const apiClient: AxiosInstance = axios.create({
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     try {
-      // // Get login info from local storage (client-side only)
-      // const loginInfo = LocalStorage.getInstance().getLoginInfo();
-
-      // if (!loginInfo) {
-      //   console.warn("LoginInfo does not exist");
-      //   return config;
-      // }
-
+     
       // Get token from cookies
       const token =
         typeof window !== "undefined" ? Cookies.get("access_token") : null;

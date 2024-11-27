@@ -1,3 +1,5 @@
+import { ISibling } from "./siblings-model";
+
 export interface IPersonalInfo {
   // Personal information
   firstName: string;
@@ -9,9 +11,9 @@ export interface IPersonalInfo {
   height: number;
   weight: number;
   complexion: string;
-  hobbies: [string];
+  hobbies: string[];
   aboutMe: string;
-  profileImages: [string];
+  profileImages: string[];
 }
 
 export interface IContactInfo {
@@ -28,12 +30,18 @@ export interface IAddress {
   pincode: string;
 }
 
+export interface IAllContactInfo {
+  contactInfo: IContactInfo;
+  residentialAddr: IAddress;
+  permanentAddr: IAddress;
+}
+
 export interface IEducationalAndProfessionInfo {
   highestEducation: string;
-  otherEductionDetail: string;
+  otherEducation: string;
   jobType: string;
   designation: string;
-  workDetail: string;
+  workDetails: string;
   income: number;
 }
 
@@ -50,18 +58,11 @@ export interface IFamilyInfo {
   fatherOccupation: string;
   motherName: string;
   motherOccupation: string;
-  siblings: [ISibling];
+  siblings: ISibling[];
   familyType: string;
 }
 
-export interface ISibling{
-    name:string;
-    realation:string;
-    age:number;
-    ageRelation:string;
-    educationDetail:string;
-    workDetails:string;
-}
+
 
 export interface IUser {
   createdBy: string;
@@ -80,9 +81,10 @@ export interface IUser {
   // Family information
   familyInfo: IFamilyInfo;
 
-  spouseExpctation: string;
+  spouseExpectation: string;
 
   isApproved: boolean;
 
-  tags: [string];
+  tags: string[];
+  password: string;
 }

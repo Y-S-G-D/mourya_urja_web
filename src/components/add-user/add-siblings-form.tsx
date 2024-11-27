@@ -1,36 +1,51 @@
 import { z } from "zod";
-import { useForm, } from "react-hook-form";
+import { FieldValues, useForm, } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { siblingSchema } from "@/schema/sibling-schema";
+import useUserStore from "@/stores/user-store";
+import { ISibling } from "@/models/siblings-model";
 
 
 type SiblingFormValues = z.infer<typeof siblingSchema>;
 
 export default function AddSiblingFormDialog() {
 
+  const { addSibling ,handleSiblingDialog } = useUserStore();
+
   const form = useForm<SiblingFormValues>({
     resolver: zodResolver(siblingSchema),
     defaultValues: {
       name: "",
       relation: "Brother",
-      age: 0,
+      age: "0",
       ageRelation: "Younger",
       education: "",
       workDetails: "",
     },
   });
 
-  const onSubmit = (data: SiblingFormValues) => {
-    console.log(data);
+  const onSubmit = (data:FieldValues) => {
+   
+    const age = parseInt(data.age ?? "0");
+    data.age = age;
+    addSibling(data as ISibling);
+    form.reset();
+  
   };
 
+  const onSave = (data: FieldValues) => { 
+    addSibling(data as ISibling);
+    handleSiblingDialog(false);
+    form.reset();
+  }
+
   return (
-    <DialogContent className="sm:max-w-3xl">
+  <DialogContent className="sm:max-w-3xl">
   <DialogHeader>
     <DialogTitle>Add Sibling Information</DialogTitle>
     <DialogDescription>
@@ -149,8 +164,11 @@ export default function AddSiblingFormDialog() {
 
       {/* Footer */}
       <DialogFooter>
-        <Button type="submit">Save</Button>
-        <Button type="button" variant="secondary" className="ml-2">
+          <Button 
+            onClick={form.handleSubmit(onSave)}
+          type="button">Save</Button>
+        
+        <Button type="submit" variant="secondary" className="ml-2">
           Save & Add More
         </Button>
       </DialogFooter>

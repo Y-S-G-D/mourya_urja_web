@@ -14,51 +14,112 @@ import {
   SelectItem,
 } from "../ui/select";
 import { Input } from "../ui/input";
-import { FormProvider, useForm } from "react-hook-form";
+import {  FieldValues, FormProvider, useForm } from "react-hook-form";
 import { FormField, FormItem, FormLabel, FormMessage, FormControl } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+// import { z } from "zod";
 import { userPersonalInfoSchema } from "@/schema/user-personal-info-schema";
 import { Button } from '../ui/button';
 import ImageView from '@/components/add-user/image-view'; // Ensure the path is correct or create the module if it doesn't exist
+import useUserStore from "@/stores/user-store";
+import { IPersonalInfo } from "@/models/user-model";
 
 const PersonalInformation = () => {
 
-  const form = useForm<z.infer<typeof userPersonalInfoSchema>>({
+  const {personalInfo , addPersonalInfo} = useUserStore()
+
+ 
+
+  const form = useForm({
     resolver: zodResolver(userPersonalInfoSchema),
-    defaultValues: {},
+    defaultValues: {
+      firstName: personalInfo.firstName ||"",
+      middleName: personalInfo.middleName ||"",
+      lastName: personalInfo.lastName ||"",          
+      gender:  personalInfo.gender || "male",
+      dob: personalInfo.dob || "",
+      bloodGroup: personalInfo.bloodGroup || "",
+      height: personalInfo.height?.toString() || "",
+      weight: personalInfo.weight?.toString() || "",
+      complexion: personalInfo.complexion || "",
+      hobbies: personalInfo.hobbies?.join(",") || "",
+      aboutMe: personalInfo.aboutMe || "",
+      profileImages: [] as string[],
+    },
   });
 
-  const onSubmit = (data: z.infer<typeof userPersonalInfoSchema>) => {
-    console.log(data);
+ 
+
+  // React.useEffect(() => {
+  //   const {
+  //     firstName,
+  //     middleName,
+  //     lastName,
+  //     gender,
+  //     dob,
+  //     bloodGroup,
+  //     height,
+  //     weight,
+  //     complexion,
+  //     hobbies,
+  //     aboutMe,
+  //     profileImages,
+  //   } = personalInfo;
+
+  //   form.reset({
+  //     firstName,
+  //     middleName,
+  //     lastName,
+  //     gender: gender as "male" | "female" | "other" | undefined,
+  //     dob,
+  //     bloodGroup,
+  //     height: height?.toString() || "",
+  //     weight: weight?.toString() || "",
+  //     complexion,
+  //     hobbies: hobbies?.join(",") || "",
+  //     aboutMe,
+  //     profileImages: (profileImages as string[]) || [],
+  //   });
+    
+  // }, [form, personalInfo]);
+  
+  const onSubmit = (data: FieldValues) => {
+    const hobbies = data.hobbies.split(",").map((hobby: string) => hobby.trim());
+    data.hobbies = hobbies;
+    const height = parseInt(data.height ?? "0");
+    const weight = parseInt(data.weight?? "0");
+    data.height = height;
+    data.weight = weight;
+    addPersonalInfo(data as IPersonalInfo)
   };
 
   
-  return (
+  return ( 
+    <FormProvider {...form}>
     <Card className="my-6">
       <CardHeader>
         <CardTitle>Personal Information</CardTitle>
       </CardHeader>
       <CardContent>
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+       
+          <form  onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
-                name="fullName"
+                name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="fullName">Full Name</FormLabel>
+                    <FormLabel htmlFor="firstName">Full Name</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        id="fullName"
+                        id="firstName"
                         placeholder="Enter Full Name"
                       />
                     </FormControl>
                     <FormMessage>
-                      {form.formState.errors.fullName?.message}
+                      {form.formState.errors.firstName?.message}
                     </FormMessage>
                   </FormItem>
                 )}
@@ -183,6 +244,7 @@ const PersonalInformation = () => {
                     <FormLabel htmlFor="height">Height</FormLabel>
                     <FormControl>
                       <Input
+                        type="number"
                         {...field}
                         id="height"
                         placeholder="Enter Height"
@@ -202,6 +264,7 @@ const PersonalInformation = () => {
                     <FormLabel htmlFor="weight">Weight</FormLabel>
                     <FormControl>
                       <Input
+                        type="number"
                         {...field}
                         id="weight"
                         placeholder="Enter Weight"
@@ -272,13 +335,13 @@ const PersonalInformation = () => {
               )}
             />
              <ImageView/>
-             <div className="flex ">
-              <Button type="submit">Save</Button>
-            </div>
+            <Button type="submit">Save</Button>
+             
           </form>
-        </FormProvider>
+        
       </CardContent>
     </Card>
+  </FormProvider>
   );
 };
 

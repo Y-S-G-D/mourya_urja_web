@@ -42,6 +42,8 @@ export default class LocalStorage{
         return null;
     }
 
+    
+
     public removeLoginInfo():void {
         localStorage.removeItem("loginInfo")
     }

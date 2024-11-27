@@ -1,51 +1,39 @@
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, FieldValues } from 'react-hook-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { userContactSchema } from '@/schema/user-contact-schema';
+import useUserStore from '@/stores/user-store'; 
+import { IContactInfo , IAddress } from '@/models/user-model';
 
-const addressSchema = z.object({
-  address: z.string().min(1, 'Address is required'),
-  locality: z.string().min(1, 'Locality is required'),
-  city: z.string().min(1, 'City is required'),
-  district: z.string().min(1, 'District is required'),
-  state: z.string().min(1, 'State is required'),
-  pincode: z.string().min(1, 'Pincode is required').regex(/^\d{6}$/, 'Pincode must be 6 digits'),
-});
-
-const schema = z.object({
-  phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits').max(15, 'Phone number must be at most 15 digits'),
-  email: z.string().email('Invalid email address'),
-  residenceAddress: addressSchema,
-  permanentAddress: addressSchema,
-  copyAddress: z.boolean(),
-});
 
 const ContactInfo = () => {
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const { contactInfo, residenceInfo , permanentInfo,saveAllContactInfo} = useUserStore();
+
+  const form = useForm({
+    resolver: zodResolver(userContactSchema),
     defaultValues: {
-      phoneNumber: '',
-      email: '',
+      phoneNumber: contactInfo.phoneNumber ||'',
+      email: contactInfo.email || '',
       residenceAddress: {
-        address: '',
-        locality: '',
-        city: '',
-        district: '',
-        state: '',
-        pincode: ''
+        address: residenceInfo.address|| '',
+        locality: residenceInfo.locality || '',
+        city: residenceInfo.city || '',
+        district: residenceInfo.district || '',
+        state:residenceInfo.state || '',
+        pincode: residenceInfo.pincode || ''
       },
       permanentAddress: {
-        address: '',
-        locality: '',
-        city: '',
-        district: '',
-        state: '',
-        pincode: ''
+        address: permanentInfo.address || '',
+        locality: permanentInfo.address || '',
+        city: permanentInfo.city || '',
+        district: permanentInfo.district || '',
+        state: permanentInfo.state || '',
+        pincode: permanentInfo.pincode ||''
       },
       copyAddress: false
     }
@@ -53,8 +41,31 @@ const ContactInfo = () => {
 
   const watchCopyAddress = form.watch('copyAddress');
 
-  const onSubmit = (data: z.infer<typeof schema>) => {
+  const onSubmit = (data: FieldValues) => {
+    console.log('Submitting contact info form');
     console.log(data);
+    const contacts: IContactInfo = {
+      phoneNumber: data.phoneNumber,
+      email: data.email
+    };
+    const residentialAddress: IAddress = {
+      address: data.residenceAddress.address,
+      locality: data.residenceAddress.locality,
+      city: data.residenceAddress.city,
+      district: data.residenceAddress.district,
+      state: data.residenceAddress.state,
+      pincode: data.residenceAddress.pincode
+    }
+    const permanentAddress: IAddress = {
+      address: data.permanentAddress.address,
+      locality: data.permanentAddress.locality,
+      city: data.permanentAddress.city,
+      district: data.permanentAddress.district,
+      state: data.permanentAddress.state,
+      pincode: data.permanentAddress.pincode
+    }
+    saveAllContactInfo(contacts, residentialAddress, permanentAddress);
+
   };
 
   React.useEffect(() => {

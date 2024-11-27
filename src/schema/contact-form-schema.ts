@@ -1,5 +1,5 @@
 import { z } from "zod";
-
+// This schema is using on Copntact Us Page for Enquiry //
 export const contactFormSchema = z.object({
   name: z
     .string()
