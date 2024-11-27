@@ -41,10 +41,12 @@ export function DataTable<TData, TValue>({
         rowSelection,
         pagination:{
           pageIndex: 0,
-          pageSize: 1
+          pageSize: 20
         }
     }
   })
+
+  console.log("data in table",data.length)
 
   return (
     <div className="rounded-md border ">

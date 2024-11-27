@@ -14,14 +14,15 @@ import { useFetchUserStore }  from '@/stores/user-store'
 const UsersPage = () => {
   const router = useRouter()
 
-  const {getUsers , getUserTableData } = useFetchUserStore()
+  const {getUsers, getUserTableData } = useFetchUserStore()
 
   const [usersTableData, setUsersTableData] = React.useState<Users[]>([])
   
 
   useEffect(()=>{
     getUsers().then((value)=>{
-      setUsersTableData(getUserTableData(value))
+      const filteredUsers = getUserTableData(value)
+      setUsersTableData(filteredUsers)
     }).catch((e)=>{
       console.log("Error is ",e)
     })

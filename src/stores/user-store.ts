@@ -289,7 +289,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
 }));
 
 export default useUserStore;
-// +++++++++++++++++++++============================================================== ///
+// ============================================================== ///
 
 export  interface IFetchUserStore {
   isProcessing: boolean;
@@ -309,7 +309,6 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
       const response = await apiClient.get(getUsers,{
         params:{
           limit:10,
-          skip:1
         }
       });
       console.log(response);
@@ -327,7 +326,7 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
   },
   getUserTableData: (users: IUser[]): Users[] => {
     // Implement the logic to convert IUser[] to Users[]
-    return users.map((user, index) => ({
+    const filteredUsers = users.map((user, index) => ({
       id: (index + 1).toString(),
       name: `${user.personalInfo.firstName} ${user.personalInfo.lastName}`,
       email: user.contactInfo.email,
@@ -335,6 +334,7 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
       phoneNumber: user.contactInfo.phoneNumber,
       jobType: user.eduAndProfInfo.jobType,
     }));
+    return filteredUsers;
   }
     
 }));

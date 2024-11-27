@@ -23,16 +23,19 @@ const EmployeesPage = () => {
 
   const router = useRouter();
   
-  const {employees,getEmployees,getEmployeeTableData} = useEmployeeStore()
+  const {getEmployees,getEmployeeTableData} = useEmployeeStore()
+
+  const [employeesTableData, setEmployeesTableData] = React.useState<Employees[]>([]);
   
-  const dataRef = React.useRef<Employees[]>([]);
+  // const dataRef = React.useRef<Employees[]>([]);
 
   useEffect(()=>{
     getEmployees().then((value)=>{
-      dataRef.current = getEmployeeTableData(value)
+      const data = getEmployeeTableData(value)
+      setEmployeesTableData(data)
     })  // fetch employees data from the API or store when page loads for the first time  // call the getEmployees hook from the employee store
    
-  },[employees,getEmployees,getEmployeeTableData]);
+  },[getEmployees,getEmployeeTableData]);
   return (
     <div className=" pt-20 flex flex-1 flex-col gap-4 p-4">
       <h1 className="text-3xl font-semibold">Manage Employees</h1>
@@ -62,7 +65,7 @@ const EmployeesPage = () => {
         </Button>
       </div>
       <div className="container mx-auto pb-10 px-4">
-        <DataTable columns={columns} data={dataRef.current} />
+        <DataTable columns={columns} data={employeesTableData} />
       </div>
     </div>
   );
