@@ -3,7 +3,7 @@
 export const userEndPoint =  '/users';
 export const registerUser = `${userEndPoint}/register`
 export const preSignedUrl = `${userEndPoint}/presignedUrl`
-export const getUsers = `${userEndPoint}/all-users`
+export const getUsers = `/all-users`
 
 
 export const employeeEndPoint =  '/employee';
