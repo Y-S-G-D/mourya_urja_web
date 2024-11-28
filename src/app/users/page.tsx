@@ -10,23 +10,29 @@ import { Separator } from '@/components/ui/separator'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/home-page/navbar'
 import { useFetchUserStore }  from '@/stores/user-store'
+import TableLoader from '@/components/skeleton-loaders/table-loader'
+import { Dialog } from '@/components/ui/dialog'
+import ErrorDialog from '@/components/dialogs/error-dialog'
 
 const UsersPage = () => {
   const router = useRouter()
 
-  const {getUsers, getUserTableData } = useFetchUserStore()
+  const {getUsers, getUserTableData,isProcessing,showError,simulateError,errorMsg } = useFetchUserStore()
 
   const [usersTableData, setUsersTableData] = React.useState<Users[]>([])
   
-
-  useEffect(()=>{
+  const fetchUsers = async () => {
     getUsers().then((value)=>{
       const filteredUsers = getUserTableData(value)
       setUsersTableData(filteredUsers)
     }).catch((e)=>{
       console.log("Error is ",e)
     })
-  },[getUsers,getUserTableData])
+  }
+
+  useEffect(()=>{
+    fetchUsers()
+  },[getUsers, getUserTableData])
 
   
   return (
@@ -63,7 +69,21 @@ const UsersPage = () => {
 
       </div>
       <div className="container mx-auto pb-10 px-4">
-        <DataTable columns={columns} data={usersTableData} />
+        {isProcessing && <TableLoader/>}
+        {usersTableData.length > 0  || errorMsg.length > 0  ? <DataTable columns={columns} data={usersTableData} /> : <TableLoader/>}
+        <Dialog open={showError} onOpenChange={simulateError}>
+            <ErrorDialog
+              title="Request Failed"
+              message="We couldn't process your request. Please check your connection and try again."
+              onRetry={()=>{ 
+                simulateError(false)
+                fetchUsers()
+               }}
+              onCancel={()=>{ simulateError(false)}}
+              retryButtonText="Try Again"
+              cancelButtonText="Close"
+            />
+        </Dialog>
       </div>
     </div>
     </section>

@@ -10,7 +10,9 @@ export interface IAuthStore{
     errorMsg: string | null;
     isLoading: boolean;
     isSuccess: boolean; 
+    showError: boolean;
     data:string | null;
+    simulateError: (isError:boolean)   => void;
     login: (email: string, password: string, accessType:string) => void;
     logout: () => void;
 
@@ -20,7 +22,11 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
     isLoading: false,
     errorMsg: null,
     isSuccess: false,
+    showError: false,
     data:null,
+    simulateError:(isError)=> {
+        set({showError:isError})
+    },
     
     login: async (email, password, accessType) => {
         try{
@@ -50,13 +56,13 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
             set({ data: date, isLoading: false, isSuccess: true })
             window.location.reload()
         }
-        }catch(err: unknown){
+        } catch(err: unknown){
             console.log(err)
             let msg = 'An unknown error occurred';
             if (axios.isAxiosError(err) && err.response) {
                 msg = err.response.data.message;
             }
-            set({ errorMsg: msg, isLoading: false,isSuccess:false})
+            set({showError:true, errorMsg: msg, isLoading: false,isSuccess:false})
         }
     },
     logout: () => {

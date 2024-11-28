@@ -17,13 +17,16 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { useEmployeeStore } from "@/stores/employee-store";
+import TableLoader  from "@/components/skeleton-loaders/table-loader";
+import { Dialog } from "@/components/ui/dialog";
+import ErrorDialog from "@/components/dialogs/error-dialog";
 
 
 const EmployeesPage = () => {
 
   const router = useRouter();
   
-  const {getEmployees,getEmployeeTableData} = useEmployeeStore()
+  const {getEmployees,getEmployeeTableData , isProcessing, showError,simulateError, errorMsg} = useEmployeeStore()
 
   const [employeesTableData, setEmployeesTableData] = React.useState<Employees[]>([]);
   
@@ -65,7 +68,21 @@ const EmployeesPage = () => {
         </Button>
       </div>
       <div className="container mx-auto pb-10 px-4">
-        <DataTable columns={columns} data={employeesTableData} />
+       {isProcessing && <TableLoader/>}
+
+        {employeesTableData.length > 0  || errorMsg !== null  ?<DataTable columns={columns} data={employeesTableData} />: <TableLoader/>}
+        <Dialog open={showError} onOpenChange={simulateError}>
+            <ErrorDialog
+              title="Request Failed"
+              message="We couldn't process your request. Please check your connection and try again."
+              onRetry={()=>{ 
+                simulateError(false)
+               }}
+              onCancel={()=>{ simulateError(false)}}
+              retryButtonText="Try Again"
+              cancelButtonText="Close"
+            />
+        </Dialog>
       </div>
     </div>
   );

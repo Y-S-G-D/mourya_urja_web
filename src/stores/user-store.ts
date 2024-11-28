@@ -25,6 +25,7 @@ export interface IUserStore {
   user: IUser | null;
   siblings: ISibling[];
   profileImageFiles: File[];
+  isPersonalInfoSaved: boolean;
   personalInfo: IPersonalInfo;
   contactInfo: IContactInfo;
   residenceInfo: IAddress;
@@ -67,6 +68,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
   isSiblingDialogOpen: false,
   siblings: [],
   profileImageFiles: [],
+  isPersonalInfoSaved: false,
   personalInfo: {
     firstName: "",
     middleName: "",
@@ -294,6 +296,8 @@ export default useUserStore;
 export  interface IFetchUserStore {
   isProcessing: boolean;
   errorMsg: string;
+  showError: boolean;
+  simulateError:(error:boolean)=>void;
   users: IUser[];
   getUsers: () => Promise<IUser[]>;
   getUserTableData: ( users: IUser[] ) => Users[]
@@ -302,10 +306,14 @@ export  interface IFetchUserStore {
 export const useFetchUserStore = create<IFetchUserStore>((set) => ({
   isProcessing: false,
   errorMsg: "",
+  showError: false,
+  simulateError:(error:boolean)=>{
+    set({showError:error})
+  },
   users: [],
   getUsers: async () => {
     try {
-      set({ isProcessing: true });
+      set({ isProcessing: true, errorMsg: "" });  
       const response = await apiClient.get(getUsers,{
         params:{
           limit:10,
@@ -320,7 +328,7 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
       return [];
     } catch (e) {
       console.log("Error fetching users", e);
-      set({ errorMsg: "Failed to get users. Please try again later." });
+      set({ showError:true,errorMsg: "Failed to get users. Please try again later.",isProcessing:false });
       return [];
     }
   },

@@ -6,6 +6,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import Header from "@/components/header";
+// import TableLoader from "@/components/skeleton-loaders/table-loader";
 
 const Layout = ({
   children,
@@ -18,8 +19,7 @@ const Layout = ({
       <SidebarInset>
         <Header />
         {/* <div className="flex flex-1 flex-col gap-4 p-4"> */}
-        {children}
-
+         {children}
         {/* </div> */}
       </SidebarInset>
     </SidebarProvider>

@@ -16,10 +16,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { useAuthStore } from '@/stores/auth-store'
 import {useLoginTypeStore } from '@/stores/login-type-store'
+import CircularLoader from './skeleton-loaders/circular-loader'
+import { Dialog } from "@/components/ui/dialog"
+import ErrorDialog from './dialogs/error-dialog'
 
 const LoginForm: React.FC = () => {
 
-  const {login}  = useAuthStore()
+  const {login , isLoading, isSuccess , errorMsg , showError, simulateError }  = useAuthStore()
   const { selectedLoginType, } = useLoginTypeStore()
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -66,7 +69,25 @@ const LoginForm: React.FC = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className='w-28' onClick={form.handleSubmit(onSubmit)}>Login</Button>
+              <Button 
+                type="submit" 
+                className={`${isLoading ? 'px-4':'w-28'}`} 
+                onClick={form.handleSubmit(onSubmit)}>
+                  {isLoading ? <>
+                  <CircularLoader/>
+                    <span>Processing...</span>
+                  </> : 'Login'}
+              </Button>
+              <Dialog open={showError} onOpenChange={simulateError}>
+            <ErrorDialog
+              title="Log In Failed"
+              message="We couldn't process your request. Please check your connection and try again."
+              onRetry={()=>{ simulateError(false)}}
+              onCancel={()=>{ simulateError(false)}}
+              retryButtonText="Try Again"
+              cancelButtonText="Close"
+            />
+          </Dialog>
             </form>
         </Form>
       

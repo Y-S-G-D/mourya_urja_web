@@ -1,45 +1,41 @@
+import React from 'react';
 import { Skeleton } from "@/components/ui/skeleton";
 
-const TableLoader = () => {
+interface TableLoaderProps {
+  rows?: number;
+}
+
+const TableLoader: React.FC<TableLoaderProps> = ({ rows = 5 }) => {
   return (
-    <div className="p-4">
-      {/* Breadcrumb */}
-      <div className="flex items-center space-x-2">
-        <Skeleton className="h-4 w-20" />
-        <Skeleton className="h-4 w-24" />
-      </div>
-
-      {/* Page Title */}
-      <Skeleton className="h-8 w-40 mt-4" />
-
-      {/* Filters */}
-      <div className="flex items-center justify-between mt-6">
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-8 w-24" />
-          <Skeleton className="h-8 w-24" />
+    <div className="w-full border rounded-lg overflow-hidden">
+      {/* Table Header */}
+      <div className="border-b bg-gray-50/40">
+        <div className="grid grid-cols-6 gap-4 p-4">
+          <Skeleton className="h-4 w-8" /> {/* ID */}
+          <Skeleton className="h-4 w-40" /> {/* User Name */}
+          <Skeleton className="h-4 w-32" /> {/* Date of Birth */}
+          <Skeleton className="h-4 w-32" /> {/* Email */}
+          <Skeleton className="h-4 w-24" /> {/* Phone No. */}
+          <Skeleton className="h-4 w-24" /> {/* Job Type */}
         </div>
-        <Skeleton className="h-8 w-32" />
       </div>
 
-      {/* Search Input */}
-      <Skeleton className="h-10 w-full mt-4 rounded-md" />
-
-      {/* Table */}
-      <div className="mt-6 space-y-4">
-        {[...Array(5)].map((_, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between space-x-4"
-          >
-            <Skeleton className="h-6 w-12" />
-            <Skeleton className="h-6 w-36" />
-            <Skeleton className="h-6 w-48" />
-            <Skeleton className="h-6 w-24" />
-            <Skeleton className="h-6 w-28" />
-            <Skeleton className="h-6 w-20" />
+      {/* Table Rows */}
+      {Array.from({ length: rows }).map((_, index) => (
+        <div
+          key={index}
+          className="border-b last:border-0 hover:bg-gray-50/50 transition-colors"
+        >
+          <div className="grid grid-cols-6 gap-4 p-4">
+            <Skeleton className="h-4 w-6" />
+            <Skeleton className="h-4 w-40" />
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-28" />
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 };

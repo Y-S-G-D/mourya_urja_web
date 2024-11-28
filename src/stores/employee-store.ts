@@ -9,6 +9,9 @@ import { Employees } from "@/app/admin/employees/columns";
 interface IEmployeeStore {
   isProcessing: boolean;
   errorMsg: string | null;
+  showError: boolean;
+  simulateError:(error:boolean)=>void;
+
   successMsg: string | null;
   getEmployees: () => Promise<IEmployee[]>;
   employees: IEmployee[];
