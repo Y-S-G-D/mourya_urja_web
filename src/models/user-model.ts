@@ -7,6 +7,7 @@ export interface IPersonalInfo {
   lastName: string;
   gender: string;
   dob: string;
+  age:number;
   bloodGroup: string;
   height: number;
   weight: number;
@@ -38,10 +39,10 @@ export interface IAllContactInfo {
 
 export interface IEducationalAndProfessionInfo {
   highestEducation: string;
-  otherEducation: string;
+  otherEductionDetail: string;
   jobType: string;
   designation: string;
-  workDetails: string;
+  workDetail: string;
   income: number;
 }
 

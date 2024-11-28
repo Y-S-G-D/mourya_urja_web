@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect, useCallback } from "react";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -19,13 +19,34 @@ import FamilyInfo from "@/components/add-user/family-info";
 import SpouseExpectations from "@/components/add-user/spouse-expectations";
 import Navbar from "@/components/home-page/navbar";
 import useUserStore from "@/stores/user-store";
+import { useFetchUserStore } from "@/stores/user-store";
 
-const AddUserForm = () => {
+interface PageParams{
+    email: string
+}
+
+const AddUserForm = ({params}:{params:Promise<PageParams>}) => {
   const { saveUser } = useUserStore();
 
   const steps = ['Personal Details', 'Contact Info', 'Educational & Professional','Cultural & Religious','Family Details',"Spouse Expectations",];
 
   const [activeStep , setActiveStep] = useState(0)
+  const { getSingleUserByEmail } = useFetchUserStore();
+  const {assignUserData} = useUserStore()
+
+  
+
+  const fetchUser = useCallback(async () => {
+    const { email } = await params;
+    if(!email) return;
+    const user = await getSingleUserByEmail(email);
+    assignUserData(user);
+    
+  }, [params, getSingleUserByEmail,assignUserData,]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser])
   
 
   const handleReset = (): void => {
@@ -51,6 +72,7 @@ const AddUserForm = () => {
     ]
     return <React.Fragment>{stepContent[activeStep]}</React.Fragment>
   }
+
 
   return (
     <section>

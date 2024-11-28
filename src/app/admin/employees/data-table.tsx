@@ -46,7 +46,6 @@ export function DataTable<TData, TValue>({
     }
   })
 
-  console.log("data in table",data.length)
 
   return (
     <div className="rounded-md border ">

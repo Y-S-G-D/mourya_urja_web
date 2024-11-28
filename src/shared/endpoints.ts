@@ -9,6 +9,7 @@ export const getUsers = `/all-users`
 export const employeeEndPoint =  '/employee';
 export const registerEmployeeEndPoint = '/register'
 export const employeeProfileEndPoint = `/profile`;
+export const userByEmail = '/user'
 
 // fetch all employees
 export const allEmployeesEndpoint = '/all-employee'

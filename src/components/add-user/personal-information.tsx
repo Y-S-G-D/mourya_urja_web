@@ -1,5 +1,5 @@
 'use client'
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardHeader,
@@ -22,12 +22,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { userPersonalInfoSchema } from "@/schema/user-personal-info-schema";
 import { Button } from '../ui/button';
 import ImageView from '@/components/add-user/image-view'; // Ensure the path is correct or create the module if it doesn't exist
-import useUserStore from "@/stores/user-store";
+import useUserStore, { useFetchUserStore } from "@/stores/user-store";
 import { IPersonalInfo } from "@/models/user-model";
+
 
 const PersonalInformation = () => {
 
   const {personalInfo , addPersonalInfo} = useUserStore()
+  const {isProcessing,user } = useFetchUserStore();
+
+  
 
  
 
@@ -48,6 +52,19 @@ const PersonalInformation = () => {
       profileImages: [] as string[],
     },
   });
+
+  useEffect(() => {
+    if(!user) return;
+  
+    form.reset({
+      ...user.personalInfo,
+      dob: user.personalInfo.dob ?  new Date(user.personalInfo.dob).toISOString().split('T')[0] : "",
+      height: user.personalInfo.height?.toString() || "",
+      weight: user.personalInfo.weight?.toString() || "",
+      hobbies: user.personalInfo.hobbies?.join(",") || "",
+    })
+  },[user,isProcessing,form])
+
 
  
 
@@ -93,6 +110,8 @@ const PersonalInformation = () => {
     data.weight = weight;
     addPersonalInfo(data as IPersonalInfo)
   };
+
+  if(isProcessing) return <div>Loading...</div>
 
   
   return ( 
@@ -196,7 +215,9 @@ const PersonalInformation = () => {
                   <FormItem>
                     <FormLabel htmlFor="dob">Date of Birth</FormLabel>
                     <FormControl>
-                      <Input {...field} id="dob" type="date" />
+                      <Input {...field} 
+                      value={field.value}
+                      id="dob" type="date" />
                     </FormControl>
                     <FormMessage>
                       {form.formState.errors.dob?.message}
@@ -216,7 +237,7 @@ const PersonalInformation = () => {
                         defaultValue={field.value}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Blood Group" />
+                          <SelectValue placeholder={field.value ?? "Select Blood Group"} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="A+">A+</SelectItem>

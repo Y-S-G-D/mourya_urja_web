@@ -17,17 +17,15 @@ const EducationNdProfessionalInfo = () => {
       resolver: zodResolver(educationalNdProfessionalSchema),
       defaultValues: {
          highestEducation: eduAndProfInfo.highestEducation || '',
-         otherEducation: eduAndProfInfo.otherEducation || '',
+         otherEducation: eduAndProfInfo.otherEductionDetail || '',
          jobType: eduAndProfInfo.jobType || '',
          designation: eduAndProfInfo.designation || '',
-         workDetails:eduAndProfInfo.workDetails || '',
+         workDetails:eduAndProfInfo.workDetail || '',
          income: eduAndProfInfo.income.toString() || "",
       }
    })
 
    const onSubmit = (data: FieldValues) => {
-      console.log('Submitting education and professional info form');
-      console.log(data)
       addEduAndProfInfo(data as IEducationalAndProfessionInfo)
    }
 

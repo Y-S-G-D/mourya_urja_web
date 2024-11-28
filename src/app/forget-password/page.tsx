@@ -9,6 +9,8 @@ import SetPasswordCard from '@/components/forgot-password/set-password'
 const ForgetPassword = () => {
 
   const { currentState} = useForgotStateStore()
+
+  console.log("Page call")
   
    const renderComponent = () => {
       if(currentState===ForgotStateEnum.EnterOTP){

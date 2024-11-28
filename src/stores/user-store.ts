@@ -11,7 +11,7 @@ import {
 import LocalStorage from "@/utils/local-storage/local-storage";
 import { create } from "zustand";
 import apiClient from "@/lib/axiosInstance";
-import { getUsers, preSignedUrl, registerUser } from "@/shared/endpoints";
+import { getUsers, preSignedUrl, registerUser, userByEmail } from "@/shared/endpoints";
 import { generate12DigPassword } from "@/utils/services/password-generator";
 import { Users } from "@/app/users/columns";
 
@@ -56,6 +56,7 @@ export interface IUserStore {
   addSpouseInfo: (spouseInfo: string) => void;
 
   saveUser: () => void;
+  assignUserData: (user: IUser) => void;
   
 }
 
@@ -75,6 +76,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
     lastName: "",
     gender: "",
     dob: "",
+    age: 0,
     bloodGroup: "",
     height: 0,
     weight: 0,
@@ -105,10 +107,10 @@ const useUserStore = create<IUserStore>((set, get) => ({
   },
   eduAndProfInfo: {
     highestEducation: "",
-    otherEducation: "",
+    otherEductionDetail: "",
     jobType: "",
     designation: "",
-    workDetails: "",
+    workDetail: "",
     income: 0,
   },
   cultureAndReligiousInfo: {
@@ -173,7 +175,6 @@ const useUserStore = create<IUserStore>((set, get) => ({
     };
     set({ user: user });
 
-    console.log(user);
     // return;
     // const formData = new FormData();
     // formData.append("data", JSON.stringify(user));
@@ -182,7 +183,6 @@ const useUserStore = create<IUserStore>((set, get) => ({
     //   formData.append("files", file);
     // });
 
-    console.log("=-=================================");
     // console.log(formData)
     /// save user to db
     try {
@@ -229,6 +229,13 @@ const useUserStore = create<IUserStore>((set, get) => ({
     set({ isSiblingDialogOpen: isOpen });
   },
   addPersonalInfo: (personalInfo) => {
+    /// calculate age based on current date and dob
+    
+    const dob = new Date(personalInfo.dob);
+    const todayDate = new Date();
+    const age = todayDate.getFullYear() - dob.getFullYear();
+    
+    personalInfo.age = age;
     personalInfo.profileImages = get().profileImageFiles.map((file) =>
       URL.createObjectURL(file)
     );
@@ -243,16 +250,13 @@ const useUserStore = create<IUserStore>((set, get) => ({
   },
 
   addEduAndProfInfo: (eduAndProfInfo) => {
-    console.log("EduAndProfInfo Details", eduAndProfInfo);
     eduAndProfInfo.income = parseInt(eduAndProfInfo.income.toString());
     set({ eduAndProfInfo: eduAndProfInfo });
   },
   addCultureAndReligiousInfo: (cultureAndReligiousInfo) => {
-    console.log("CultureAndReligiousInfo Details", cultureAndReligiousInfo);
     set({ cultureAndReligiousInfo: cultureAndReligiousInfo });
   },
   addFamilyInfo: (familyInfo) => {
-    console.log("FamilyInfo Details", familyInfo);
     set({ familyInfo: familyInfo });
   },
 
@@ -260,7 +264,6 @@ const useUserStore = create<IUserStore>((set, get) => ({
     sibling.age = parseInt(sibling.age.toString());
     set((state) => {
       const updatedSiblings = [...state.siblings, sibling];
-      console.log("Updated Siblings List", updatedSiblings);
       return { siblings: updatedSiblings };
     });
   },
@@ -288,6 +291,15 @@ const useUserStore = create<IUserStore>((set, get) => ({
       profileImageFiles: state.profileImageFiles.filter((_, i) => i !== index),
     }));
   },
+  assignUserData: (user: IUser) => {
+    get().addPersonalInfo(user.personalInfo)
+    get().saveAllContactInfo(user.contactInfo,user.residentialAddr,user.permanentAddr)
+    get().addEduAndProfInfo(user.eduAndProfInfo)
+    get().addCultureAndReligiousInfo(user.cultureAndReligiousInfo)
+    get().addFamilyInfo(user.familyInfo);
+    
+    set((state)=>({siblings:[...state.siblings,...user.familyInfo.siblings]}));
+  }
 }));
 
 export default useUserStore;
@@ -299,8 +311,10 @@ export  interface IFetchUserStore {
   showError: boolean;
   simulateError:(error:boolean)=>void;
   users: IUser[];
+  user: IUser | null;
   getUsers: () => Promise<IUser[]>;
-  getUserTableData: ( users: IUser[] ) => Users[]
+  getUserTableData: ( users: IUser[] ) => Users[];
+  getSingleUserByEmail(email: string): Promise<IUser>;
 }
 
 export const useFetchUserStore = create<IFetchUserStore>((set) => ({
@@ -311,6 +325,8 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
     set({showError:error})
   },
   users: [],
+  user: null,
+
   getUsers: async () => {
     try {
       set({ isProcessing: true, errorMsg: "" });  
@@ -343,6 +359,25 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
       jobType: user.eduAndProfInfo.jobType,
     }));
     return filteredUsers;
-  }
+  },
+
+  getSingleUserByEmail: async (email) => {
+    try {
+      set({ isProcessing: true,errorMsg:"" });
+      const response = await apiClient.get(`${userByEmail}/${email}`);
+      console.log("User Response ",response)
+      if (response.status === 200) {
+        set({ user: response.data.data, isProcessing: false });
+        return response.data.data;
+      }
+    } catch (e) {
+      console.log("Error fetching user by email", e);
+      set({ errorMsg: "Failed to get user. Please try again later.", isProcessing: false });
+    }
+  },
+
+ 
+
+
     
 }));

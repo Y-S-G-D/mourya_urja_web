@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Users = {
@@ -72,7 +73,8 @@ export const columns: ColumnDef<Users>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original
+      const user = row.original
+      
  
       return (
         <DropdownMenu>
@@ -85,15 +87,17 @@ export const columns: ColumnDef<Users>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(user.id)}
             >
               Copy User ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View User</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <a href={`/add-users/${user.email}`}>View User</a>
+            </DropdownMenuItem>
             <DropdownMenuItem 
-                className="text-destructive hover:!text-destructive hover:!bg-red-100">
-                Delete User
+              className="text-destructive hover:!text-destructive hover:!bg-red-100">
+              Delete User
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
