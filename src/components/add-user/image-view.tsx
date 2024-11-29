@@ -1,13 +1,32 @@
-import React from "react";
+import React  from "react";
 import { FaTimes } from "react-icons/fa";
 import Image from "next/image";
 import { Label } from "../ui/label";
 import { Plus } from "lucide-react";
 import { Button } from "../ui/button";
 import useUserStore from "@/stores/user-store";
+import { useFetchUserStore } from "@/stores/user-store";
 
-const ImageView = () => {
-  const { profileImageFiles, addProfileImageFiles ,removeProfileImageFile} = useUserStore();
+interface ImageViewParams {
+  profileImages: string[]
+}
+
+const ImageView = ({params}:{params:ImageViewParams | null}) => {
+  const { profileImageFiles, addProfileImageFiles ,removeProfileImageFile,removeProfileImageFromPersonalInfo} = useUserStore();
+  const {deleteImage} = useFetchUserStore();
+
+
+  const handleDeleteImage = (index:number, image:File | string) => {
+    if(image instanceof File){
+      removeProfileImageFile(index);
+      
+      return;
+    }
+    removeProfileImageFromPersonalInfo(image);
+    deleteImage(image);
+   
+
+  }
   // const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,23 +41,30 @@ const ImageView = () => {
   //   setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
   // };
 
-  return (
+
+
+
+
+    return (
     <div className="my-4">
       <Label>Upload Images (up to 5)</Label>
       <div className="flex items-center space-x-4 my-4">
-        {profileImageFiles.map((image, index) => (
+        {[...profileImageFiles, ...(params?.profileImages || [])].map((image, index) => (
           <div
             key={index}
             className="relative w-24 h-24 rounded-lg border border-gray-300 overflow-hidden"
           >
             <Image
-              src={URL.createObjectURL(image)}
+              src={image instanceof File ? URL.createObjectURL(image) : image}
               alt={`Preview ${index + 1}`}
               layout="fill"
               objectFit="cover"
             />
             <Button
-              onClick={() => removeProfileImageFile(index)}
+              onClick={() => {
+                
+                handleDeleteImage(index, image);
+              }}
               variant={"destructive"}
               className=" p-1 h-5 text-xs absolute top-0 right-0"
             >

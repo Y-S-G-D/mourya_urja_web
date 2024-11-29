@@ -1,35 +1,25 @@
 'use client'
-import React, { useEffect } from "react";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-} from "../ui/card";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "../ui/select";
-import { Input } from "../ui/input";
-import {  FieldValues, FormProvider, useForm } from "react-hook-form";
-import { FormField, FormItem, FormLabel, FormMessage, FormControl } from "../ui/form";
-import { Textarea } from "../ui/textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, {useEffect} from "react";
+import {Card, CardContent, CardHeader, CardTitle,} from "../ui/card";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "../ui/select";
+import {Input} from "../ui/input";
+import {FieldValues, FormProvider, useForm} from "react-hook-form";
+import {FormControl, FormField, FormItem, FormLabel, FormMessage} from "../ui/form";
+import {Textarea} from "../ui/textarea";
+import {zodResolver} from "@hookform/resolvers/zod";
 // import { z } from "zod";
-import { userPersonalInfoSchema } from "@/schema/user-personal-info-schema";
-import { Button } from '../ui/button';
+import {userPersonalInfoSchema} from "@/schema/user-personal-info-schema";
+import {Button} from '../ui/button';
 import ImageView from '@/components/add-user/image-view'; // Ensure the path is correct or create the module if it doesn't exist
-import useUserStore, { useFetchUserStore } from "@/stores/user-store";
-import { IPersonalInfo } from "@/models/user-model";
+import useUserStore, {useFetchUserStore} from "@/stores/user-store";
+import {IPersonalInfo,} from "@/models/user-model";
+
 
 
 const PersonalInformation = () => {
 
   const {personalInfo , addPersonalInfo} = useUserStore()
-  const {isProcessing,user } = useFetchUserStore();
+  const {isProcessing } = useFetchUserStore();
 
   
 
@@ -49,65 +39,32 @@ const PersonalInformation = () => {
       complexion: personalInfo.complexion || "",
       hobbies: personalInfo.hobbies?.join(",") || "",
       aboutMe: personalInfo.aboutMe || "",
-      profileImages: [] as string[],
+      profileImages: personalInfo.profileImages || [],
     },
   });
 
   useEffect(() => {
-    if(!user) return;
-  
+    
     form.reset({
-      ...user.personalInfo,
-      dob: user.personalInfo.dob ?  new Date(user.personalInfo.dob).toISOString().split('T')[0] : "",
-      height: user.personalInfo.height?.toString() || "",
-      weight: user.personalInfo.weight?.toString() || "",
-      hobbies: user.personalInfo.hobbies?.join(",") || "",
+      ...personalInfo,
+      profileImages: personalInfo.profileImages || [],
+      dob: personalInfo.dob ?  new Date(personalInfo.dob).toISOString().split('T')[0] : "",
+      height: personalInfo.height?.toString() || "",
+      weight: personalInfo.weight?.toString() || "",
+      hobbies: personalInfo.hobbies?.join(",") || "",
     })
-  },[user,isProcessing,form])
+  },[isProcessing, form, personalInfo])
+
 
 
  
-
-  // React.useEffect(() => {
-  //   const {
-  //     firstName,
-  //     middleName,
-  //     lastName,
-  //     gender,
-  //     dob,
-  //     bloodGroup,
-  //     height,
-  //     weight,
-  //     complexion,
-  //     hobbies,
-  //     aboutMe,
-  //     profileImages,
-  //   } = personalInfo;
-
-  //   form.reset({
-  //     firstName,
-  //     middleName,
-  //     lastName,
-  //     gender: gender as "male" | "female" | "other" | undefined,
-  //     dob,
-  //     bloodGroup,
-  //     height: height?.toString() || "",
-  //     weight: weight?.toString() || "",
-  //     complexion,
-  //     hobbies: hobbies?.join(",") || "",
-  //     aboutMe,
-  //     profileImages: (profileImages as string[]) || [],
-  //   });
-    
-  // }, [form, personalInfo]);
-  
   const onSubmit = (data: FieldValues) => {
-    const hobbies = data.hobbies.split(",").map((hobby: string) => hobby.trim());
-    data.hobbies = hobbies;
+      data.hobbies = data.hobbies.split(",").map((hobby: string) => hobby.trim());
     const height = parseInt(data.height ?? "0");
     const weight = parseInt(data.weight?? "0");
     data.height = height;
     data.weight = weight;
+    console.log("user data ", data);
     addPersonalInfo(data as IPersonalInfo)
   };
 
@@ -217,7 +174,10 @@ const PersonalInformation = () => {
                     <FormControl>
                       <Input {...field} 
                       value={field.value}
-                      id="dob" type="date" />
+                      id="dob" type="date"
+                      min={new Date("1970-01-01").toISOString().split('T')[0]}
+                      max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                      />
                     </FormControl>
                     <FormMessage>
                       {form.formState.errors.dob?.message}
@@ -355,7 +315,7 @@ const PersonalInformation = () => {
                 </FormItem>
               )}
             />
-             <ImageView/>
+             <ImageView params={{ profileImages: personalInfo.profileImages }}/>
             <Button type="submit">Save</Button>
              
           </form>

@@ -42,8 +42,8 @@ const AddUserForm = () => {
  
   const renderComponent = () => {
     const stepContent = [
-      <div key="personalInfo"><PersonalInformation/></div>,
-      <div key="contactInfo"><ContactInfo/></div>,
+      <div key="personalInfo"><PersonalInformation /></div>,
+      <div key="contactInfo"><ContactInfo isEditing = {false}/></div>,
       <div key="education&professional"><EducationNdProfessionalInfo/></div>,
       <div key="cultural"><CulturalNdReligiousInfo/></div>,
       <div key="familyInfo"><FamilyInfo/></div>,

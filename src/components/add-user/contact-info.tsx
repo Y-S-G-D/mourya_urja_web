@@ -11,7 +11,7 @@ import useUserStore from '@/stores/user-store';
 import { IContactInfo , IAddress } from '@/models/user-model';
 
 
-const ContactInfo = () => {
+const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
   const { contactInfo, residenceInfo , permanentInfo,saveAllContactInfo} = useUserStore();
 
   const form = useForm({
@@ -104,7 +104,7 @@ const ContactInfo = () => {
                   <FormItem>
                     <FormLabel htmlFor="email">Email</FormLabel>
                     <FormControl>
-                      <Input {...field} id="email" placeholder="Enter Email" />
+                      <Input {...field} id="email" placeholder="Enter Email" readOnly = {isEditing} />
                     </FormControl>
                     <FormMessage>{form.formState.errors.email?.message}</FormMessage>
                   </FormItem>

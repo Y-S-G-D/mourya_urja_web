@@ -31,7 +31,7 @@ const AddUserForm = ({params}:{params:Promise<PageParams>}) => {
   const steps = ['Personal Details', 'Contact Info', 'Educational & Professional','Cultural & Religious','Family Details',"Spouse Expectations",];
 
   const [activeStep , setActiveStep] = useState(0)
-  const { getSingleUserByEmail } = useFetchUserStore();
+  const { getSingleUserByEmail,user } = useFetchUserStore();
   const {assignUserData} = useUserStore()
 
   
@@ -39,8 +39,10 @@ const AddUserForm = ({params}:{params:Promise<PageParams>}) => {
   const fetchUser = useCallback(async () => {
     const { email } = await params;
     if(!email) return;
-    const user = await getSingleUserByEmail(email);
-    assignUserData(user);
+    const fetchedUser = await getSingleUserByEmail(email);
+    assignUserData(fetchedUser);
+
+    
     
   }, [params, getSingleUserByEmail,assignUserData,]);
 
@@ -63,8 +65,8 @@ const AddUserForm = ({params}:{params:Promise<PageParams>}) => {
  
   const renderComponent = () => {
     const stepContent = [
-      <div key="personalInfo"><PersonalInformation/></div>,
-      <div key="contactInfo"><ContactInfo/></div>,
+      <div key="personalInfo">{user && <PersonalInformation />}</div>,
+      <div key="contactInfo"><ContactInfo isEditing={true}/></div>,
       <div key="education&professional"><EducationNdProfessionalInfo/></div>,
       <div key="cultural"><CulturalNdReligiousInfo/></div>,
       <div key="familyInfo"><FamilyInfo/></div>,
@@ -124,7 +126,7 @@ const AddUserForm = ({params}:{params:Promise<PageParams>}) => {
         <Button 
           onClick={ activeStep ===steps.length-1 ? () =>{
             saveUser()
-            handleNext()
+            window.location.reload()
             
           } : handleNext}>
           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}

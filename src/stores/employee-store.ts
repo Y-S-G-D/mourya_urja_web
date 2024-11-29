@@ -30,6 +30,8 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
   successMsg: null,
   employees: [], // The list of employees
   employee: null,
+  showError: false,
+  simulateError: (error: boolean) => set({ showError: error }),
   getEmployees: async () => {
     try {
       set({isProcessing:true,errorMsg:null,successMsg:null})
