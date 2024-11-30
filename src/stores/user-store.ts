@@ -431,6 +431,7 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
       });
     }
   },
+  
 
   deleteImage: async (imageUrl) => {
     try {

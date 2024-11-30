@@ -22,7 +22,7 @@ import ErrorDialog from './dialogs/error-dialog'
 
 const LoginForm: React.FC = () => {
 
-  const {login , isLoading, isSuccess , errorMsg , showError, simulateError }  = useAuthStore()
+  const {login , isLoading, showError, simulateError }  = useAuthStore()
   const { selectedLoginType, } = useLoginTypeStore()
 
   const form = useForm<z.infer<typeof loginSchema>>({

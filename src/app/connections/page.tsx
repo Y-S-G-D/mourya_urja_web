@@ -30,7 +30,7 @@ const ConnectionsPage = () => {
               key={index}
               className="p-4 bg-white border border-secondary rounded-2xl shadow-lg  group hover:bg-primary hover:text-accent transition duration-500"
             >
-              <UserBasicInfo data={connection}/>
+              <UserBasicInfo />
               <div className="flex items-center gap-4 justify-center">
                 <div className="p-2 cursor-pointer bg-accent rounded-full border border-border">
                   <FaHeart className="text-red-500" />

@@ -2,19 +2,19 @@ import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent, } from '@/components/ui/card';
 import {Badge} from '@/components/ui/badge';
 
-const hobbies = [
-  'Modelling',
-  'Watching movies',
-  'Playing volleyball',
-  'Hangout with family',
-  'Adventure travel',
-  'Books reading',
-  'Music',
-  'Cooking',
-  'Yoga'
-];
+// const hobbies = [
+//   'Modelling',
+//   'Watching movies',
+//   'Playing volleyball',
+//   'Hangout with family',
+//   'Adventure travel',
+//   'Books reading',
+//   'Music',
+//   'Cooking',
+//   'Yoga'
+// ];
 
-export default function HobbiesCard() {
+export default function HobbiesCard({hobbies}:{hobbies: string[]}) {
   return (
     <Card className="w-full md:max-w-lg  bg-white shadow-md rounded-lg">
       <CardHeader>

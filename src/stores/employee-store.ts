@@ -11,7 +11,6 @@ interface IEmployeeStore {
   errorMsg: string | null;
   showError: boolean;
   simulateError:(error:boolean)=>void;
-
   successMsg: string | null;
   getEmployees: () => Promise<IEmployee[]>;
   employees: IEmployee[];
@@ -31,7 +30,9 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
   employees: [], // The list of employees
   employee: null,
   showError: false,
-  simulateError: (error: boolean) => set({ showError: error }),
+  simulateError:(error:boolean)=>{
+    set({showError:error})
+  },
   getEmployees: async () => {
     try {
       set({isProcessing:true,errorMsg:null,successMsg:null})
@@ -45,7 +46,7 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
     } catch (e) {
       console.log(e);
       const errorMsg = errorMessage(e);
-      set({isProcessing:false,errorMsg:errorMsg})
+      set({isProcessing:false,errorMsg:errorMsg , showError:true});
       return []
     }
   },

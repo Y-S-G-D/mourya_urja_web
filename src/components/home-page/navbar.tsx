@@ -7,6 +7,7 @@ import { FaTimes } from "react-icons/fa";
 import { RiMenu3Fill } from "react-icons/ri";
 import { websiteName } from "@/shared/constant";
 import { navMenus } from "@/shared/nav-menus";
+import LocalStorage from "@/utils/local-storage/local-storage";
 
 const Navbar = ({ bgColor }: { bgColor: string | null }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -47,7 +48,8 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
           <ul className="text-base rounded-3xl flex md:space-x-6 lg:space-x-8  bg-accent/80 py-3 px-6 text-foreground ">
             {navMenus.map((menu, index) => (
               <li key={index} className="text-nowrap hover:text-sidebar-primary  hover:-translate-y-[2px] transform transition duration-300">
-                <Link href={menu.url}>{menu.title}</Link>
+
+                <Link href={menu.title==="My Profile"?`${menu.url}/${LocalStorage.getInstance().getLoginInfo()?._id}`:menu.url}>{menu.title}</Link>
               </li>
             ))}
           </ul>

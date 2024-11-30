@@ -31,6 +31,7 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
     login: async (email, password, accessType) => {
         try{
             // Add your login logic here
+        console.log("accessType",accessType)
         set({ isLoading: true, errorMsg: null, isSuccess: false })
         const response = await apiClient.post(loginEndPoint,{email, password, accessType},
             

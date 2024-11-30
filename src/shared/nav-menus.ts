@@ -1,10 +1,11 @@
+
 export const navMenus = [
     {
         title: 'Home',
         url: '/',
       },
       {
-        title: 'Profiles',
+        title: 'Explore',
         url: '/browse-profile',
       },
       {
@@ -17,7 +18,7 @@ export const navMenus = [
       },
       {
         title: 'My Profile',
-        url: '/user-profile',
+        url: `/user-profile`,
       },
       {
         title: 'Contact Us',

@@ -40,7 +40,7 @@ export default function BestPersonSlider() {
             {connectionData.map((data, index) => (
               <SwiperSlide key={index} className="!w-[300px] !h-auto">
                 <div className="bg-white  text-foreground rounded-lg shadow-lg p-4 overflow-hidden">
-                  <UserBasicInfo data={connectionData[index]}/>
+                  <UserBasicInfo />
                   {/* <Image
                     src={project.image}
                     alt={project.title}

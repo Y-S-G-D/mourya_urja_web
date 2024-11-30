@@ -12,8 +12,9 @@ const playfair = Playfair({subsets:["latin"]})
 
 
 
-export default function BasicInfoSection() {
-    const [isLiked, setIsLiked] = React.useState(false);
+export default function BasicInfoSection({name,city,dob,height,jobType}:{name:string,city:string,dob:string,height:string,jobType:string}) {
+
+  const [isLiked, setIsLiked] = React.useState(false);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -40,7 +41,7 @@ export default function BasicInfoSection() {
       {/* Right side - Profile Details */}
       <div className="px-2 md:px-6 md:w-[65%] w-full text-center md:text-left flex flex-col justify-center">
         {/* Name and Status */}
-        <h1 className={`text-3xl md:text-5xl font-bold ${playfair.className}`}>Abhinav Sinha</h1>
+        <h1 className={`text-3xl md:text-5xl font-bold ${playfair.className}`}>{name}</h1>
         <div className="flex justify-center md:justify-start items-center space-x-2 mt-2">
           <Badge variant="secondary" className="bg-yellow-500 text-white px-2 py-1">
             100 Likes
@@ -55,25 +56,25 @@ export default function BasicInfoSection() {
         <Card className="flex flex-col items-center justify-center p-4 space-y-2">
             <span className="text-2xl">🏙️</span>
             <CardTitle className="text-sm font-light">CITY:</CardTitle>
-            <p className="text-brown-800 font-bold ">Amritsar</p>
+            <p className="text-brown-800 font-bold ">{city}</p>
           </Card>
 
           <Card className="flex flex-col items-center justify-center p-4 space-y-2">
             <span className="text-2xl">👥</span>
-            <CardTitle className="text-sm font-light">AGE:</CardTitle>
-            <p className="text-brown-800 font-bold">21</p>
+            <CardTitle className="text-sm font-light">DOB:</CardTitle>
+            <p className="text-brown-800 font-bold">{dob}</p>
           </Card>
 
           <Card className="flex flex-col items-center justify-center p-4 space-y-2">
             <span className="text-2xl">📏</span>
             <CardTitle className="text-sm font-light">HEIGHT:</CardTitle>
-            <p className="text-brown-800 font-bold">5.7</p>
+            <p className="text-brown-800 font-bold">{`${height} cm`}</p>
           </Card>
 
           <Card className="flex flex-col items-center justify-center p-4 space-y-2">
             <span className="text-2xl">💼</span>
             <CardTitle className="text-sm font-light">JOB:</CardTitle>
-            <p className="text-brown-800 font-bold">Sr. Developer</p>
+            <p className="text-brown-800 font-bold">{jobType}</p>
           </Card>
 
         </div>

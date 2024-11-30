@@ -1,52 +1,67 @@
 import { UserLoginInfo } from "@/models/UserLoginInfo";
 
+export default class LocalStorage {
+  /// implement singleton constructor
+  private static instance: LocalStorage;
+  private constructor() {
+    // Make it non-enumerable and non-writable
+    Object.defineProperty(this, "constructor", {
+      enumerable: false,
+      writable: false,
+    });
+  }
 
+  // Implement the singleton pattern
+  public static getInstance(): LocalStorage {
+    if (!LocalStorage.instance) {
+      LocalStorage.instance = new LocalStorage();
+    }
+    return LocalStorage.instance;
+  }
 
+  private isLocalStorageAvailable(): boolean {
+    return typeof window !== "undefined" && typeof localStorage !== "undefined";
+  }
 
-export default class LocalStorage{
+  public addLoginInfo(loginInfo: UserLoginInfo): void {
+    if (this.isLocalStorageAvailable()) {
+      delete loginInfo.access_token;
+      const info = JSON.stringify(loginInfo);
+      localStorage.setItem("loginInfo", info);
+    } else {
+      console.log("localStorage is not available.");
+    }
+  }
 
-    /// implement singleton constructor
-    private static instance: LocalStorage;
-    private constructor() {
-        // Make it non-enumerable and non-writable
-        Object.defineProperty(this, 'constructor', { enumerable: false, writable: false });
+  public getRole(): string {
+    if (this.isLocalStorageAvailable()) {
+      const info = localStorage.getItem("loginInfo");
+      if (info) {
+        const loginInfo: UserLoginInfo = JSON.parse(info);
+        return loginInfo.role;
+      }
+    } else {
+      console.warn("localStorage is not available.");
+    }
+    return "NA";
+  }
+
+  public getLoginInfo(): UserLoginInfo | null {
+    if (this.isLocalStorageAvailable()) {
+      const info = localStorage.getItem("loginInfo");
+      if (info) {
+        return JSON.parse(info);
+      }
     }
 
-    // Implement the singleton pattern
-    public static getInstance(): LocalStorage {
-        if (!LocalStorage.instance) {
-            LocalStorage.instance = new LocalStorage();
-        }
-        return LocalStorage.instance;
+    return null;
+  }
+
+  public removeLoginInfo(): void {
+    if (this.isLocalStorageAvailable()) {
+      localStorage.removeItem("loginInfo");
+    } else {
+      console.log("localStorage is not available.");
     }
-
-    public addLoginInfo(loginInfo:UserLoginInfo):void {
-        delete loginInfo.access_token;
-        const info = JSON.stringify(loginInfo)
-        localStorage.setItem("loginInfo", info)
-    }
-    public getRole():string {
-        const info = localStorage.getItem("loginInfo");
-        if(info){
-            const loginInfo: UserLoginInfo = JSON.parse(info);
-            return loginInfo.role;
-        }
-        return "NA";
-    }
-
-    public getLoginInfo():UserLoginInfo | null {
-        const info = localStorage.getItem("loginInfo");
-        if(info){
-            return JSON.parse(info);
-        }
-        return null;
-    }
-
-    
-
-    public removeLoginInfo():void {
-        localStorage.removeItem("loginInfo")
-    }
-
-
+  }
 }

@@ -6,7 +6,7 @@ import { Separator } from "../ui/separator";
 
 
 
-export default function SiblingCard({ siblings, onDelete }: { siblings: ISibling[]; onDelete: (index: number) => void }) {
+export default function SiblingCard({ siblings, onDelete, showDeleteIcon }: { siblings: ISibling[]; onDelete: (index: number) => void, showDeleteIcon?:boolean }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {siblings.map((sibling, index) => (
@@ -20,7 +20,7 @@ export default function SiblingCard({ siblings, onDelete }: { siblings: ISibling
                 <User size={18} />
                 {sibling.name}
               </span>
-              <Button
+              {showDeleteIcon === true?<Button
                 variant="ghost"
                 size="icon"
                 onClick={() => onDelete(index)}
@@ -28,7 +28,7 @@ export default function SiblingCard({ siblings, onDelete }: { siblings: ISibling
                 title="Delete"
               >
                 <Trash size={18} />
-              </Button>
+              </Button>:<></>}
             </CardTitle>
           </CardHeader>
 

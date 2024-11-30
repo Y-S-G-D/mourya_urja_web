@@ -2,8 +2,9 @@ import React from 'react';
 import { Card, CardContent, CardTitle } from '../ui/card';
 import { Separator } from '@/components/ui/separator';
 import { GraduationCap, Briefcase } from 'lucide-react';
+import { IEducationalAndProfessionInfo } from '@/models/user-model';
 
-const EducationAndProfessionCard = () => {
+const EducationAndProfessionCard = ({eduAndProfInfo}:{eduAndProfInfo:IEducationalAndProfessionInfo | null}) => {
   return (
     <Card className="p-6 w-full bg-white shadow-md rounded-lg">
       <div className="flex flex-col lg:flex-row  ">
@@ -16,10 +17,10 @@ const EducationAndProfessionCard = () => {
           </div>
           <CardContent>
             <p className="text-gray-600">
-              <span className="font-semibold">Highest Education:</span> Bachelor&apos;s in Technology
+              <span className="font-semibold">Highest Education:</span> {eduAndProfInfo?.highestEducation || ""}
             </p>
             <p className="text-gray-600">
-              <span className="font-semibold">Other Educational Details:</span> Completed from National Institute of Technology, Manipur
+              <span className="font-semibold">Other Educational Details:</span> {eduAndProfInfo?.otherEductionDetail || ""}
             </p>
           </CardContent>
         </div>
@@ -37,10 +38,16 @@ const EducationAndProfessionCard = () => {
           </div>
           <CardContent>
             <p className="text-gray-600">
-              <span className="font-semibold">Job Type:</span> Government
+              <span className="font-semibold">Job Type:</span> {eduAndProfInfo?.jobType.toLocaleUpperCase() || ""}
             </p>
             <p className="text-gray-600">
-              <span className="font-semibold">Designation:</span> Software Development Engineer (SDE)
+              <span className="font-semibold">Designation:</span> {eduAndProfInfo?.designation || ""}
+            </p>
+            <p className="text-gray-600">
+              <span className="font-semibold">Work Details:</span> {eduAndProfInfo?.workDetail || ""}
+            </p>
+            <p className="text-gray-600">
+              <span className="font-semibold">Income:</span> {`\u20b9${eduAndProfInfo?.income}.00` || ""}
             </p>
           </CardContent>
         </div>
