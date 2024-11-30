@@ -13,6 +13,7 @@ import { create } from "zustand";
 import apiClient from "@/lib/axiosInstance";
 import {
   deleteImage,
+  deleteUser,
   getUsers,
   preSignedUrl,
   registerUser,
@@ -158,6 +159,9 @@ const useUserStore = create<IUserStore>((set, get) => ({
   password: "",
 
   user: null,
+
+ 
+
   removeProfileImageFromPersonalInfo(fileName) {
  
     set((state) => {
@@ -179,6 +183,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
         fileType: file.type,
       };
     });
+    const fileNames = payLoads.map((file) => file.fileName);
     const preSignedUrlResponse = await apiClient.post(preSignedUrl, {
       payLoads,
       headers: {
@@ -194,7 +199,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
           })
         )
       );
-      const fileNames = payLoads.map((file) => file.fileName);
+      
       return fileNames;
 
   }
@@ -238,16 +243,11 @@ const useUserStore = create<IUserStore>((set, get) => ({
     try {
       set({ isProcessing: true });
       const imageFileNames = get().personalInfo.profileImages.map((image) => {
-        console.log("Image", image);
         return extractFileNameFromURL(image);
       })
-      console.log(imageFileNames)
       const fileNames = await get().uploadImages();
     
-    
       user.personalInfo.profileImages = [...fileNames,...imageFileNames];
-
-      console.log("User after save images", user.personalInfo.profileImages);
 
       const response = await apiClient.post(registerUser, user);
       set({ isProcessing: false, successMsg: response.data.message });
@@ -259,6 +259,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
   handleSiblingDialog: (isOpen) => {
     set({ isSiblingDialogOpen: isOpen });
   },
+  ///
   addPersonalInfo: (personalInfo) => {
     /// calculate age based on current date and dob
 
@@ -266,17 +267,10 @@ const useUserStore = create<IUserStore>((set, get) => ({
     const todayDate = new Date();
     const age = todayDate.getFullYear() - dob.getFullYear();
     personalInfo.age = age;
-    const profileImges = get().profileImageFiles.map((file) =>
-      URL.createObjectURL(file)
-    );
-    const updatedProfileImages = [...personalInfo.profileImages,];
-    profileImges.forEach((image) => {
-      if(!updatedProfileImages.includes(image)){
-        updatedProfileImages.push(image);
-      }
-    })
-
-    personalInfo.profileImages = updatedProfileImages;
+    // const profileImges = get().profileImageFiles.map((file) =>
+    //   URL.createObjectURL(file)
+    // );
+ 
    
     set({ personalInfo: personalInfo });
   },
@@ -358,6 +352,7 @@ export interface IFetchUserStore {
   isProcessing: boolean;
   errorMsg: string;
   showError: boolean;
+  successMsg: string | null;
   simulateError: (error: boolean) => void;
   users: IUser[];
   user: IUser | null;
@@ -366,17 +361,34 @@ export interface IFetchUserStore {
   getSingleUserByEmail(email: string): Promise<IUser>;
   deleteImage: (imageUrl: string) => void;
   extractFileNameFromURL: (imageUrl: string) => string;
+  deleteUserByEmail:(email:string) => Promise<void>;
 }
 
 export const useFetchUserStore = create<IFetchUserStore>((set) => ({
   isProcessing: false,
   errorMsg: "",
+  successMsg: "",
   showError: false,
   simulateError: (error: boolean) => {
     set({ showError: error });
   },
   users: [],
   user: null,
+
+  deleteUserByEmail: async (email) => {
+    try{
+      set({isProcessing:true});
+      const response = await apiClient.delete(`${deleteUser}/${email}`);
+      console.log("Response is ",response);
+      if(response.status === 200){
+        set({successMsg: response.data.message, isProcessing:false,});
+        window.location.reload();
+      }
+    }catch (e){
+      console.log(e)
+      set({errorMsg:"Failed to delete user. Please try again later.",isProcessing:false})
+    }
+  },
 
   getUsers: async () => {
     try {

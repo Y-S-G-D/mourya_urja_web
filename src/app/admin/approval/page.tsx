@@ -1,12 +1,34 @@
 'use client'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { DataTable } from '@/app/admin/employees/data-table'
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
-import { usersData } from '@/utils/users-data'
 import { columns } from './columns'
+import { useApprovalStore } from '@/stores/approval-store'
+import {useFetchUserStore} from '@/stores/user-store'
 
 const ApprovalPage: React.FC = () => {
+
+  const { getPendingApprovals,users,isProcessing } = useApprovalStore()
+  const {getUserTableData} = useFetchUserStore()
+  
+
+  const fetchApprovalData = useCallback(async () => {
+    getPendingApprovals()
+  }, [getPendingApprovals])
+
+  React.useEffect(()=>{
+    fetchApprovalData()
+  },[fetchApprovalData])
+
+  if(isProcessing ){
+    return <h1 className='text-3xl font-semibold'>Loading...</h1>
+  }
+
+  if(users.length === 0){
+    return <h1 className='text-3xl font-semibold'>No pending approvals</h1>
+  }
+
   return (
     <div className=" pt-24 flex flex-1 flex-col gap-4 p-4 px-8">
       <h1 className='text-3xl font-semibold'>Approval</h1>
@@ -38,7 +60,7 @@ const ApprovalPage: React.FC = () => {
         </Button>
       </div> */}
       <div className="container mx-auto pb-10 px-4">
-        <DataTable columns={columns} data={usersData} />
+        <DataTable columns={columns} data={ getUserTableData(users) } />
       </div>
     </div>
   )

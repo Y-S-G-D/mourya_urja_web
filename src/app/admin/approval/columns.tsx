@@ -61,7 +61,7 @@ export const columns: ColumnDef<ApproveUser>[] = [
             <Button><CheckCheck className="font-bold"/></Button>
             <Button 
                 onClick={() => {
-                  console.log(approve.id)
+                  console.log(approve.email)
                 }}
                 variant={"destructive"}>
                 <FaTimes/>

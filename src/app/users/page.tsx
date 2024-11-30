@@ -21,18 +21,18 @@ const UsersPage = () => {
 
   const [usersTableData, setUsersTableData] = React.useState<Users[]>([])
   
-  const fetchUsers = async () => {
+  const fetchUsers = React.useCallback(async () => {
     getUsers().then((value)=>{
       const filteredUsers = getUserTableData(value)
       setUsersTableData(filteredUsers)
     }).catch((e)=>{
       console.log("Error is ",e)
     })
-  }
+  }, [getUsers, getUserTableData])
 
   useEffect(()=>{
     fetchUsers()
-  },[getUsers, getUserTableData])
+  },[fetchUsers])
 
   
   return (
