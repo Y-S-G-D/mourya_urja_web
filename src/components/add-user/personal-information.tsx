@@ -48,6 +48,7 @@ const PersonalInformation = () => {
     form.reset({
       ...personalInfo,
       profileImages: personalInfo.profileImages || [],
+      gender: personalInfo.gender || "male",
       dob: personalInfo.dob ?  new Date(personalInfo.dob).toISOString().split('T')[0] : "",
       height: personalInfo.height?.toString() || "",
       weight: personalInfo.weight?.toString() || "",

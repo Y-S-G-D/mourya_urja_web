@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useFetchUserStore } from "@/stores/user-store";
 
 
 // This type is used to define the shape of our data.
@@ -75,6 +76,7 @@ export const columns: ColumnDef<Users>[] = [
     cell: ({ row }) => {
       const user = row.original
       
+      const store = useFetchUserStore.getState()
  
       return (
         <DropdownMenu>
@@ -96,6 +98,13 @@ export const columns: ColumnDef<Users>[] = [
               <a href={`/add-users/${user.email}`}>View User</a>
             </DropdownMenuItem>
             <DropdownMenuItem 
+            onClick={() => {
+              const confirm = window.confirm("Are you sure you want to delete this user?");
+              if (confirm) {
+                store.deleteUserByEmail(user.email)
+
+              }
+            }}
               className="text-destructive hover:!text-destructive hover:!bg-red-100">
               Delete User
             </DropdownMenuItem>

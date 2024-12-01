@@ -7,6 +7,7 @@ export const getUsers = `/all-users`
 export const deleteImage = `${userEndPoint}/delete-file`
 export const userProfileById= `${userEndPoint}/profile`
 export const browseProfiles = `${userEndPoint}/find-new-connections`
+export const deleteUser = `${userEndPoint}/delete-user`
 
 
 export const employeeEndPoint =  '/employee';

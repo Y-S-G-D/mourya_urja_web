@@ -126,7 +126,7 @@ const AddUserForm = ({params}:{params:Promise<PageParams>}) => {
         <Button 
           onClick={ activeStep ===steps.length-1 ? () =>{
             saveUser()
-            window.location.reload()
+            // window.location.reload()
             
           } : handleNext}>
           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
