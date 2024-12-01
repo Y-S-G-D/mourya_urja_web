@@ -27,16 +27,20 @@ import PageSelectionCheckbox from "./page-selection-checkbox";
 import { IEmployee } from "@/models/employee-model";
 import { Replace } from "lucide-react"
 import usePasswordStore from "@/stores/password-store";
+import CircularLoader from "@/components/skeleton-loaders/circular-loader";
+import { useToast } from "@/hooks/use-toast";
 
 const AddEmployeeForm = () => {
-  const { employee, saveEmployee } = useEmployeeStore();
+  const { toast }  = useToast();
+  const { employee, saveEmployee , isProcessing , isUpdateSuccess} = useEmployeeStore();
   const {generate12DigPassword } = usePasswordStore();
+  
 
   // Initialize the form with defaultValues
   const form = useForm<IEmployee>({
     defaultValues: {
       employeeId: "",
-      companyName: "",
+      companyName: employee?.companyName || "",
       firstName: "",
       lastName: "",
       email: "",
@@ -81,8 +85,23 @@ const AddEmployeeForm = () => {
         password: employee.password || "",
       });
     }
-  }, [employee, form]);
+    if(isUpdateSuccess){
+      toast({
+       variant: "success",
+        title: "Success",
+        description: "Employee Updated Successfully",
+      })
+    }
+  }, [employee, form,isUpdateSuccess,toast]);
+  
+  // if(successMsg !== null){
+    // toast({
+    //   title: "Success",
+    //   description: "Employee Updated Successfully",
+    // })
 
+
+  // }
   return (
     <Form {...form}>
       <form
@@ -119,11 +138,13 @@ const AddEmployeeForm = () => {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select Company Name"></SelectValue>
+                      <SelectValue 
+                        id="companyName"
+                        placeholder="Select Company Name"></SelectValue>
                       <SelectContent>
                         {companyNames.map((companyName, index) => {
                           return (
-                            <SelectItem key={index} value={companyName.value}>
+                            <SelectItem key={index} value={companyName.value.toLocaleLowerCase()}>
                               {companyName.label}
                             </SelectItem>
                           );
@@ -290,8 +311,11 @@ const AddEmployeeForm = () => {
         </div>
 
         <div className="my-8 flex gap-4">
-          <Button type="submit" className="w-28">
-            Save
+          <Button type="submit" className={`${isProcessing?'px-4':'w-28'}`}>
+            {isProcessing ? <>
+                  <CircularLoader/>
+                    <span>Processing...</span>
+                  </>:'Save'}
           </Button>
           <Button
             type="button"
@@ -301,6 +325,7 @@ const AddEmployeeForm = () => {
           >
             Cancel
           </Button>
+        
         </div>
       </form>
     </Form>

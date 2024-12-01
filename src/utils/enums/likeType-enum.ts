@@ -1,5 +1,5 @@
 export enum LikeType {
-    WhoLikedYou="Who Liked You",
+    WhoLikedYou="WhoLikedYou",
     WhomYouLiked="WhomYouLiked",
 
 }

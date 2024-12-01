@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button"
 import { CheckCheck } from "lucide-react"
 import { FaTimes } from "react-icons/fa";
+import { useApprovalStore } from "@/stores/approval-store";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type ApproveUser = {
@@ -11,6 +12,7 @@ export type ApproveUser = {
   name: string;
   email: string;
   phoneNumber: string;
+  docId:string;
 };
 
 export const columns: ColumnDef<ApproveUser>[] = [
@@ -55,13 +57,17 @@ export const columns: ColumnDef<ApproveUser>[] = [
     header: "Actions",
     cell: ({ row }) => {
       const approve = row.original
+      const store = useApprovalStore.getState()
  
       return (
         <div className="flex justify-around">
-            <Button><CheckCheck className="font-bold"/></Button>
+            <Button
+              onClick={() => {
+                store.approveUser(approve.docId)
+              }}
+            ><CheckCheck className="font-bold"/></Button>
             <Button 
                 onClick={() => {
-                  console.log(approve.email)
                 }}
                 variant={"destructive"}>
                 <FaTimes/>

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Lora,Playfair_Display } from 'next/font/google'
+import { Lora,Playfair_Display,Inter } from 'next/font/google'
 import { websiteName } from "@/shared/constant";
+import { Toaster } from "@/components/ui/toaster"
 
 
 export const metadata: Metadata = {
@@ -12,6 +13,11 @@ export const metadata: Metadata = {
 const lora = Lora({ 
   subsets: ['latin'],
   variable: '--font-lora'
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter'
 });
 
 const playfair = Playfair_Display({ 
@@ -26,8 +32,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" >
-      <body className={`${playfair.variable} ${lora.variable} ${lora.className} antialiased`} suppressHydrationWarning>
+      <body className={`${playfair.variable} ${lora.variable} ${inter.className} antialiased`} suppressHydrationWarning>
         {children}
+        <Toaster />
+
       </body>
     </html>
   );

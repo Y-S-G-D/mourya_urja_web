@@ -22,15 +22,20 @@ import { Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useBrowseProfilesStore } from "@/stores/browse-profiles-store";
 import { IUser } from "@/models/user-model";
+import {useFavouriteStore} from "@/stores/faviroute-store";
 
 const BrowseProfilePage = () => {
   const router = useRouter();
   const { getBrowseProfiles , browseProfiles} = useBrowseProfilesStore();
+  const {addToFavourite} = useFavouriteStore();
 
   const [isLiked, setIsLiked] = React.useState(false);
 
-  const handleLike = () => {
+  const handleLike = (id:string | null) => {
+    if(!id) return;
     setIsLiked(!isLiked);
+    addToFavourite(id);
+
   }
 
   const fetchBrowseProfiles = useCallback( async () => {
@@ -82,7 +87,7 @@ const BrowseProfilePage = () => {
             >
               <UserBasicInfo data={profile} />
                 <div 
-                  onClick={handleLike}
+                  onClick={()=>handleLike(profile._id ?? null)}
                   className="absolute  top-6 right-6 p-2 cursor-pointer bg-accent rounded-full border border-border hover:bg-secondary">
                   {isLiked?<FaHeart className="text-red-500" />:<FaRegHeart  className="text-primary hover:text-secondary-foreground" />}
                 </div>

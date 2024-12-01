@@ -17,8 +17,8 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import WhoLikedYouContent from './who-liked-you'
-import ProfileCard from './profile-card'
 import { LikeType } from '@/utils/enums/likeType-enum'
+import WhomYouLiked from './whom-you-liked'
 const LikesTabs = () => {
   
   return (
@@ -34,14 +34,7 @@ const LikesTabs = () => {
             <WhoLikedYouContent/>
         </TabsContent>
         <TabsContent value={LikeType.WhomYouLiked}>
-            <div className='grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4  gap-8 my-6'>
-                {
-                    Array.from({length: 12}).map((_, index) => (
-                        <ProfileCard key={index} likeType={LikeType.WhomYouLiked}/>
-                    ))
-                }
-                 
-            </div>
+           <WhomYouLiked/>
 
         </TabsContent>
     </Tabs>

@@ -24,6 +24,7 @@ export type Users = {
   email: string;
   phoneNumber: string;
   jobType: string;
+  docId:string;
 };
 
 export const columns: ColumnDef<Users>[] = [

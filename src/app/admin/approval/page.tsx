@@ -26,7 +26,7 @@ const ApprovalPage: React.FC = () => {
   }
 
   if(users.length === 0){
-    return <h1 className='text-3xl font-semibold'>No pending approvals</h1>
+    return <h1 className=' pt-24 flex flex-1 flex-col justify-center items-center text-center gap-4 p-4 px-8 text-3xl font-semibold'>No pending approvals</h1>
   }
 
   return (

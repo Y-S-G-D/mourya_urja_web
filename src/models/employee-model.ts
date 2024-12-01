@@ -1,4 +1,5 @@
 export interface IEmployee {
+    _id?: string;
     createdBy: string | null; // The id of the admin who created the employee
     employeeId: string;
     firstName: string;

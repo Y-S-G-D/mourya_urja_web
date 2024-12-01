@@ -4,7 +4,10 @@ import LikesTabs from '@/components/likes-tabs'
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb'
 import React from 'react'
 
+
 const LikesPage = () => {
+
+
   return (
     <div>
       <Navbar bgColor={'bg-primary'}/>

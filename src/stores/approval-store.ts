@@ -1,6 +1,6 @@
 import apiClient from "@/lib/axiosInstance";
 import { IUser } from "@/models/user-model";
-import { getUsers } from "@/shared/endpoints";
+import { getUsers, userApproval } from "@/shared/endpoints";
 import { errorMessage } from "@/shared/errorHandler";
 import { create } from "zustand";
 
@@ -12,18 +12,18 @@ export interface IApprovalStore {
   approveUser: (id: string) => Promise<void>;
 }
 
-export const useApprovalStore = create<IApprovalStore>((set) => ({
+export const useApprovalStore = create<IApprovalStore>((set,get) => ({
   users: [],
   errMsg: null,
   isProcessing: false,
   getPendingApprovals: async () => {
     try {
-      const response = await apiClient.get(getUsers, {
+      const response = await apiClient.get(getUsers,{
         params: {
-          query:JSON.stringify({isApproved:false})
+          limit:30,
+          filter: JSON.stringify({ isApproved: false }),
         },
       });
-      console.log("resonses", response);
         set({ users: response.data.data, isProcessing: false });
     } catch (err) {
       const errorMsg = errorMessage(err);
@@ -32,9 +32,17 @@ export const useApprovalStore = create<IApprovalStore>((set) => ({
 
   },
   approveUser: async (id) => {
-    await fetch(`/api/approvals/${id}`, {
-      method: "POST",
-    });
+    try {
+      set({ isProcessing: true });
+      const response = await apiClient.patch(`${userApproval}/${id}`,);
+      if(response.status === 200){
+        const updatedUsers = get().users.filter((user) => user._id !== id);
+        set({ errMsg: null, isProcessing: false,users: updatedUsers });
+      }
+    }catch(err){
+      const errorMsg = errorMessage(err);
+      set({ errMsg: errorMsg, isProcessing: false });
+    }
     
   },
 }));

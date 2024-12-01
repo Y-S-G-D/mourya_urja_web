@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { IEmployee } from "@/models/employee-model";
-import { allEmployeesEndpoint, employeeProfileEndPoint,registerEmployeeEndPoint } from "@/shared/endpoints";
+import { allEmployeesEndpoint, deleteEmployee, employeeProfileEndPoint,registerEmployeeEndPoint } from "@/shared/endpoints";
 import LocalStorage from "@/utils/local-storage/local-storage";
 import apiClient from "@/lib/axiosInstance";
 import { errorMessage } from "@/shared/errorHandler";
@@ -12,26 +12,61 @@ interface IEmployeeStore {
   showError: boolean;
   simulateError:(error:boolean)=>void;
   successMsg: string | null;
+  isUpdateSuccess: boolean;
   getEmployees: () => Promise<IEmployee[]>;
   employees: IEmployee[];
   employee: IEmployee | null;
   updateEmployee: (employee: IEmployee) => void;
   saveEmployee: (employee: IEmployee) => void;
-  deleteEmployee: (employeeId: string) => void;
+ 
   getEmployeeProfile: () => Promise<IEmployee | null>;
   getEmployeeTableData:(employees:IEmployee[])=> Employees[]
+  getEmployeeById: (employeeId: string) => Promise<void>;
+  deleteEmployeeById:(employeeId: string) => void;
 }
 
 // Just a minute a am guiding vinita for mobile app
 export const useEmployeeStore = create<IEmployeeStore>((set) => ({
   isProcessing: false,
   errorMsg: null,
+  isUpdateSuccess: false,
   successMsg: null,
   employees: [], // The list of employees
   employee: null,
   showError: false,
   simulateError:(error:boolean)=>{
     set({showError:error})
+  },
+  deleteEmployeeById: async (employeeId) => {
+    try {
+      set({ isProcessing: true, errorMsg: null, successMsg: null });
+      const response = await apiClient.delete(`${deleteEmployee}/${employeeId}`);
+      
+      if(response.status === 200){
+        console.log("delete",response.data.message);
+        
+        set({isProcessing:false,successMsg:response.data.message});
+      }
+
+
+    }catch(e){
+      console.log(e);
+    }
+  },
+  getEmployeeById: async (employeeId): Promise<void> => {
+    try {
+      set({ isProcessing: true, errorMsg: null, successMsg: null });
+      const response = await apiClient.get(`${employeeProfileEndPoint}/${employeeId}`);
+
+      if(response.status === 200){
+        const fetchedEmployee:IEmployee = response.data.data;
+        set({isProcessing:false,successMsg:response.data.message,employee:fetchedEmployee});
+      }
+    }
+    catch (e) {
+      console.error(e);
+      set({ isProcessing: false, errorMsg: errorMessage(e) ,showError:true });
+    }
   },
   getEmployees: async () => {
     try {
@@ -85,10 +120,10 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
   saveEmployee: async (employee):Promise<void> =>
   {
     try{
-      set({isProcessing: true, errorMsg:null,})
+      set({isProcessing: true, errorMsg:null,isUpdateSuccess:false,successMsg:null})
       const response = await apiClient.post(registerEmployeeEndPoint, employee);
       if(response.status === 200){
-        set({isProcessing:false, successMsg:response.data.message,})
+        set({isProcessing:false, successMsg:response.data.message, isUpdateSuccess:true})
         // Refresh the employee list
       }
 
@@ -98,13 +133,11 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
       set({isProcessing:false,errorMsg:errorMsg,successMsg:null})
     }
   },
-  deleteEmployee: (employeeId) =>
-    set((state) => ({
-      employees: state.employees.filter((e) => e.email !== employeeId),
-    })),
+ 
   getEmployeeTableData: (employees:IEmployee[]): Employees[] => {
     return employees.map((employee) => ({
-      id: employee.employeeId ?? "NA",
+      _id: employee._id ?? "NA",
+      employeeId: employee.employeeId ?? "NA",
       name: employee.firstName + ' ' + employee.lastName,
       email: employee.email,
       role: employee.role,
@@ -114,3 +147,7 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
     }));
   },
 }));
+
+// =============================================================================== //
+
+

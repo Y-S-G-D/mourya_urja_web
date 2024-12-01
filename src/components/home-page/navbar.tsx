@@ -12,10 +12,12 @@ import LocalStorage from "@/utils/local-storage/local-storage";
 const Navbar = ({ bgColor }: { bgColor: string | null }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
   const handleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 60) {
@@ -24,6 +26,13 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
         setIsScrolled(false);
       }
     };
+
+    const getUserIdFromLocalStorage = () => {
+      const userId = LocalStorage.getInstance().getLoginInfo()?._id;
+      setUserId(userId);
+    };
+
+    getUserIdFromLocalStorage();
     window.addEventListener("scroll", handleScroll);
 
     return () => {
@@ -49,7 +58,7 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
             {navMenus.map((menu, index) => (
               <li key={index} className="text-nowrap hover:text-sidebar-primary  hover:-translate-y-[2px] transform transition duration-300">
 
-                <Link href={menu.title==="My Profile"?`${menu.url}/${LocalStorage.getInstance().getLoginInfo()?._id}`:menu.url}>{menu.title}</Link>
+                <Link href={menu.title==="My Profile"?`${menu.url}/${userId}`:menu.url}>{menu.title}</Link>
               </li>
             ))}
           </ul>

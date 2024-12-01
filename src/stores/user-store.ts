@@ -376,7 +376,7 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
   user: null,
 
   deleteUserByEmail: async (email) => {
-    try{
+    try {
       set({isProcessing:true});
       const response = await apiClient.delete(`${deleteUser}/${email}`);
       console.log("Response is ",response);
@@ -423,6 +423,7 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
       dob: user.personalInfo.dob,
       phoneNumber: user.contactInfo.phoneNumber,
       jobType: user.eduAndProfInfo.jobType,
+      docId: user._id || ""
     }));
     return filteredUsers;
   },

@@ -31,7 +31,9 @@ const AddUserForm = ({params}:{params:Promise<PageParams>}) => {
   const steps = ['Personal Details', 'Contact Info', 'Educational & Professional','Cultural & Religious','Family Details',"Spouse Expectations",];
 
   const [activeStep , setActiveStep] = useState(0)
+
   const { getSingleUserByEmail,user } = useFetchUserStore();
+  
   const {assignUserData} = useUserStore()
 
   
