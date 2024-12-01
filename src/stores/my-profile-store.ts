@@ -22,6 +22,7 @@ export const useMyProfileStore = create<IMyProfileStore>((set) => ({
     getMyProfile: async (Id) => {
         try {
             set({isProcessing:true,errorMsg:null,successMsg:null})
+            console.log("user Id",Id);
             const response = await apiClient.get(`${userProfileById}/${Id}`);
             console.log("My Profile data",response.data.data);
             if(response.status === 200){

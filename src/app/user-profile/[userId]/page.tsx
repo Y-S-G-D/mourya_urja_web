@@ -21,10 +21,11 @@ interface UserProfileParams {
 
 const ViewUserProfile = ({ params }: { params: Promise<UserProfileParams> }) => {
   const { userProfile, getMyProfile } = useMyProfileStore();
-
+  
   const fetchUserProfile = useCallback(async () => {
     const { userId } = await params;
     if (!userId) return;
+    console.log("user Id in USer Profilepage", userId);
     await getMyProfile(userId);
   }, [getMyProfile, params]);
 
@@ -37,6 +38,7 @@ const ViewUserProfile = ({ params }: { params: Promise<UserProfileParams> }) => 
       <Navbar bgColor={"bg-primary"} />
       <section className="bg-secondary max-w-7xl w-full mx-auto pt-24 md:px-8 px-4 flex flex-col justify-center items-center">
         <BasicInfoSection 
+          image={userProfile?.personalInfo.profileImages[0] || ""}
           height={userProfile?.personalInfo.height.toString() || ""}
           jobType={userProfile?.eduAndProfInfo.jobType||""}
           city={userProfile?.residentialAddr.city || ""}

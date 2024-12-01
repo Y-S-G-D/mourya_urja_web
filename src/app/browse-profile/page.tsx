@@ -33,10 +33,11 @@ const BrowseProfilePage = () => {
     setIsLiked(!isLiked);
   }
 
-  const fetchBrowseProfiles = useCallback( async () =>{
+  const fetchBrowseProfiles = useCallback( async () => {
      await getBrowseProfiles();
   },[getBrowseProfiles])
 
+     
   useEffect(() => {
      fetchBrowseProfiles();
   },[fetchBrowseProfiles])
@@ -87,7 +88,7 @@ const BrowseProfilePage = () => {
                 </div>
                 <div 
                   onClick={()=> {
-                    router.push(`/user-profile/`)
+                    router.push(`/user-profile/${profile._id}`)
                   }}
                   className="absolute  top-16 right-6 p-2 cursor-pointer bg-accent rounded-full border border-border hover:bg-sidebar-primary">
                   <Eye className="text-primary hover:text-primary-foreground" size={18} />
