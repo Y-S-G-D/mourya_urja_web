@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Card,  CardTitle,  } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 // import { FaCity, FaUserFriends, FaRulerVertical, FaBriefcase } from "react-icons/fa";
-import Person from "@/app/assets/person.jpeg";
+// import Person from "@/app/assets/person.jpeg";
 import { Playfair } from "next/font/google";
 import React from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -12,7 +12,7 @@ const playfair = Playfair({subsets:["latin"]})
 
 
 
-export default function BasicInfoSection({name,city,dob,height,jobType}:{name:string,city:string,dob:string,height:string,jobType:string}) {
+export default function BasicInfoSection({image,name,city,dob,height,jobType}:{image:string,name:string,city:string,dob:string,height:string,jobType:string}) {
 
   const [isLiked, setIsLiked] = React.useState(false);
 
@@ -25,7 +25,7 @@ export default function BasicInfoSection({name,city,dob,height,jobType}:{name:st
       {/* Left side - Profile Image */}
       <div className="md:w-[30%] flex items-center justify-center w-full relative  border border-border ">
         <Image
-          src={Person.src} 
+          src={image} 
           alt="Profile"
           width={400} // Set image width (adjust as needed)
           height={400} // Set image height (adjust as needed)

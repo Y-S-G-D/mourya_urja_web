@@ -6,7 +6,7 @@ export const preSignedUrl = `${userEndPoint}/presigned-url`
 export const getUsers = `/all-users`
 export const deleteImage = `${userEndPoint}/delete-file`
 export const userProfileById= `${userEndPoint}/profile`
-export const browseProfiles = `${userEndPoint}/find-connections`
+export const browseProfiles = `${userEndPoint}/find-new-connections`
 
 
 export const employeeEndPoint =  '/employee';

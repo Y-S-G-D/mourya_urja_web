@@ -27,9 +27,9 @@ export const useBrowseProfilesStore = create<IBrowseProfilesStore>((set) => ({
     getBrowseProfiles: async () => {
         try {
             set({ isProcessing: true, errorMsg: null });
+
             // Call API to get browse profiles
             const response = await apiClient.get(`${browseProfiles}`);
-            console.log("Browse Profiles data", response.data.data);
             if (response.status === 200) {
                 const fetchedProfiles: IUser[] = response.data.data;
                 set({ isProcessing: false, isSuccess: true, browseProfiles: fetchedProfiles });
