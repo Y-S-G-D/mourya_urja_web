@@ -15,6 +15,9 @@ export interface IAuthStore{
     simulateError: (isError:boolean)   => void;
     login: (email: string, password: string, accessType:string) => void;
     logout: () => void;
+    isLoggedin: boolean;
+    checkLogin:()=>boolean;
+    
 
 }
 
@@ -24,6 +27,7 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
     isSuccess: false,
     showError: false,
     data:null,
+    isLoggedin: false,
     simulateError:(isError)=> {
         set({showError:isError})
     },
@@ -54,7 +58,7 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
                 expires: 7 * 24 * 60 * 60 * 1000  // expire in 7 days
             })
             LocalStorage.getInstance().addLoginInfo(response.data.data)
-            set({ data: date, isLoading: false, isSuccess: true })
+            set({ data: date, isLoading: false, isSuccess: true,isLoggedin:true })
             window.location.reload()
         }
         } catch(err: unknown){
@@ -71,5 +75,15 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
         Cookies.remove("role")
         LocalStorage.getInstance().removeLoginInfo();
         window.location.reload();
+    },
+
+    checkLogin:()=>{
+        const token = Cookies.get('access_token');
+        if(token){
+            set({isLoggedin:true})
+            return true;
+        }   
+        set({isLoggedin:false})
+        return false;
     }
 }))

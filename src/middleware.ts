@@ -23,6 +23,16 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  /// restrict user to access all routes without login 
+  /// don't restrict user to access login, and / page
+  // if role is 
+  if(!access_token && (url.startsWith('/browse-profile') || url.startsWith('/connections') || url.startsWith('/favourites') || url.startsWith('/user-profile'))){
+    return NextResponse.redirect(new URL("/login", request.url))
+  } 
+
+  
+
+
  
   if(access_token && role && url.startsWith('/login')){
 
@@ -54,5 +64,5 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 export const config = {
-    matcher: ['/','/login','/admin/:path*','/management/:path*'],
+    matcher: ['/','/login','/admin/:path*','/management/:path*', '/browse-profile/:path*','/connections/:path*','/favourites/:path*','/user-profile/:path*'],
   };

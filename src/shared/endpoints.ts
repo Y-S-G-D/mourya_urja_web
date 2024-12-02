@@ -6,6 +6,7 @@ export const preSignedUrl = `${userEndPoint}/presigned-url`
 export const getUsers = `/all-users`
 export const deleteImage = `${userEndPoint}/delete-file`
 export const userProfileById= `${userEndPoint}/profile`
+export const totalUsersCount = `${userEndPoint}//totalUsersCount`
 export const browseProfiles = `${userEndPoint}/find-new-connections`
 export const deleteUser = `${userEndPoint}/delete-user`
 export const userApproval = `${userEndPoint}/user-approval`

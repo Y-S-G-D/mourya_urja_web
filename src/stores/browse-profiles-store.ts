@@ -11,8 +11,9 @@ interface IBrowseProfilesStore {
     errorMsg: string | null;
     showError: boolean;
     simulateError: (isError:boolean) => void;
-    getBrowseProfiles: () => Promise<void>;
+    getBrowseProfiles: ({page,limit}:{page:number,limit:number,}) => Promise<void>;
     browseProfiles: IUser[];
+    
 }
 
 export const useBrowseProfilesStore = create<IBrowseProfilesStore>((set) => ({
@@ -24,12 +25,14 @@ export const useBrowseProfilesStore = create<IBrowseProfilesStore>((set) => ({
     simulateError: (isError) => {
         set({ showError: isError });
     },
-    getBrowseProfiles: async () => {
+    getBrowseProfiles: async ({page, limit}:{page:number,limit:number}) => {
         try {
             set({ isProcessing: true, errorMsg: null });
 
             // Call API to get browse profiles
-            const response = await apiClient.get(`${browseProfiles}`);
+            const response = await apiClient.get(`${browseProfiles}`,{params:{page,limit,
+                skip:(page-1)*limit,
+            }});
             if (response.status === 200) {
                 const fetchedProfiles: IUser[] = response.data.data;
                 set({ isProcessing: false, isSuccess: true, browseProfiles: fetchedProfiles });
@@ -40,4 +43,5 @@ export const useBrowseProfilesStore = create<IBrowseProfilesStore>((set) => ({
             set({ isProcessing: false, errorMsg: "Error in fetching browse profiles", showError: true });
         }
     },
+   
 }));

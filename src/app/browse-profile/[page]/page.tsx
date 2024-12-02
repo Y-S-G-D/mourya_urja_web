@@ -24,12 +24,17 @@ import { useBrowseProfilesStore } from "@/stores/browse-profiles-store";
 import { IUser } from "@/models/user-model";
 import {useFavouriteStore} from "@/stores/faviroute-store";
 
-const BrowseProfilePage = () => {
+interface Params {
+    page:number
+}
+
+const BrowseProfilePage = ({params}:{params:Promise<Params>}) => {
   const router = useRouter();
   const { getBrowseProfiles , browseProfiles} = useBrowseProfilesStore();
   const {addToFavourite} = useFavouriteStore();
 
   const [isLiked, setIsLiked] = React.useState(false);
+  const [selectedPage, setSelectedPage] = React.useState(1);    
 
   const handleLike = (id:string | null) => {
     if(!id) return;
@@ -39,8 +44,10 @@ const BrowseProfilePage = () => {
   }
 
   const fetchBrowseProfiles = useCallback( async () => {
-     await getBrowseProfiles({page:1,limit:20});
-  },[getBrowseProfiles])
+    const {page} = await params;
+    setSelectedPage(page);
+     await getBrowseProfiles({page: page ?? 1,limit:20});
+  },[getBrowseProfiles,params])
 
      
   useEffect(() => {
@@ -103,7 +110,7 @@ const BrowseProfilePage = () => {
             </div>
           ))}
         </div>
-        <PaginationButton page = {1}/>
+        <PaginationButton page = {selectedPage}/>
       </section>
       <Footer/>
     </main>

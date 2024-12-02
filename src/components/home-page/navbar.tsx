@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import RingLogo from "@/app/assets/ring-logo.png";
@@ -8,15 +8,23 @@ import { RiMenu3Fill } from "react-icons/ri";
 import { websiteName } from "@/shared/constant";
 import { navMenus } from "@/shared/nav-menus";
 import LocalStorage from "@/utils/local-storage/local-storage";
+import { useAuthStore } from "@/stores/auth-store";
+import { Button } from "../ui/button";
 
 const Navbar = ({ bgColor }: { bgColor: string | null }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [userId, setUserId] = useState<string | undefined>(undefined);
+  const { checkLogin, isLoggedin, logout } = useAuthStore();
 
   const handleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
+
+  const checkUserLoggedIn = useCallback(() => {
+    checkLogin();
+    console.log("User login ", isLoggedin);
+  }, [checkLogin, isLoggedin]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,13 +40,17 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
       setUserId(userId);
     };
 
+    checkUserLoggedIn();
+
     getUserIdFromLocalStorage();
     window.addEventListener("scroll", handleScroll);
+
+    console.log("Use Effect called");
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [checkUserLoggedIn]);
   return (
     <header
       className={`${bgColor || "bg-black/30"}  ${
@@ -54,11 +66,44 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
       <nav className="flex">
         {/* Desktop Menus */}
         <div className=" lg:w-8/12  md:flex hidden items-center justify-around">
-          <ul className="text-base rounded-3xl flex md:space-x-6 lg:space-x-8  bg-accent/80 py-3 px-6 text-foreground ">
+          <ul className="text-base rounded-3xl flex md:space-x-6 lg:space-x-8 items-center bg-accent/80 py-3 px-6 text-foreground ">
             {navMenus.map((menu, index) => (
-              <li key={index} className="text-nowrap hover:text-sidebar-primary  hover:-translate-y-[2px] transform transition duration-300">
-
-                <Link href={menu.title==="My Profile"?`${menu.url}/${userId}`:menu.url}>{menu.title}</Link>
+              <li
+                key={index}
+                className="text-nowrap hover:text-sidebar-primary items-center hover:-translate-y-[2px] transform transition duration-300"
+              >
+               {menu.url === "/login" ? (
+                  isLoggedin ? (
+                    <Button
+                      onClick={() => {
+                        logout();
+                        window.location.reload();
+                      }}
+                    >
+                      LogOut
+                    </Button>
+                  ) : (
+                    <Link
+                      href={
+                        menu.title === "My Profile"
+                          ? `${menu.url}/${userId}`
+                          : menu.url
+                      }
+                    >
+                      {menu.title}
+                    </Link>
+                  )
+                ) : (
+                  <Link
+                    href={
+                      menu.title === "My Profile"
+                        ? `${menu.url}/${userId}`
+                        : menu.url
+                    }
+                  >
+                    {menu.title}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -82,7 +127,38 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
           <ul className="text-base md:space-x-6 lg:space-x-8  py-3 px-6 text-center  font-semibold text-sidebar-primary-foreground ">
             {navMenus.map((menu, index) => (
               <li key={index} className="py-2 text-xl text-nowrap">
-                <Link href={menu.url}>{menu.title}</Link>
+                {menu.url === "/login" ? (
+                  isLoggedin ? (
+                    <Button
+                      onClick={() => {
+                        logout();
+                        window.location.reload();
+                      }}
+                    >
+                      LogOut
+                    </Button>
+                  ) : (
+                    <Link
+                      href={
+                        menu.title === "My Profile"
+                          ? `${menu.url}/${userId}`
+                          : menu.url
+                      }
+                    >
+                      {menu.title}
+                    </Link>
+                  )
+                ) : (
+                  <Link
+                    href={
+                      menu.title === "My Profile"
+                        ? `${menu.url}/${userId}`
+                        : menu.url
+                    }
+                  >
+                    {menu.title}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
