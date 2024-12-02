@@ -9,7 +9,8 @@ import { ConnectionModel } from "@/models/connection-model";
 import { useFavouriteStore } from "@/stores/faviroute-store";
 
 export default function ProfileCard({ likeType,favourite }: { likeType: LikeType,favourite:ConnectionModel }) {
-  const {removeFromFavourite} = useFavouriteStore();
+
+  const {removeFromFavourite,acceptRequest} = useFavouriteStore();
   return (
     <Card className="relative group transition-all duration-500 hover:scale-105 mx-auto rounded-xl p-2 shadow-sm overflow-hidden border border-secondary bg-background text-foreground">
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -52,7 +53,12 @@ export default function ProfileCard({ likeType,favourite }: { likeType: LikeType
         </div>
         {likeType === LikeType.WhoLikedYou ? (
           <div className="mt-4 flex justify-around">
-            <Button className="w-24 bg-sidebar-primary">Accept</Button>
+            <Button 
+              onClick={()=>{
+                console.log(favourite.userId)
+                acceptRequest(favourite.userId ?? "")
+              }}
+              className="w-24 bg-sidebar-primary">Accept</Button>
             <Button variant={"destructive"}>
               Remove
             </Button>

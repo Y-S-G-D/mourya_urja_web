@@ -1,6 +1,6 @@
 import apiClient from '@/lib/axiosInstance';
 import { ConnectionModel } from '@/models/connection-model';
-import { addToFavroute, deleteFavourite, getFavourites } from '@/shared/endpoints';
+import { acceptProposal, addToFavroute, deleteFavourite, getFavourites } from '@/shared/endpoints';
 import { errorMessage } from '@/shared/errorHandler';
 import {create} from 'zustand';
 
@@ -12,6 +12,8 @@ export interface IFavouriteStore {
     isProcessing: boolean;
     errorMsg: string | null;
     successMsg: string | null;
+    isRequestAccepted: boolean; 
+    acceptRequest: (id: string) => Promise<void>;
 
 }
 
@@ -20,6 +22,7 @@ export const useFavouriteStore = create<IFavouriteStore>((set,get)=>({
     isProcessing: false,
     errorMsg: null,
     successMsg: null,
+    isRequestAccepted: false,
     addToFavourite: async (id: string) => {
         try{
             set({isProcessing: true, errorMsg: null, successMsg: null});
@@ -60,6 +63,22 @@ export const useFavouriteStore = create<IFavouriteStore>((set,get)=>({
             console.log(e);
             const errMsg = errorMessage(e)
             set({isProcessing: false, errorMsg: errMsg,successMsg:null});
+        }
+    },
+    acceptRequest: async (id: string) => {
+        try{
+            
+            set({isProcessing: true, errorMsg: null, successMsg: null,isRequestAccepted: false});
+            const response = await apiClient.patch(`${acceptProposal}/${id}`);
+            console.log("Favourite Page store",response.data)
+            if(response.status === 200){
+                const filteredFavourites = get().favourites.filter((favourite) => favourite._id !== id);
+                set({isProcessing: false, successMsg: response.data.message,favourites: filteredFavourites,isRequestAccepted: true});
+            }
+        }catch(e){
+            console.log(e);
+            const errMsg = errorMessage(e)
+            set({isProcessing: false, errorMsg: errMsg,isRequestAccepted: false});
         }
     }
 }));

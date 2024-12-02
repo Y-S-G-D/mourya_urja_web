@@ -8,6 +8,7 @@ import { useFavouriteStore } from '@/stores/faviroute-store';
 const WhoLikedYouContent = () => {
 
   const {getFavourites,isProcessing,favourites} = useFavouriteStore()
+
   const fetchFavourites = useCallback( async () => {
     getFavourites(LikeType.WhoLikedYou)
   }, [getFavourites])

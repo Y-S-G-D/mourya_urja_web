@@ -23,6 +23,14 @@ export const dashboardInsight = '/dashboard-insights';
 export const addToFavroute = `${userEndPoint}/send-proposal`
 export const getFavourites = `${userEndPoint}/get-favourites`
 export const deleteFavourite = `${userEndPoint}/delete-favourite`
+export const acceptProposal = `${userEndPoint}/accept-proposal`
+
+// connection endpoints
+export const getConnections = `${userEndPoint}/connections`
+
+// comment endpoints
+export const addComment = `${userEndPoint}/add-comment`
+export const getComments = `${userEndPoint}/get-comments`
 
 
 // fetch all employees

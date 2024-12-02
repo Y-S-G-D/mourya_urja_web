@@ -14,6 +14,7 @@ import ContactInfoCard from "@/components/user-profile/contact-info-card";
 import Footer from "@/components/Footer";
 import { SiblingDetailsCard } from "@/components/user-profile/sibling-details-card";
 import { useMyProfileStore } from "@/stores/my-profile-store";
+import PersonImage from "@/app/assets/person.jpeg"
 
 interface UserProfileParams {
   userId: string;
@@ -25,7 +26,6 @@ const ViewUserProfile = ({ params }: { params: Promise<UserProfileParams> }) => 
   const fetchUserProfile = useCallback(async () => {
     const { userId } = await params;
     if (!userId) return;
-    console.log("user Id in USer Profilepage", userId);
     await getMyProfile(userId);
   }, [getMyProfile, params]);
 
@@ -38,7 +38,7 @@ const ViewUserProfile = ({ params }: { params: Promise<UserProfileParams> }) => 
       <Navbar bgColor={"bg-primary"} />
       <section className="bg-secondary max-w-7xl w-full mx-auto pt-24 md:px-8 px-4 flex flex-col justify-center items-center">
         <BasicInfoSection 
-          image={userProfile?.personalInfo.profileImages[0] || ""}
+          image={userProfile?.personalInfo.profileImages[0] || PersonImage.src}
           height={userProfile?.personalInfo.height.toString() || ""}
           jobType={userProfile?.eduAndProfInfo.jobType||""}
           city={userProfile?.residentialAddr.city || ""}

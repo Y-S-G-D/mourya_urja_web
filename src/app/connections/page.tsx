@@ -1,5 +1,6 @@
+'use client'
 import Navbar from "@/components/home-page/navbar";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import {
    Eye,
   MessageSquarePlus,
@@ -11,12 +12,26 @@ import {
 } from "@/components/ui/sheet";
 import CommentsSection from "@/components/comments-sheet";
 import UserBasicInfo from "@/components/user-basic-info";
-import { connectionData } from "@/utils/connection-data";
+// import { connectionData } from "@/utils/connection-data";
 import Footer from "@/components/Footer"
-
-
+import { useConnectionStore } from "@/stores/connection-store";
+import { useRouter } from "next/navigation";
 
 const ConnectionsPage = () => {
+  const router = useRouter()
+
+  const { connections, getConnections } = useConnectionStore();
+
+  const fetchConnections = useCallback( async () => {
+      getConnections();
+   }, [getConnections]);
+  
+   useEffect(() => {
+     fetchConnections();
+   }, [fetchConnections]);
+  
+  
+  
   return (
     <main>
       <Navbar bgColor={"bg-primary"} />
@@ -25,17 +40,21 @@ const ConnectionsPage = () => {
           Your Connections
         </h1>
         <div className="w-full grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6 px-6 lg:px-12">
-          {connectionData.map((connection, index) => (
+          {connections.map((connection, index) => (
             <div
               key={index}
               className="p-4 bg-white border border-secondary rounded-2xl shadow-lg  group hover:bg-primary hover:text-accent transition duration-500"
             >
-              <UserBasicInfo />
+              <UserBasicInfo  data={connection.user}/>
               <div className="flex items-center gap-4 justify-center">
                 <div className="p-2 cursor-pointer bg-accent rounded-full border border-border">
                   <FaHeart className="text-red-500" />
                 </div>
-                <div className="p-2 cursor-pointer bg-accent rounded-full border border-border">
+                <div 
+                  onClick={() => {
+                     router.push(`/user-profile/${connection.user._id}`)
+                  }}
+                  className="p-2 cursor-pointer bg-accent rounded-full border border-border">
                   <Eye className="text-primary" size={18} />
                 </div>
                 <Sheet>
@@ -45,7 +64,7 @@ const ConnectionsPage = () => {
                     </div>
                   </SheetTrigger>
 
-                  <CommentsSection />
+                  <CommentsSection userId={connection.user._id ?? ""} connectionId={connection.connectionId ?? ""} />
                 </Sheet>
               </div>
             </div>
