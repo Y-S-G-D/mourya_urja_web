@@ -14,7 +14,7 @@ export const contactFormSchema = z.object({
     .min(1, { message: "Subject is required" }),
   phoneNumber: z
     .string()
-    .regex(/^\d{10}$/, { message: "Please enter a valid phone number" })
+    .regex(/^\d{10}$/, { message: "Phone Number must be exactly 10 digits" })
     .min(1, { message: "Phone Number is required" }),
   message: z
     .string()
