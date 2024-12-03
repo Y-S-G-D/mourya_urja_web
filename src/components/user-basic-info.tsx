@@ -13,6 +13,7 @@ const UserBasicInfo = ({ data }: { data?: IUser }) => {
         alt="User Image"
         width={200}
         height={200}
+        style={{ objectFit: "cover" , minWidth:"150px" , minHeight:"150px"}}
         className="w-full h-72 sm:h-max border-4 border-secondary object-cover rounded-xl transform transition duration-500 group-hover:scale-x-105"
       />
 

@@ -16,11 +16,14 @@ import UserBasicInfo from "@/components/user-basic-info";
 import Footer from "@/components/Footer"
 import { useConnectionStore } from "@/stores/connection-store";
 import { useRouter } from "next/navigation";
+import { useCommentStore } from "@/stores/comments-store";
 
 const ConnectionsPage = () => {
   const router = useRouter()
 
   const { connections, getConnections } = useConnectionStore();
+  const { getComments} = useCommentStore();
+
 
   const fetchConnections = useCallback( async () => {
       getConnections();
@@ -29,7 +32,6 @@ const ConnectionsPage = () => {
    useEffect(() => {
      fetchConnections();
    }, [fetchConnections]);
-  
   
   
   return (
@@ -41,10 +43,11 @@ const ConnectionsPage = () => {
         </h1>
         <div className="w-full grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6 px-6 lg:px-12">
           {connections.map((connection, index) => (
+              console.log("connection  ID", connection.connectionId),
             <div
               key={index}
               className="p-4 bg-white border border-secondary rounded-2xl shadow-lg  group hover:bg-primary hover:text-accent transition duration-500"
-            >
+             > 
               <UserBasicInfo  data={connection.user}/>
               <div className="flex items-center gap-4 justify-center">
                 <div className="p-2 cursor-pointer bg-accent rounded-full border border-border">
@@ -59,12 +62,19 @@ const ConnectionsPage = () => {
                 </div>
                 <Sheet>
                   <SheetTrigger asChild>
-                    <div className="p-2  cursor-pointer bg-accent rounded-full border border-border">
+                    <div 
+                      onClick={() => {
+                          getComments(connection.connectionId ?? "")
+                      }}
+                      className="p-2  cursor-pointer bg-accent rounded-full border border-border">
                       <MessageSquarePlus className="text-primary" size={18} />
                     </div>
                   </SheetTrigger>
 
-                  <CommentsSection userId={connection.user._id ?? ""} connectionId={connection.connectionId ?? ""} />
+                  <CommentsSection 
+                    userId={connection.user._id ?? ""} 
+                    connectionName={`${connection.user.personalInfo.firstName} ${connection.user.personalInfo.lastName}`}
+                    connectionId={connection.connectionId ?? ""} />
                 </Sheet>
               </div>
             </div>

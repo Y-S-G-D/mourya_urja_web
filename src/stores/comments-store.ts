@@ -7,7 +7,7 @@ import { errorMessage } from '@/shared/errorHandler';
 
 interface ICommentStore {
     comments: IComment[];
-    getComments: () => Promise<void>;
+    getComments: (connectionUserId:string) => Promise<void>;
     addComment: (comment: IComment) => Promise<void>;
     isProcessing: boolean;
     errorMsg: string | null;
@@ -19,10 +19,11 @@ export const useCommentStore = create<ICommentStore>((set,get) => ({
     isProcessing: false,
     errorMsg: null,
     successMsg: null,
-    getComments: async () => {
+    getComments: async (connectionUserId) => {
         try{
             set({ isProcessing: true, errorMsg: null, successMsg: null });
-            const response = await apiClient.get(getComments);
+            console.log("connectionUserId", connectionUserId);
+            const response = await apiClient.get(getComments,{params:{connectionUserId}});
             console.log("get comments", response.data);
             if (response.status === 200) {
                 set({ isProcessing: false, comments: response.data.comments, successMsg: response.data.message });

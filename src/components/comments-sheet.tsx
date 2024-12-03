@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback ,useEffect } from "react";
+import React, {useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,40 +10,47 @@ import {
 } from "@/components/ui/sheet";
 import { SendHorizonal } from "lucide-react";
 import { Separator } from "./ui/separator";
-import Image from "next/image";
-import Person from "@/app/assets/person.jpeg";
+import { Avatar } from "@mui/material";
 import { Form, FormField, FormItem, FormControl, FormLabel } from "./ui/form";
 import { FieldValues, useForm } from "react-hook-form";
 import { useCommentStore } from "@/stores/comments-store";
 import { IComment } from "@/models/comment-model";
+import LocalStorage from "@/utils/local-storage/local-storage";
+import { formatDate } from "@/utils/date";
 
-const CommentsSection = ({userId,connectionId}:{userId:string | null ,connectionId:string | null}) => {
+const CommentsSection = ({userId,connectionId,connectionName}:{userId:string | null ,connectionId:string | null,connectionName:string|null}) => {
   
-  const { addComment , getComments , comments } = useCommentStore();
+  console.log("comment section called")
+  const { addComment ,getComments, comments } = useCommentStore();
+  const [userName,setUserName] = useState("")
   
-  const fetchComments = useCallback( async () => {
-    getComments();
-  },[getComments]);
+  // const fetchComments = useCallback( async () => {
+  //   getComments(connectionId ?? "");
+  // },[getComments , connectionId]);
 
   useEffect(() => {
-    fetchComments();
-  },[fetchComments]);
+    const userName = LocalStorage.getInstance().getLoginInfo()?.name ?? ""
+    setUserName(userName)
+  },[]);
 
   const form = useForm({
     defaultValues: {
-      userId: userId,
+      userName: userName,
       connectionId:connectionId,
       comment: "",
     },
   });
 
   const onSubmit = (data: FieldValues) => {
+    data.userName = userName;
+    console.log("data", data);
     addComment(data as IComment);
+    getComments(connectionId ?? "");
     form.reset()
   }
-
+  
   return (
-    <SheetContent>
+    <SheetContent >
       <SheetHeader>
         <SheetTitle className="text-4xl">Comments</SheetTitle>
         <SheetDescription>
@@ -73,32 +80,27 @@ const CommentsSection = ({userId,connectionId}:{userId:string | null ,connection
             </Button>
           </form>
         </Form>
-        {/* <Label>Comments</Label>
-        <div className="flex my-2">
-          <Input placeholder="Enter your comment here" />
-          <Button className="rounded-full px-3 ml-4" variant={"secondary"}>
-            <SendHorizonal />
-          </Button>
-        </div> */}
         <Separator className="my-4" />
+        <div className="overflow-y-auto h-[70vh]">
         {
           comments.map((comment, index) => {
             // if(comment.userId === userId){
               return (
-                <div key={index} className="flex gap-4  my-4 p-2 bg-accent rounded-lg ">
-                  <Image
+                <div key={index} className={`flex gap-4  my-4 p-2 ${comment.userId === userId ? 'bg-accent' : 'bg-secondary/60'} rounded-lg `}>
+                  {/* <Image
                     src={Person.src}
                     alt="Comment Image"
                     width={30}
                     height={20}
                     className="h-1/2"
-                  />
+                  /> */}
+                  <Avatar className="!bg-sidebar-primary !h-8 !w-8">{comment.userId === userId ? userName[0] : (connectionName ? connectionName[0] : 'N/A')}</Avatar>
                   <div>
                     <h1 className="text-sm font-medium text-primary">
-                      @snehakashyap{" "}
+                      {comment.userName}
+                      {/* {`${connectionName ?? ""} `} */}
                       <span className="text-[10px] font-light text-gray-500">
-                        {" "}
-                        ~ 10 days ago
+                        ~ {comment.createdAt !=null?formatDate(comment.createdAt ?? "",'dd MMM | HH:mm') : "N/A"}
                       </span>
                     </h1>
                     <p className="text-xs text-gray-600">
@@ -111,6 +113,8 @@ const CommentsSection = ({userId,connectionId}:{userId:string | null ,connection
             // return <div key={index}></div>
           })
         }
+        
+        </div>
         {/* <div className="flex gap-4 p-2 bg-accent rounded-lg ">
           <Image
             src={Person.src}

@@ -1,16 +1,13 @@
-// import { format, parseISO } from "date-fns";
+// src/utils/dateUtils.ts
+import { format } from 'date-fns';
 
-// export function formatDate(date: string | Date): string {
-//   const parsedDate = typeof date === "string" ? parseISO(date) : date;
-//   return format(parsedDate, "MMMM d, yyyy");
-// }
-
-// export function formatDateTime(date: string | Date): string {
-//   const parsedDate = typeof date === "string" ? parseISO(date) : date;
-//   return format(parsedDate, "MMMM d, yyyy 'at' h:mm a");
-// }
-
-// export function formatShortDate(date: string | Date): string {
-//   const parsedDate = typeof date === "string" ? parseISO(date) : date;
-//   return format(parsedDate, "MMM d, yyyy");
-// }
+/**
+ * Formats a date based on the provided format string.
+ * @param date - The date to format.
+ * @param formatString - The format string to use.
+ * @returns The formatted date string.
+ */
+export const formatDate = (date: Date | string, formatString: string): string => {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  return format(dateObj, formatString);
+};
