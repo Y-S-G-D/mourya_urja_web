@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,35 +17,37 @@ import { useCommentStore } from "@/stores/comments-store";
 import { IComment } from "@/models/comment-model";
 import LocalStorage from "@/utils/local-storage/local-storage";
 import { formatDate } from "@/utils/date";
+import { UserLoginInfo } from "@/models/UserLoginInfo";
 
-const CommentsSection = ({userId,connectionId,connectionName}:{userId:string | null ,connectionId:string | null,connectionName:string|null}) => {
+const CommentsSection = ({connectionId}:{userId:string | null ,connectionId:string | null,connectionName:string|null}) => {
   
   console.log("comment section called")
   const { addComment ,getComments, comments } = useCommentStore();
-  const [userName,setUserName] = useState("")
+  const [localUser,setLocalUser] = useState<UserLoginInfo | null>(null)
   
   // const fetchComments = useCallback( async () => {
   //   getComments(connectionId ?? "");
   // },[getComments , connectionId]);
 
   useEffect(() => {
-    const userName = LocalStorage.getInstance().getLoginInfo()?.name ?? ""
-    setUserName(userName)
+    const localUser = LocalStorage.getInstance().getLoginInfo();
+    setLocalUser(localUser);
   },[]);
 
   const form = useForm({
     defaultValues: {
-      userName: userName,
+      userName: localUser?.name ?? "",
       connectionId:connectionId,
       comment: "",
     },
   });
 
-  const onSubmit = (data: FieldValues) => {
-    data.userName = userName;
+
+  const onSubmit = async(data: FieldValues) => {
+    data.userName = localUser?.name;
     console.log("data", data);
-    addComment(data as IComment);
-    getComments(connectionId ?? "");
+    await addComment(data as IComment);
+    await getComments(connectionId ?? "");
     form.reset()
   }
   
@@ -86,7 +88,7 @@ const CommentsSection = ({userId,connectionId,connectionName}:{userId:string | n
           comments.map((comment, index) => {
             // if(comment.userId === userId){
               return (
-                <div key={index} className={`flex gap-4  my-4 p-2 ${comment.userId === userId ? 'bg-accent' : 'bg-secondary/60'} rounded-lg `}>
+                <div key={index} className={`flex gap-4  my-4 p-2 ${comment.userId === localUser?._id ? 'bg-accent' : 'bg-secondary/60'} rounded-lg `}>
                   {/* <Image
                     src={Person.src}
                     alt="Comment Image"
@@ -94,7 +96,7 @@ const CommentsSection = ({userId,connectionId,connectionName}:{userId:string | n
                     height={20}
                     className="h-1/2"
                   /> */}
-                  <Avatar className="!bg-sidebar-primary !h-8 !w-8">{comment.userId === userId ? userName[0] : (connectionName ? connectionName[0] : 'N/A')}</Avatar>
+                  <Avatar className="!bg-sidebar-primary !h-8 !w-8">{comment.userName}</Avatar>
                   <div>
                     <h1 className="text-sm font-medium text-primary">
                       {comment.userName}

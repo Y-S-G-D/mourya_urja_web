@@ -43,7 +43,7 @@ const ConnectionsPage = () => {
         </h1>
         <div className="w-full grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6 px-6 lg:px-12">
           {connections.map((connection, index) => (
-              console.log("connection  ID", connection.connectionId),
+              console.log("connection  ID", connection),
             <div
               key={index}
               className="p-4 bg-white border border-secondary rounded-2xl shadow-lg  group hover:bg-primary hover:text-accent transition duration-500"
@@ -64,7 +64,7 @@ const ConnectionsPage = () => {
                   <SheetTrigger asChild>
                     <div 
                       onClick={() => {
-                          getComments(connection.connectionId ?? "")
+                          getComments(connection.user._id ?? "")
                       }}
                       className="p-2  cursor-pointer bg-accent rounded-full border border-border">
                       <MessageSquarePlus className="text-primary" size={18} />
@@ -74,7 +74,7 @@ const ConnectionsPage = () => {
                   <CommentsSection 
                     userId={connection.user._id ?? ""} 
                     connectionName={`${connection.user.personalInfo.firstName} ${connection.user.personalInfo.lastName}`}
-                    connectionId={connection.connectionId ?? ""} />
+                    connectionId={connection.user._id ?? ""} />
                 </Sheet>
               </div>
             </div>
