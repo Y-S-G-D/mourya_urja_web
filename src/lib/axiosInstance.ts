@@ -6,9 +6,8 @@ import Cookies from "js-cookie";
 // Create an Axios instance
 const apiClient: AxiosInstance = axios.create({
   // baseURL:'http://192.168.139.186:3000/v1',
-
-  // baseURL:'http://192.168.1.42:3000/v1',
-  baseURL: 'http://localhost:3000/v1', // Use environment variable
+  baseURL:'http://192.168.1.42:3000/v1',
+  // baseURL: 'http://localhost:3000/v1', // Use environment variable
   timeout: 10000, // Optional: Set a request timeout
 });
 
@@ -19,13 +18,12 @@ apiClient.interceptors.request.use(
       // Get token from cookies
       const token =
         typeof window !== "undefined" ? Cookies.get("access_token") : null;
-
       if (token) {
         config.headers.set('Authorization', `Bearer ${token}`);
       }
 
       return config;
-    } catch (error) {
+    } catch (error){
       console.error("Error in request interceptor:", error);
       return Promise.reject(error); // Forward error
     }

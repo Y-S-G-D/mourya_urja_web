@@ -11,11 +11,13 @@ export interface IAuthStore{
     isLoading: boolean;
     isSuccess: boolean; 
     showError: boolean;
+    showLogoutDialog: boolean;
     data:string | null;
     simulateError: (isError:boolean)   => void;
     login: (email: string, password: string, accessType:string) => void;
     logout: () => void;
     isLoggedin: boolean;
+    handleLogoutDialog: (isOpen:boolean) => void;
     checkLogin:()=>boolean;
     
 
@@ -28,6 +30,10 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
     showError: false,
     data:null,
     isLoggedin: false,
+    showLogoutDialog: false,
+    handleLogoutDialog:(isOpen)=>{
+        set({showLogoutDialog:isOpen})
+    },
     simulateError:(isError)=> {
         set({showError:isError})
     },

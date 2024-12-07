@@ -14,20 +14,28 @@ import {
 } from "@/components/ui/sidebar"
 import { Home, User, Users, ClipboardCheck, LogOut, FileText, Shield } from 'lucide-react';
 import { Separator } from "./ui/separator"
-
+import { Dialog , DialogTrigger } from "./ui/dialog";
 import { useAuthStore } from "@/stores/auth-store";
 import { usePathname } from 'next/navigation';
+import LocalStorage from "@/utils/local-storage/local-storage";
+import { LogoutDialog } from "./dialogs/logout-dialog";
 
 
-export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
+export function AppSidebar() {
 
   const pathname = usePathname();
 
 
-  const {logout} = useAuthStore()
+  const {logout , handleLogoutDialog , showLogoutDialog} = useAuthStore()
+
+  const [userName, setUserName] = React.useState('');
+  const [userRole, setUserRole] = React.useState('');
 
   React.useEffect(() => {
-   
+    const user = LocalStorage.getInstance().getLoginInfo()?.name??""
+    const role = LocalStorage.getInstance().getLoginInfo()?.role??""
+    setUserName(user)
+    setUserRole(role)
   }, []);
 
   const handleMenuClick = (path: string) => {
@@ -91,8 +99,8 @@ export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
               <User className="size-5" />
             </div>
             <div className="mx-2 flex flex-col gap-0.5 leading-none">
-              <span className="font-semibold text-xl">John Doe</span>
-              <span className="text-sm">{isAdmin ? 'Admin' : 'Management'}</span>
+              <span className="font-semibold text-xl">{userName}</span>
+              <span className="text-sm">{userRole.toLocaleUpperCase()}</span>
             </div>
           </div>
         </SidebarMenu>
@@ -106,16 +114,43 @@ export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
               {menus.map((item) => (
                 <SidebarMenuItem key={item.title} className="text-lg font-semibold">
                   <SidebarMenuButton asChild isActive={item.path === pathname}>
-                    <a href={item.path} onClick={() => {
-                      if(item.title === 'Logout'){
-                        logout()
-                        return false;  // to prevent the default link behavior to navigate to the logout page
-                      }
-                      handleMenuClick(item.path)
-                    }}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
+                  {item.title === 'Logout' ? (
+                    <div className="flex">
+                    {React.createElement(item.icon )}
+
+                       <Dialog
+                        open={showLogoutDialog}
+                        onOpenChange={() => handleLogoutDialog(false)}
+                      >
+                        <DialogTrigger asChild>
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleLogoutDialog(true);
+                            }}
+                          >
+                            <span>{item.title}</span>
+                          </a>
+                        </DialogTrigger>
+                        <LogoutDialog
+                          onCancel={() => handleLogoutDialog(false)}
+                          onLogout={logout}
+                        />
+                      </Dialog>
+
+                    </div>
+                                          ) : (
+                      <a
+                        href={item.path}
+                        onClick={() => {
+                          handleMenuClick(item.path);
+                        }}
+                      >
+                        {React.createElement(item.icon)}
+                        <span>{item.title}</span>
+                      </a>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

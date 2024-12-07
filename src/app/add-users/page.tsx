@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -21,25 +21,11 @@ import Navbar from "@/components/home-page/navbar";
 import useUserStore from "@/stores/user-store";
 
 const AddUserForm = () => {
-  const { saveUser } = useUserStore();
+  const { saveUser,activeStep, handleBack, handleNext,handleReset } = useUserStore();
 
   const steps = ['Personal Details', 'Contact Info', 'Educational & Professional','Cultural & Religious','Family Details',"Spouse Expectations",];
 
-  const [activeStep , setActiveStep] = useState(0)
   
-
-  const handleReset = (): void => {
-    setActiveStep(0)
-  }
-
-  const handleBack = (): void=>{
-    setActiveStep((prevActiveStep) => prevActiveStep - 1)
-  }
-
-  const handleNext = (): void => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1)
-  }
- 
   const renderComponent = () => {
     const stepContent = [
       <div key="personalInfo"><PersonalInformation /></div>,

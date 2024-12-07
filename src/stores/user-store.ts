@@ -21,13 +21,17 @@ import {
 } from "@/shared/endpoints";
 import { generate12DigPassword } from "@/utils/services/password-generator";
 import { Users } from "@/app/users/columns";
+import { toast , } from "@/hooks/use-toast";
 
 export interface IUserStore {
   /// fields for handling dbresponse
   isProcessing: boolean;
   errorMsg: string;
   successMsg: string;
-
+  activeStep: number;
+  handleNext: () => void;
+  handleBack: () => void;
+  handleReset: () => void;
   isSiblingDialogOpen: boolean;
   user: IUser | null;
   siblings: ISibling[];
@@ -80,7 +84,7 @@ const extractFileNameFromURL = (imageUrl: string) => {
 // Removed incorrect declaration of useUserStore
 
 const useUserStore = create<IUserStore>((set, get) => ({
-
+  activeStep: 0,
   isProcessing: false,
   errorMsg: "",
   successMsg: "",
@@ -88,6 +92,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
   siblings: [],
   profileImageFiles: [],
   isPersonalInfoSaved: false,
+
   personalInfo: {
     firstName: "",
     middleName: "",
@@ -159,6 +164,15 @@ const useUserStore = create<IUserStore>((set, get) => ({
   password: "",
 
   user: null,
+  handleNext: () => {
+    set((state) => ({ activeStep: state.activeStep + 1 }));
+  },
+  handleBack: () => {
+    set((state) => ({ activeStep: state.activeStep - 1 }));
+  },
+  handleReset: () => {
+    set({ activeStep: 0 });
+  },
 
  
 
@@ -250,10 +264,23 @@ const useUserStore = create<IUserStore>((set, get) => ({
       user.personalInfo.profileImages = [...fileNames,...imageFileNames];
 
       const response = await apiClient.post(registerUser, user);
-      set({ isProcessing: false, successMsg: response.data.message });
+      set({isProcessing: false, successMsg: response.data.message });
+      toast({
+        variant: "success",
+        title:"Success",
+        description: 'You have added a new user successfully',
+        
+      })
+      
     } catch (e) {
       console.log("Error saving user", e);
       set({ errorMsg: "Failed to save user. Please try again later." });
+      toast({
+        variant: "destructive",
+        title:"Failed",
+        description: 'Failed to save user. Please try again later.',
+        
+      })
     }
   },
   handleSiblingDialog: (isOpen) => {
@@ -270,9 +297,15 @@ const useUserStore = create<IUserStore>((set, get) => ({
     // const profileImges = get().profileImageFiles.map((file) =>
     //   URL.createObjectURL(file)
     // );
- 
    
     set({ personalInfo: personalInfo });
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Personal Information saved successfully',
+      
+    })
+    get().handleNext();
   },
   saveAllContactInfo: (contact, residenceAddr, permanentAddr) => {
     set({
@@ -280,17 +313,47 @@ const useUserStore = create<IUserStore>((set, get) => ({
       residenceInfo: residenceAddr,
       permanentInfo: permanentAddr,
     });
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Contact Information saved successfully',
+      
+    })
+    get().handleNext();
+
   },
 
   addEduAndProfInfo: (eduAndProfInfo) => {
     eduAndProfInfo.income = parseInt(eduAndProfInfo.income.toString());
     set({ eduAndProfInfo: eduAndProfInfo });
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Education & Profession Information saved successfully',
+      
+    })
+    get().handleNext();
+
   },
   addCultureAndReligiousInfo: (cultureAndReligiousInfo) => {
     set({ cultureAndReligiousInfo: cultureAndReligiousInfo });
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Cultural & Religious Information saved successfully',
+      
+    })
+    get().handleNext();
   },
   addFamilyInfo: (familyInfo) => {
     set({ familyInfo: familyInfo });
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Family Information saved successfully',
+      
+    })
+    get().handleNext();
   },
 
   addSibling: (sibling) => {
@@ -299,11 +362,26 @@ const useUserStore = create<IUserStore>((set, get) => ({
       const updatedSiblings = [...state.siblings, sibling];
       return { siblings: updatedSiblings };
     });
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Sibling saved successfully',
+      
+    })
+
   },
   deleteSibling: (index) => {
     set((state) => ({
       siblings: state.siblings.filter((_, i) => i !== index),
     }));
+    toast({
+      variant: "destructive",
+      title:"Deleted",
+      description: 'Sibling deleted successfully',
+      
+    })
+
+    
   },
   addSpouseInfo(spouseInfo) {
     set({ spouseExpectation: spouseInfo });
@@ -335,7 +413,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
     get().addEduAndProfInfo(user.eduAndProfInfo);
     get().addCultureAndReligiousInfo(user.cultureAndReligiousInfo);
     get().addFamilyInfo(user.familyInfo);
-
+     
     set((state) => ({
       siblings: [...state.siblings, ...user.familyInfo.siblings],
       user: user,

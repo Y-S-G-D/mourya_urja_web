@@ -16,7 +16,6 @@ const HeroSection = () => {
           <Button 
             variant={'secondary'}
             className='hover:translate-x-3 transition-all  duration-500'
-            // className="mt-6 px-6 py-3 bg-gray-200 text-black rounded-lg shadow-lg hover:bg-gray-300 transition"
             >
             Get Started
           </Button>

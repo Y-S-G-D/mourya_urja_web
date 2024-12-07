@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Lora,Playfair_Display,Inter } from 'next/font/google'
+import { Lora,Playfair_Display,Poppins} from 'next/font/google'
 import { websiteName } from "@/shared/constant";
 import { Toaster } from "@/components/ui/toaster"
 
@@ -15,15 +15,16 @@ const lora = Lora({
   variable: '--font-lora'
 });
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter'
-});
-
 const playfair = Playfair_Display({ 
   subsets: ['latin'],
   variable: '--font-playfair'
 });
+
+const poppins = Poppins({
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  subsets: ['latin'],
+  variable: '--font-poppins'
+})
 
 export default function RootLayout({
   children,
@@ -32,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" >
-      <body className={`${playfair.variable} ${lora.variable} ${inter.className} antialiased`} suppressHydrationWarning>
+      <body className={`${playfair.variable} ${lora.variable} ${poppins.className} antialiased`} suppressHydrationWarning>
         {children}
         <Toaster />
 

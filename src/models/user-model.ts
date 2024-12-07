@@ -66,9 +66,8 @@ export interface IFamilyInfo {
 
 
 export interface IUser {
-  _id?: string | null;
   createdBy: string;
-  id?: string;
+  _id?: string;
   personalInfo: IPersonalInfo;
 
   contactInfo: IContactInfo;

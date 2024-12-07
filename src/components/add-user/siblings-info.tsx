@@ -26,6 +26,7 @@ const SiblingsInfo = () => {
 
     <SiblingCard 
       siblings={siblings} 
+      showDeleteIcon={true}
       onDelete={deleteSibling}
        />
 

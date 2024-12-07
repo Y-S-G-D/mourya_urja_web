@@ -24,7 +24,7 @@ export const useCommentStore = create<ICommentStore>((set,get) => ({
             set({ isProcessing: true, errorMsg: null, successMsg: null });
             console.log("connectionUserId", connectionUserId);
             const response = await apiClient.get(getComments,{params:{connectionUserId}});
-            console.log("get comments", response.data);
+            console.log("get comments", response);
             if (response.status === 200) {
                 set({ isProcessing: false, comments: response.data.comments, successMsg: response.data.message });
             }

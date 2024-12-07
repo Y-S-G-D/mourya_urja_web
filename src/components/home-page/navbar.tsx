@@ -10,12 +10,14 @@ import { navMenus } from "@/shared/nav-menus";
 import LocalStorage from "@/utils/local-storage/local-storage";
 import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "../ui/button";
+import { Dialog ,DialogTrigger} from "../ui/dialog";
+import { LogoutDialog } from "../dialogs/logout-dialog";
 
 const Navbar = ({ bgColor }: { bgColor: string | null }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [userId, setUserId] = useState<string | undefined>(undefined);
-  const { checkLogin, isLoggedin, logout } = useAuthStore();
+  const { checkLogin, isLoggedin, logout , showLogoutDialog, handleLogoutDialog } = useAuthStore();
 
   const handleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -74,15 +76,30 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
               >
                {menu.url === "/login" ? (
                   isLoggedin ? (
-                    <Button
+                    <Dialog
+                      open={showLogoutDialog}
+                      onOpenChange={() => handleLogoutDialog(false)}>
+                     <DialogTrigger  asChild>
+                     <Button
+                      variant={"secondary"}
                       onClick={() => {
-                        logout();
-                        window.location.reload();
+                        handleLogoutDialog(true);
                       }}
                     >
-                      LogOut
+                      Log out
                     </Button>
-                  ) : (
+                       <LogoutDialog  onCancel={() => {
+                        handleLogoutDialog(false);
+                       }} onLogout = { () =>{
+                        logout();
+                        window.location.reload();
+                       }}/>
+
+
+
+                     </DialogTrigger>
+                    </Dialog>
+                                      ) : (
                     <Link
                       href={
                         menu.title === "My Profile"

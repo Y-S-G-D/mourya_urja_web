@@ -5,30 +5,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  // DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-interface LogoutDialogProps {
-  onLogout: () => void;
-  onCancel: () => void;
-}
 
-export function LogoutDialog({props } :{ props:LogoutDialogProps}) {
 
-  const handleLogout = () => {
-    props.onLogout();
-  };
+export function LogoutDialog({onCancel, onLogout}:{onCancel:()=>void, onLogout:()=>void}) {
 
+  
   return (
-    // <Dialog open={open} onOpenChange={setOpen}>
-    //   <DialogTrigger asChild>
-    //     <Button variant="destructive">
-    //       <LogOut className="mr-2 h-4 w-4" />
-    //       Logout
-    //     </Button>
-    //   </DialogTrigger>
-      <DialogContent>
+       <DialogContent>
         <DialogHeader>
           <div className="flex items-center space-x-2">
             <LogOut className="h-6 w-6 text-destructive" />
@@ -40,10 +26,10 @@ export function LogoutDialog({props } :{ props:LogoutDialogProps}) {
         </DialogHeader>
         <DialogFooter className="mt-4">
           <Button variant="outline" 
-            onClick={props.onCancel }>
+            onClick={onCancel }>
             Cancel
           </Button>
-          <Button variant="destructive" onClick={handleLogout}>
+          <Button variant="destructive" onClick={onLogout}>
             <LogOut className="mr-2 h-4 w-4" />
             Logout
           </Button>
