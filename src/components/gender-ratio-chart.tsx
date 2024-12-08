@@ -20,10 +20,7 @@ import {
 
 export const description = "A pie chart with a label list"
 
-const chartData = [
-  { gender: "male", visitors: 275, fill: "var(--color-male)" },
-  { gender: "female", visitors: 200, fill: "var(--color-female)" },
-]
+
 
 const chartConfig = {
   visitors: {
@@ -39,12 +36,16 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function GenderRatioChart() {
+export function GenderRatioChart({maleCount,femaleCount}:{maleCount:number,femaleCount:number}) {
+  const chartData = [
+    { gender: "male", visitors: maleCount, fill: "var(--color-male)" },
+    { gender: "female", visitors: femaleCount, fill: "var(--color-female)" },
+  ]
   return (
     <Card className="flex flex-col ">
       <CardHeader className="items-center pb-0">
         <CardTitle>Gender Ratio </CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>Till Now</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -71,10 +72,10 @@ export function GenderRatioChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Male Vs Female  <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing total visitors till now
         </div>
       </CardFooter>
     </Card>

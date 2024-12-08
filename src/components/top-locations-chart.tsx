@@ -17,17 +17,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { TopCity } from "@/app/admin/page"
 
 export const description = "A bar chart with a custom label"
 
-const chartData = [
-  { location: "Location1", desktop: 186, mobile: 80 },
-  { location: "XYZ City", desktop: 305, mobile: 200 },
-  { location: "Location 3", desktop: 237, mobile: 120 },
-  { location: "Location 4", desktop: 73, mobile: 190 },
-  { location: "Location 5", desktop: 209, mobile: 130 },
-  { location: "Location 6", desktop: 214, mobile: 140 },
-]
+
 
 const chartConfig = {
   desktop: {
@@ -43,18 +37,18 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function TopLocationsChart() {
+export function TopLocationsChart({topCities}:{topCities:TopCity[]}) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Top Locations Chart</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>Last 6 months</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart
             accessibilityLayer
-            data={chartData}
+            data={topCities}
             layout="vertical"
             margin={{
               right: 16,
@@ -62,7 +56,7 @@ export function TopLocationsChart() {
           >
             <CartesianGrid horizontal={false} />
             <YAxis
-              dataKey="location"
+              dataKey="city"
               type="category"
               tickLine={false}
               tickMargin={10}
@@ -70,26 +64,26 @@ export function TopLocationsChart() {
               tickFormatter={(value) => value.slice(0, 3)}
               hide
             />
-            <XAxis dataKey="desktop" type="number" hide />
+            <XAxis dataKey="userCount" type="number" hide />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
             <Bar
-              dataKey="desktop"
+              dataKey="userCount"
               layout="vertical"
               fill="var(--color-desktop)"
               radius={4}
             >
               <LabelList
-                dataKey="location"
+                dataKey="city"
                 position="insideLeft"
                 offset={8}
                 className="fill-[--color-label]"
                 fontSize={12}
               />
               <LabelList
-                dataKey="desktop"
+                dataKey="userCount"
                 position="right"
                 offset={8}
                 className="fill-foreground"

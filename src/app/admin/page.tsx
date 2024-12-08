@@ -9,26 +9,24 @@ import { TopLocationsChart } from "@/components/top-locations-chart";
 import { NewRegistrationChart } from "@/components/new-registration-chart";
 import { useDashboardStore } from "@/stores/dashboard-store";
 import { DashboardModel } from "@/models/dashboard-model";
-// const topSectionData = [
-//   {
-//     title: "Total Employees",
-//     count: "100",
-//     icon: User,
-//     tag: "+100 from last month",
-//   },
-//   {
-//     title: "Total Users",
-//     count: "200",
-//     icon: Users,
-//     tag: "+100 from last month",
-//   },
-//   {
-//     title: "Pending Approval",
-//     count: "10",
-//     icon: ClipboardCheck,
-//     tag: "+20 from last month",
-//   },
-// ];
+
+
+export interface AgeDistributionChart{
+  male:number,
+  female:number,
+  ageRange:string
+
+}
+
+export interface TopCity{
+  userCount:number,
+  city:string
+}
+
+export interface TopJobType{
+  count:number,
+  jobType:string
+}
 
 const getTopSectionData = (dashboardData:DashboardModel | null):{title:string,count:number,icon:React.ElementType,tag:string}[]=>{
   const topSectionData = [
@@ -57,9 +55,13 @@ const getTopSectionData = (dashboardData:DashboardModel | null):{title:string,co
 const Dashboard = () => {
   const { getDashboardData,isLoading } = useDashboardStore();
   const [topSectionData, setTopSectionData] = React.useState<{ title: string; count: number; icon: React.ElementType; tag: string }[]>([]);
+  const [dashboardData, setDashboardData] = React.useState<DashboardModel | null>(null);
+
 
   const fetchDashboardData = useCallback(async () => {
     await getDashboardData().then((data) => {
+      setDashboardData(data);
+
       setTopSectionData(getTopSectionData(data));
     });
     
@@ -94,11 +96,11 @@ const Dashboard = () => {
         })}
       </div>
       <div className="grid auto-rows-min gap-8 md:grid-cols-2 my-4">
-        <GenderRatioChart />
-        <AgeDistributionChart />
+        <GenderRatioChart maleCount={dashboardData?.MALE_USERS ?? 0} femaleCount={dashboardData?.FEMALE_USERS ?? 0}/>
+        <AgeDistributionChart chartData={dashboardData?.AGE_DISTRIBUTION ?? []} />
       </div>
       <div className="grid auto-rows-min gap-8 md:grid-cols-2 my-4">
-        <TopLocationsChart />
+        <TopLocationsChart topCities={dashboardData?.TOP_CITIES ?? []}/>
         <NewRegistrationChart />
       </div>
     </div>

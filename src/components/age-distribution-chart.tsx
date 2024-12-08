@@ -19,16 +19,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import type { AgeDistributionChart } from "@/app/admin/page"
 
 export const description = "A stacked bar chart with a legend"
 
-const chartData = [
-  { age: "22-25", male: 186, female: 80 },
-  { age: "26-30", male: 305, female: 200 },
-  { age: "31-35", male: 237, female: 120 },
-  { age: "35-40", male: 73, female: 190 },
-  
-]
+
 
 const chartConfig = {
   male: {
@@ -41,19 +36,19 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function AgeDistributionChart() {
+export function AgeDistributionChart({chartData}:{chartData:AgeDistributionChart[]}) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Age Distribution Chart</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>Last 6 months</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="age"
+              dataKey="ageRange"
               tickLine={false}
               tickMargin={10}
               axisLine={false}

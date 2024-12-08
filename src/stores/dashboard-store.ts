@@ -20,7 +20,6 @@ export const useDashboardStore = create<IDashboardStore>((set) => ({
         try{
             set({isLoading: true, errMsg: null});
             const response = await apiClient.get(dashboardInsight);
-            console.log(response);
             set({dashboardData: response.data.data, isLoading: false});
             return response.data.data;
 

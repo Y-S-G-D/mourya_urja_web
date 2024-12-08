@@ -50,6 +50,7 @@ const UsersPage = () => {
     fetchUsers();
   }, [fetchUsers]);
 
+
   return (
     <section>
       <Navbar bgColor={"bg-primary"} />

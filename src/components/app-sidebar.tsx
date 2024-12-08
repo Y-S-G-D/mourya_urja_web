@@ -18,24 +18,24 @@ import { Dialog , DialogTrigger } from "./ui/dialog";
 import { useAuthStore } from "@/stores/auth-store";
 import { usePathname } from 'next/navigation';
 import LocalStorage from "@/utils/local-storage/local-storage";
+import { UserLoginInfo } from "@/models/UserLoginInfo";
 import { LogoutDialog } from "./dialogs/logout-dialog";
+
 
 
 export function AppSidebar() {
 
   const pathname = usePathname();
+  const [loginInfo, setLoginInfo] = React.useState<UserLoginInfo | null>(null)
 
 
   const {logout , handleLogoutDialog , showLogoutDialog} = useAuthStore()
 
-  const [userName, setUserName] = React.useState('');
-  const [userRole, setUserRole] = React.useState('');
 
   React.useEffect(() => {
-    const user = LocalStorage.getInstance().getLoginInfo()?.name??""
-    const role = LocalStorage.getInstance().getLoginInfo()?.role??""
-    setUserName(user)
-    setUserRole(role)
+    
+    const loginInfo = LocalStorage.getInstance().getLoginInfo();
+    setLoginInfo(loginInfo);
   }, []);
 
   const handleMenuClick = (path: string) => {
@@ -99,8 +99,8 @@ export function AppSidebar() {
               <User className="size-5" />
             </div>
             <div className="mx-2 flex flex-col gap-0.5 leading-none">
-              <span className="font-semibold text-xl">{userName}</span>
-              <span className="text-sm">{userRole.toLocaleUpperCase()}</span>
+              <span className="font-semibold text-xl">{loginInfo?.name}</span>
+              <span className="text-sm">{loginInfo?.role.toUpperCase()}</span>
             </div>
           </div>
         </SidebarMenu>

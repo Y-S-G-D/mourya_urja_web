@@ -10,14 +10,20 @@ import { navMenus } from "@/shared/nav-menus";
 import LocalStorage from "@/utils/local-storage/local-storage";
 import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "../ui/button";
-import { Dialog ,DialogTrigger} from "../ui/dialog";
+import { Dialog, DialogTrigger } from "../ui/dialog";
 import { LogoutDialog } from "../dialogs/logout-dialog";
 
 const Navbar = ({ bgColor }: { bgColor: string | null }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [userId, setUserId] = useState<string | undefined>(undefined);
-  const { checkLogin, isLoggedin, logout , showLogoutDialog, handleLogoutDialog } = useAuthStore();
+  const {
+    checkLogin,
+    isLoggedin,
+    logout,
+    showLogoutDialog,
+    handleLogoutDialog,
+  } = useAuthStore();
 
   const handleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -25,8 +31,7 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
 
   const checkUserLoggedIn = useCallback(() => {
     checkLogin();
-    console.log("User login ", isLoggedin);
-  }, [checkLogin, isLoggedin]);
+  }, [checkLogin]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,9 +51,6 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
 
     getUserIdFromLocalStorage();
     window.addEventListener("scroll", handleScroll);
-
-    console.log("Use Effect called");
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -74,32 +76,35 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
                 key={index}
                 className="text-nowrap hover:text-sidebar-primary items-center hover:-translate-y-[2px] transform transition duration-300"
               >
-               {menu.url === "/login" ? (
+                {menu.url === "/login" ? (
                   isLoggedin ? (
                     <Dialog
                       open={showLogoutDialog}
-                      onOpenChange={() => handleLogoutDialog(false)}>
-                     <DialogTrigger  asChild>
-                     <Button
-                      variant={"secondary"}
-                      onClick={() => {
-                        handleLogoutDialog(true);
-                      }}
+                      onOpenChange={() => handleLogoutDialog(false)}
                     >
-                      Log out
-                    </Button>
-                       <LogoutDialog  onCancel={() => {
-                        handleLogoutDialog(false);
-                       }} onLogout = { () =>{
-                        logout();
-                        window.location.reload();
-                       }}/>
-
-
-
-                     </DialogTrigger>
+                      <DialogTrigger asChild>
+                        <div>
+                          <Button
+                            variant={"secondary"}
+                            onClick={() => {
+                              handleLogoutDialog(true);
+                            }}
+                          >
+                            Log out
+                          </Button>
+                          <LogoutDialog
+                            onCancel={() => {
+                              handleLogoutDialog(false);
+                            }}
+                            onLogout={() => {
+                              logout();
+                              window.location.reload();
+                            }}
+                          />
+                        </div>
+                      </DialogTrigger>
                     </Dialog>
-                                      ) : (
+                  ) : (
                     <Link
                       href={
                         menu.title === "My Profile"

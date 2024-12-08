@@ -23,7 +23,6 @@ export const useConnectionStore = create<IConnectionStore>((set) => ({
       const response =  await apiClient.get(getConnections);
       if( response.status === 200){
          const fetchedConnections: ConnectionModel[] = response.data.connections;
-        console.log("connection data", fetchedConnections);
         set({ connections: fetchedConnections, isProcessing: false, successMsg: response.data.message });
       }
       // const response = await apiClient.get(getFavourites, { params: { tab: tabValue } });

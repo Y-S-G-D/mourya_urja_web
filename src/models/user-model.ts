@@ -39,10 +39,10 @@ export interface IAllContactInfo {
 
 export interface IEducationalAndProfessionInfo {
   highestEducation: string;
-  otherEductionDetail: string;
+  otherEducation: string;
   jobType: string;
   designation: string;
-  workDetail: string;
+  workDetails: string;
   income: number;
 }
 
