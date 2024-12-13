@@ -12,7 +12,7 @@ export interface IEmployee {
     designation: string;
     postingPlace: string;
     role: string; // admin | employee
-    access: [string]; // edit, read, delete
+    access: string[]; 
     createdAt: string;
     updatedAt: string;
     isActive: boolean; // whether the employee is currently active or not

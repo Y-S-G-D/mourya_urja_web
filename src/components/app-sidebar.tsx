@@ -23,6 +23,10 @@ import { LogoutDialog } from "./dialogs/logout-dialog";
 
 
 
+
+
+
+
 export function AppSidebar() {
 
   const pathname = usePathname();
@@ -30,6 +34,8 @@ export function AppSidebar() {
 
 
   const {logout , handleLogoutDialog , showLogoutDialog} = useAuthStore()
+
+
 
 
   React.useEffect(() => {

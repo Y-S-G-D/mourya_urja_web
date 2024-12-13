@@ -9,7 +9,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  // FormMessage,
   
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -25,15 +25,18 @@ import { companyNames } from "@/shared/constant";
 import { Label } from "./ui/label";
 import PageSelectionCheckbox from "./page-selection-checkbox";
 import { IEmployee } from "@/models/employee-model";
-import { Replace } from "lucide-react"
+// import { Replace } from "lucide-react"
 import usePasswordStore from "@/stores/password-store";
 import CircularLoader from "@/components/skeleton-loaders/circular-loader";
 import { useToast } from "@/hooks/use-toast";
+import { useRestrictionPathStore} from "@/stores/restriction-path-store";
 
 const AddEmployeeForm = () => {
   const { toast }  = useToast();
   const { employee, saveEmployee , isProcessing , isUpdateSuccess} = useEmployeeStore();
   const {generate12DigPassword } = usePasswordStore();
+  const {selectedPaths,setSelectedPaths} = useRestrictionPathStore();
+  
   
 
   // Initialize the form with defaultValues
@@ -48,28 +51,31 @@ const AddEmployeeForm = () => {
       phoneNumber: "",
       designation: "",
       postingPlace: "",
-      access: ["/addemployee"] as [(string | undefined)?],
+      access: [] as [(string | undefined)?],
       post: "",
       password: "",
     },
   });
 
-  const updatePassword = ()=>{
-    const newPassword = generate12DigPassword()
-    form.setValue("password", newPassword)
-  }
+  // const updatePassword = ()=>{
+  //   const newPassword = generate12DigPassword()
+  //   form.setValue("password", newPassword)
+  // }
 
   // Handle form submission
   function onSubmit(values: FieldValues) {
     const employeeData: IEmployee = values as IEmployee;
-    console.log(employeeData)
+    employeeData.password = generate12DigPassword()
     // return;
+    employeeData.access = selectedPaths;
     saveEmployee(employeeData);
   }
 
   // Populate form with employee data
   useEffect(() => {
     if (employee) {
+      setSelectedPaths(employee.access)
+
       form.reset({
         employeeId: employee.employeeId || "",
         companyName: employee.companyName || "",
@@ -92,7 +98,7 @@ const AddEmployeeForm = () => {
         description: "Employee Updated Successfully",
       })
     }
-  }, [employee, form,isUpdateSuccess,toast]);
+  }, [employee, form, isUpdateSuccess, setSelectedPaths, toast]);
   
   // if(successMsg !== null){
     // toast({
@@ -276,7 +282,7 @@ const AddEmployeeForm = () => {
               </FormItem>
             )}
           />
-          <div className="flex items-center ">
+          {/* <div className="flex items-center ">
           <FormField
             control={form.control}
             name="password"
@@ -300,7 +306,7 @@ const AddEmployeeForm = () => {
             type="button"
             onClick={updatePassword}
             className="mt-8 mx-2"><Replace/></Button>
-          </div>
+          </div> */}
         </div>
 
         <div>
