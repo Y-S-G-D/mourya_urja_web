@@ -9,12 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { siblingSchema } from "@/schema/sibling-schema";
 import useUserStore from "@/stores/user-store";
 import { ISibling } from "@/models/siblings-model";
-
+import { useToast } from "@/hooks/use-toast";
 
 type SiblingFormValues = z.infer<typeof siblingSchema>;
 
 export default function AddSiblingFormDialog() {
-
+  const { toast } = useToast();
   const { addSibling ,handleSiblingDialog } = useUserStore();
 
   const form = useForm<SiblingFormValues>({
@@ -35,6 +35,11 @@ export default function AddSiblingFormDialog() {
     data.age = age;
     addSibling(data as ISibling);
     form.reset();
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Sibling Information saved successfully',
+    })
   
   };
 
@@ -42,6 +47,12 @@ export default function AddSiblingFormDialog() {
     addSibling(data as ISibling);
     handleSiblingDialog(false);
     form.reset();
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Sibling Information saved successfully',
+    })
+
   }
 
   return (

@@ -13,10 +13,11 @@ import {
 import CommentsSection from "@/components/comments-sheet";
 import UserBasicInfo from "@/components/user-basic-info";
 // import { connectionData } from "@/utils/connection-data";
-import Footer from "@/components/Footer"
+
 import { useConnectionStore } from "@/stores/connection-store";
 import { useRouter } from "next/navigation";
 import { useCommentStore } from "@/stores/comments-store";
+import Footer from "@/components/Footer";
 
 const ConnectionsPage = () => {
   const router = useRouter()

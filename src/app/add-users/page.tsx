@@ -18,10 +18,12 @@ import CulturalNdReligiousInfo from "@/components/add-user/cultural-religious-in
 import FamilyInfo from "@/components/add-user/family-info";
 import SpouseExpectations from "@/components/add-user/spouse-expectations";
 import Navbar from "@/components/home-page/navbar";
+import CircularLoader  from "@/components/skeleton-loaders/circular-loader"
 import useUserStore from "@/stores/user-store";
+import FinishSection from "@/components/add-user/finish-section";
 
 const AddUserForm = () => {
-  const { saveUser,activeStep, handleBack, handleNext,handleReset } = useUserStore();
+  const { saveUser,activeStep,handleBack, handleNext, isProcessing } = useUserStore();
 
   const steps = ['Personal Details', 'Contact Info', 'Educational & Professional','Cultural & Religious','Family Details',"Spouse Expectations",];
 
@@ -46,11 +48,11 @@ const AddUserForm = () => {
       <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem className="hidden md:block">
-        <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
+        <BreadcrumbLink href="/admin">Dashboard</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator className="hidden md:block" />
         <BreadcrumbItem className="hidden md:block">
-        <BreadcrumbLink href="#">Manage Users</BreadcrumbLink>
+        <BreadcrumbLink href="/users">Manage Users</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator className="hidden md:block" />
 
@@ -65,11 +67,15 @@ const AddUserForm = () => {
         activeStep={activeStep} />
       {activeStep === steps.length ? (
       <React.Fragment>
-        <div className="mt-2 mb-1">All steps completed - you&apos;re finished</div>
+        <FinishSection/>
+        {/* <div>
+          
+        </div> */}
+        {/* <div className="mt-2 mb-1">All steps completed - you&apos;re finished</div>
         <div className="flex flex-row pt-2">
         <div className="flex-1" />
         <Button className="btn" onClick={handleReset}>Reset</Button>
-        </div>
+        </div> */}
       </React.Fragment>
       ) : (
       <React.Fragment>
@@ -84,15 +90,26 @@ const AddUserForm = () => {
         >
           Back
         </Button>
+        {activeStep===steps.length-1?
+        <Button onClick={()=>{
+          saveUser()
+          handleNext()
+        }}>{isProcessing?<>
+          <CircularLoader/>
+            <span>Processing...</span>
+          </>:"Finish"}</Button>:
+        <Button onClick={()=>{
+          handleNext()
+        }}>Next</Button>}
         
-        <Button 
-          onClick={ activeStep ===steps.length-1 ? () =>{
+        {/* <Button
+          onClick={activeStep ===steps.length-1 ? () =>{
             saveUser()
             handleNext()
             
           } : handleNext}>
           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-        </Button>
+        </Button> */}
         </div>
       </React.Fragment>
       )}

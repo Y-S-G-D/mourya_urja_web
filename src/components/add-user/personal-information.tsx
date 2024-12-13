@@ -13,12 +13,14 @@ import {Button} from '../ui/button';
 import ImageView from '@/components/add-user/image-view'; // Ensure the path is correct or create the module if it doesn't exist
 import useUserStore, {useFetchUserStore} from "@/stores/user-store";
 import {IPersonalInfo,} from "@/models/user-model";
-
+import { useToast } from "@/hooks/use-toast";
 
 
 const PersonalInformation = () => {
 
-  const {personalInfo , addPersonalInfo} = useUserStore()
+  const {toast} = useToast();
+
+  const {personalInfo , addPersonalInfo ,  handleNext } = useUserStore()
   const {isProcessing } = useFetchUserStore();
 
   
@@ -31,7 +33,7 @@ const PersonalInformation = () => {
       firstName: personalInfo.firstName ||"",
       middleName: personalInfo.middleName ||"",
       lastName: personalInfo.lastName ||"",          
-      gender:  personalInfo.gender || "male",
+      gender:  personalInfo.gender || "",
       dob: personalInfo.dob || "",
       bloodGroup: personalInfo.bloodGroup || "",
       height: personalInfo.height?.toString() || "",
@@ -48,7 +50,7 @@ const PersonalInformation = () => {
     form.reset({
       ...personalInfo,
       profileImages: personalInfo.profileImages || [],
-      gender: personalInfo.gender || "male",
+      gender: personalInfo.gender || "",
       dob: personalInfo.dob ?  new Date(personalInfo.dob).toISOString().split('T')[0] : "",
       height: personalInfo.height?.toString() || "",
       weight: personalInfo.weight?.toString() || "",
@@ -67,6 +69,13 @@ const PersonalInformation = () => {
     data.weight = weight;
     console.log("user data ", data);
     addPersonalInfo(data as IPersonalInfo)
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Personal Information saved successfully',
+      
+    })
+    handleNext()
   };
 
   if(isProcessing) return <div>Loading...</div>
@@ -151,7 +160,7 @@ const PersonalInformation = () => {
                         defaultValue={field.value}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Gender" />
+                          <SelectValue placeholder={field.value.length>0?field.value:"Select Gender"} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="male">Male</SelectItem>
@@ -198,7 +207,7 @@ const PersonalInformation = () => {
                         defaultValue={field.value}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder={field.value ?? "Select Blood Group"} />
+                          <SelectValue placeholder={field.value.length > 0 ?field.value : "Select Blood Group"} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="A+">A+</SelectItem>
@@ -223,7 +232,7 @@ const PersonalInformation = () => {
                 name="height"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="height">Height</FormLabel>
+                    <FormLabel htmlFor="height">Height (in cm)</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -243,7 +252,7 @@ const PersonalInformation = () => {
                 name="weight"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="weight">Weight</FormLabel>
+                    <FormLabel htmlFor="weight">Weight (in Kg)</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -278,6 +287,7 @@ const PersonalInformation = () => {
                 )}
               />
             </div>
+            <div className="flex flex-col">
             <FormField
               control={form.control}
               name="hobbies"
@@ -297,6 +307,8 @@ const PersonalInformation = () => {
                 </FormItem>
               )}
             />
+            </div>
+            
             <FormField
               control={form.control}
               name="aboutMe"

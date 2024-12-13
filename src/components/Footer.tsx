@@ -25,29 +25,29 @@ const Footer = () => {
         </div>
         {/* Quick Links Section */}
         <div className="flex flex-col justify-start md:items-center items-start mb-8">
-          <h1 className="text-xl text-primary">Quick Links</h1>
+          <h1 className="text-xl text-sidebar-primary">Quick Links</h1>
           <ul className="flex md:flex-col flex-wrap">
             <li className="mx-2 hover:text-secondary cursor-pointer py-1">
               <Link href="/">Home</Link>
             </li>
             <li className="mx-2 hover:text-secondary cursor-pointer py-1">
-              Connections
+              <Link href={"/connections"}>Connections</Link>
             </li>
             <li className="mx-2 hover:text-secondary cursor-pointer py-1">
-              Favourites
+              <Link href={'/favourites'}>Favourites</Link>
             </li>
             <li className="mx-2 hover:text-secondary cursor-pointer py-1">
-              <Link href="/">Contact Us</Link>
+              <Link href="/contact-us">Contact Us</Link>
             </li>
             <li className="mx-2 hover:text-secondary cursor-pointer py-1">
-              <Link href="/">
-                About Us
+              <Link href="/forget-password">
+                Forgot Password
               </Link>
             </li>
           </ul>
         </div>
         <div className="flex flex-col items-left mb-8">
-          <h1 className="text-xl text-primary">Contacts</h1>
+          <h1 className="text-xl text-sidebar-primary">Contacts</h1>
           <div className="mt-2">
           <p className="mx-2 py-1  ">Phone: +91 12345 67890</p>
           <p className="mx-2 py-1">Email: service@xyz.in,  info@xyz.com </p>

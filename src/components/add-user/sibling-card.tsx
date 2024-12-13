@@ -1,12 +1,18 @@
+
 import { Card, CardHeader, CardTitle, CardContent,} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Briefcase, GraduationCap, Trash, User, Users } from "lucide-react";
 import { ISibling } from "@/models/siblings-model";
 import { Separator } from "../ui/separator";
+import { Dialog , DialogTrigger, } from "../ui/dialog";
+import DeleteConfirmationDialog from "../dialogs/delete-confirmation-dialog";
+import { useToast } from "@/hooks/use-toast"
 
 
 
 export default function SiblingCard({ siblings, onDelete, showDeleteIcon }: { siblings: ISibling[]; onDelete: (index: number) => void, showDeleteIcon?:boolean }) {
+  const { toast } = useToast();
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {siblings.map((sibling, index) => (
@@ -20,15 +26,32 @@ export default function SiblingCard({ siblings, onDelete, showDeleteIcon }: { si
                 <User size={18} />
                 {sibling.name}
               </span>
-              {showDeleteIcon === true?<Button
+              {showDeleteIcon === true?
+               <Dialog>
+                 <DialogTrigger asChild>
+                 <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => onDelete(index)}
+                // onClick={() => {
+                //   onDelete(index)
+                // }}
                 className="text-red-600 hover:text-red-800"
                 title="Delete"
               >
                 <Trash size={18} />
-              </Button>:<></>}
+              </Button>
+                 </DialogTrigger>
+                 <DeleteConfirmationDialog message="Are you sure you want to delete this sibling?" onNo={()=> {}} onYes={() => {
+                  onDelete(index)
+                  toast({
+                    variant: "destructive",
+                    title:"Deleted",
+                    description: 'Sibling deleted successfully',
+                    
+                  })
+                 }}/>
+               </Dialog>
+              :<></>}
             </CardTitle>
           </CardHeader>
 

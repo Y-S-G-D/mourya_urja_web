@@ -6,6 +6,7 @@ import useUserStore from '@/stores/user-store';
 
 
 const SiblingsInfo = () => {
+  
   const { siblings ,deleteSibling ,isSiblingDialogOpen , handleSiblingDialog} = useUserStore();
  
  

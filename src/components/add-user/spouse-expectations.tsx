@@ -7,10 +7,12 @@ import { spouseExpectationsSchema } from '@/schema/spouse-expectations-schema'
 import { FormField, FormItem, FormMessage,FormControl } from '../ui/form'
 import { Textarea } from '../ui/textarea'
 import useUserStore from '@/stores/user-store'
+import { useToast } from '@/hooks/use-toast'
 
 
 const SpouseExpectations = () => {
-    const { spouseExpectation , addSpouseInfo } = useUserStore()
+  const { toast } = useToast()
+  const { spouseExpectation , addSpouseInfo } = useUserStore()
   
   const form = useForm({
         resolver: zodResolver(spouseExpectationsSchema),
@@ -20,8 +22,12 @@ const SpouseExpectations = () => {
     })
 
     const onSubmit = (data: FieldValues) => {
-        console.log(data)
         addSpouseInfo(data.spouseExpectations as unknown as string)
+        toast({
+            variant: "success",
+            title:"Saved",
+            description: 'Spouse Expectations saved successfully',
+        })
     }
   return (
     <FormProvider {...form}>

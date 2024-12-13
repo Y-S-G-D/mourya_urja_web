@@ -9,24 +9,34 @@ import { Button } from '../ui/button'
 import { educationalNdProfessionalSchema } from "@/schema/education-professional-schema"
 import useUserStore from '@/stores/user-store'
 import { IEducationalAndProfessionInfo } from '@/models/user-model'
+import { useToast } from '@/hooks/use-toast'
 
 const EducationNdProfessionalInfo = () => {
-   const { eduAndProfInfo, addEduAndProfInfo } = useUserStore()
+   const { toast } = useToast()
+   const { eduAndProfInfo, addEduAndProfInfo ,handleNext} = useUserStore()
 
    const form = useForm({
       resolver: zodResolver(educationalNdProfessionalSchema),
       defaultValues: {
          highestEducation: eduAndProfInfo.highestEducation || '',
-         otherEducation: eduAndProfInfo.otherEductionDetail || '',
+         otherEducation: eduAndProfInfo.otherEducation || '',
          jobType: eduAndProfInfo.jobType || '',
          designation: eduAndProfInfo.designation || '',
-         workDetails:eduAndProfInfo.workDetail || '',
+         workDetails:eduAndProfInfo.workDetails || '',
          income: eduAndProfInfo.income.toString() || "",
       }
    })
 
    const onSubmit = (data: FieldValues) => {
       addEduAndProfInfo(data as IEducationalAndProfessionInfo)
+      toast({
+         variant: "success",
+         title:"Saved",
+         description: 'Education & Profession Information saved successfully',
+         
+       })
+       handleNext()
+       
    }
 
    return (

@@ -9,10 +9,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { userContactSchema } from '@/schema/user-contact-schema';
 import useUserStore from '@/stores/user-store'; 
 import { IContactInfo , IAddress } from '@/models/user-model';
+import { useToast } from '@/hooks/use-toast';
 
 
 const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
-  const { contactInfo, residenceInfo , permanentInfo,saveAllContactInfo} = useUserStore();
+  const { toast}  = useToast();
+  
+  const { contactInfo, residenceInfo , permanentInfo,saveAllContactInfo, handleNext} = useUserStore();
 
   const form = useForm({
     resolver: zodResolver(userContactSchema),
@@ -42,8 +45,6 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
   const watchCopyAddress = form.watch('copyAddress');
 
   const onSubmit = (data: FieldValues) => {
-    console.log('Submitting contact info form');
-    console.log(data);
     const contacts: IContactInfo = {
       phoneNumber: data.phoneNumber,
       email: data.email
@@ -65,7 +66,15 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
       pincode: data.permanentAddress.pincode
     }
     saveAllContactInfo(contacts, residentialAddress, permanentAddress);
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Contact Information saved successfully',
+      
+    })
+    handleNext();
 
+    
   };
 
   React.useEffect(() => {

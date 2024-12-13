@@ -1,13 +1,14 @@
-import Footer from '@/components/Footer'
+
 import Navbar from '@/components/home-page/navbar'
 import LikesTabs from '@/components/likes-tabs'
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb'
 import React from 'react'
+import Footer from '@/components/Footer'
 
 
 const LikesPage = () => {
 
-
+  
   return (
     <div>
       <Navbar bgColor={'bg-primary'}/>
@@ -27,11 +28,12 @@ const LikesPage = () => {
             </BreadcrumbList>
         </Breadcrumb>
         <LikesTabs/>
+        <Footer/>
 
 
 
       </section>
-      <Footer/>
+    
     </div>
   )
 }

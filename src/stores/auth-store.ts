@@ -4,6 +4,7 @@ import { loginEndPoint } from '@/shared/endpoints';
 import Cookies from 'js-cookie'
 import LocalStorage from '../utils/local-storage/local-storage'
 import apiClient from '@/lib/axiosInstance';
+import { toast } from '@/hooks/use-toast';
 
 
 export interface IAuthStore{
@@ -13,6 +14,8 @@ export interface IAuthStore{
     showError: boolean;
     showLogoutDialog: boolean;
     data:string | null;
+    showPassword: boolean;
+    toggleShowPassword:()=>void;
     simulateError: (isError:boolean)   => void;
     login: (email: string, password: string, accessType:string) => void;
     logout: () => void;
@@ -31,6 +34,10 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
     data:null,
     isLoggedin: false,
     showLogoutDialog: false,
+    showPassword:false,
+    toggleShowPassword:()=>{
+        set((state)=>({showPassword:!state.showPassword}))
+    },
     handleLogoutDialog:(isOpen)=>{
         set({showLogoutDialog:isOpen})
     },
@@ -81,6 +88,11 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
         Cookies.remove("role")
         LocalStorage.getInstance().removeLoginInfo();
         window.location.reload();
+        toast({
+            title: 'Logged out successfully',
+            description: 'You have been logged out successfully'
+            
+        })
     },
 
     checkLogin:()=>{

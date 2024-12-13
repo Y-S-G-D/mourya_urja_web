@@ -11,11 +11,12 @@ import SiblingsInfo from './siblings-info'
 import { familyInfoSchema } from '@/schema/family-info-schema'
 import useUserStore from '@/stores/user-store'
 import { IFamilyInfo } from '@/models/user-model'
-
+import { useToast } from '@/hooks/use-toast'
 
 
 const FamilyInfo = () => {
-  const { familyInfo  , siblings , addFamilyInfo} = useUserStore()
+  const { toast } = useToast()
+  const { familyInfo  , siblings , addFamilyInfo , handleNext} = useUserStore()
     
     const form = useForm({
         resolver: zodResolver(familyInfoSchema),
@@ -33,6 +34,14 @@ const FamilyInfo = () => {
       console.log("FamilyInfo Details",data);
       data.siblings = siblings;
       addFamilyInfo(data as IFamilyInfo)
+      
+      toast({
+        variant: "success",
+        title:"Saved",
+        description: 'Family Information saved successfully',
+      })
+      
+      handleNext()
     }
   return (
     <FormProvider {...form}>

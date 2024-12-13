@@ -35,8 +35,36 @@ const UsersPage = () => {
 
   const [usersTableData, setUsersTableData] = React.useState<Users[]>([]);
 
+  /// add debounce for search
+
+  const timeoutRef = React.useRef<number | undefined>(undefined);
+
+  const searchDebounce = React.useCallback((searchTerm: string) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = window.setTimeout(() => {
+      getUsers(searchTerm)
+        .then((value) => {
+          const filteredUsers = getUserTableData(value);
+          setUsersTableData(filteredUsers);
+        })
+        .catch((e) => {
+          console.log("Error is ", e);
+        });
+    }, 500); // 500ms debounce time
+  }, [getUsers, getUserTableData]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   const fetchUsers = React.useCallback(async () => {
-    getUsers()
+    getUsers("")
       .then((value) => {
         const filteredUsers = getUserTableData(value);
         setUsersTableData(filteredUsers);
@@ -70,7 +98,11 @@ const UsersPage = () => {
         <Separator />
 
         <div className="flex justify-between px-4 py-4">
-          <Input placeholder="Search here.." className="w-1/2" />
+          <Input 
+            onChange={(e) => {
+              searchDebounce(e.target.value);
+            }}
+          placeholder="Search here.." className="w-1/2" />
           <Button
             onClick={() => {
               router.push("/add-users");

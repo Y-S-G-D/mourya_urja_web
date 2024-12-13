@@ -1,13 +1,14 @@
 import Navbar from '@/components/home-page/navbar';
 import React from 'react';
 import { Shield, Lock, Share2, RefreshCw, CheckCircle } from 'lucide-react';
+import Footer from '@/components/Footer';
 
 const PrivacyPolicy = () => {
   return (
     <main className="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
       <Navbar bgColor="bg-primary" />
-      <section className="max-w-7xl mx-auto px-6 sm:px-12 py-16 flex flex-col items-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-primary mb-12 text-center">
+      <section className="max-w-7xl mx-auto px-6 sm:px-12 py-24 flex flex-col items-center">
+        <h1 className="text-4xl font-playfair md:text-5xl font-bold text-primary mb-12 text-center">
           Privacy Policy
         </h1>
         <p className="text-lg md:text-xl text-gray-700 text-center mb-8 max-w-3xl">
@@ -79,6 +80,7 @@ const PrivacyPolicy = () => {
           Thank you for using our services. Maurya Urja Matrimony is dedicated to contributing to your happiness and a successful future.
         </p>
       </section>
+      <Footer/>
     </main>
   );
 };

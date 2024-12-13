@@ -80,7 +80,7 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
                   isLoggedin ? (
                     <Dialog
                       open={showLogoutDialog}
-                      onOpenChange={() => handleLogoutDialog(false)}
+                      onOpenChange={() => handleLogoutDialog}
                     >
                       <DialogTrigger asChild>
                         <div>
@@ -90,6 +90,7 @@ const Navbar = ({ bgColor }: { bgColor: string | null }) => {
                               handleLogoutDialog(true);
                             }}
                           >
+                            
                             Log out
                           </Button>
                           <LogoutDialog

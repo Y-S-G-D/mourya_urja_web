@@ -15,6 +15,7 @@ import {
   deleteImage,
   deleteUser,
   getUsers,
+  isUserExist,
   preSignedUrl,
   registerUser,
   userByEmail,
@@ -22,6 +23,7 @@ import {
 import { generate12DigPassword } from "@/utils/services/password-generator";
 import { Users } from "@/app/users/columns";
 import { toast , } from "@/hooks/use-toast";
+import { formatDate } from "@/utils/date";
 
 export interface IUserStore {
   /// fields for handling dbresponse
@@ -45,6 +47,9 @@ export interface IUserStore {
   cultureAndReligiousInfo: ICultureAndReligiousInfo;
   familyInfo: IFamilyInfo;
   spouseExpectation: string;
+  isUserExist: boolean;
+  checkUserExist: (email: string) => Promise<boolean>;
+
   handleSiblingDialog: (isOpen: boolean) => void;
 
   addProfileImageFiles: (files: File[]) => void;
@@ -130,10 +135,10 @@ const useUserStore = create<IUserStore>((set, get) => ({
   },
   eduAndProfInfo: {
     highestEducation: "",
-    otherEductionDetail: "",
+    otherEducation: "",
     jobType: "",
     designation: "",
-    workDetail: "",
+    workDetails: "",
     income: 0,
   },
   cultureAndReligiousInfo: {
@@ -162,6 +167,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
   },
   spouseExpectation: "",
   password: "",
+  isUserExist: false,
 
   user: null,
   handleNext: () => {
@@ -173,8 +179,20 @@ const useUserStore = create<IUserStore>((set, get) => ({
   handleReset: () => {
     set({ activeStep: 0 });
   },
+  checkUserExist: async (email) => {
+    try {
+      const response = await apiClient.get(`${isUserExist}/${email}`);
+      if (response.status === 200) {
+        set({ isUserExist: true });
+        return true;
+      }
+    } catch (e) {
+      console.log("Error checking user exist", e);
+      return false;
+    }
+    return false;
+  },
 
- 
 
   removeProfileImageFromPersonalInfo(fileName) {
  
@@ -255,7 +273,13 @@ const useUserStore = create<IUserStore>((set, get) => ({
 
    
     try {
+
       set({ isProcessing: true });
+    //  const isUserExist = await get().checkUserExist(user.contactInfo.email);
+    //   if(isUserExist){
+    //     throw new Error("User already Exists with this email");
+    //   } 
+
       const imageFileNames = get().personalInfo.profileImages.map((image) => {
         return extractFileNameFromURL(image);
       })
@@ -265,20 +289,21 @@ const useUserStore = create<IUserStore>((set, get) => ({
 
       const response = await apiClient.post(registerUser, user);
       set({isProcessing: false, successMsg: response.data.message });
-      toast({
-        variant: "success",
-        title:"Success",
-        description: 'You have added a new user successfully',
+      // toast({
+      //   variant: "success",
+      //   title:"Success",
+      //   description: 'You have added a new user successfully',
         
-      })
+      // })
       
     } catch (e) {
-      console.log("Error saving user", e);
-      set({ errorMsg: "Failed to save user. Please try again later." });
+      const error = e as Error ;
+      console.log("Error saving user", e );
+      set({ errorMsg: `${error.message} Failed to save user. Please try again later.` });
       toast({
         variant: "destructive",
         title:"Failed",
-        description: 'Failed to save user. Please try again later.',
+        description: error.message,
         
       })
     }
@@ -299,13 +324,13 @@ const useUserStore = create<IUserStore>((set, get) => ({
     // );
    
     set({ personalInfo: personalInfo });
-    toast({
-      variant: "success",
-      title:"Saved",
-      description: 'Personal Information saved successfully',
+    // toast({
+    //   variant: "success",
+    //   title:"Saved",
+    //   description: 'Personal Information saved successfully',
       
-    })
-    get().handleNext();
+    // })
+    // get().handleNext();
   },
   saveAllContactInfo: (contact, residenceAddr, permanentAddr) => {
     set({
@@ -313,47 +338,26 @@ const useUserStore = create<IUserStore>((set, get) => ({
       residenceInfo: residenceAddr,
       permanentInfo: permanentAddr,
     });
-    toast({
-      variant: "success",
-      title:"Saved",
-      description: 'Contact Information saved successfully',
-      
-    })
-    get().handleNext();
+    
+    // get().handleNext();
 
   },
 
   addEduAndProfInfo: (eduAndProfInfo) => {
     eduAndProfInfo.income = parseInt(eduAndProfInfo.income.toString());
     set({ eduAndProfInfo: eduAndProfInfo });
-    toast({
-      variant: "success",
-      title:"Saved",
-      description: 'Education & Profession Information saved successfully',
-      
-    })
-    get().handleNext();
+    
+    // get().handleNext();
 
   },
   addCultureAndReligiousInfo: (cultureAndReligiousInfo) => {
     set({ cultureAndReligiousInfo: cultureAndReligiousInfo });
-    toast({
-      variant: "success",
-      title:"Saved",
-      description: 'Cultural & Religious Information saved successfully',
-      
-    })
-    get().handleNext();
+    
+    // get().handleNext();
   },
   addFamilyInfo: (familyInfo) => {
     set({ familyInfo: familyInfo });
-    toast({
-      variant: "success",
-      title:"Saved",
-      description: 'Family Information saved successfully',
-      
-    })
-    get().handleNext();
+   
   },
 
   addSibling: (sibling) => {
@@ -362,24 +366,13 @@ const useUserStore = create<IUserStore>((set, get) => ({
       const updatedSiblings = [...state.siblings, sibling];
       return { siblings: updatedSiblings };
     });
-    toast({
-      variant: "success",
-      title:"Saved",
-      description: 'Sibling saved successfully',
-      
-    })
-
+    
   },
   deleteSibling: (index) => {
     set((state) => ({
       siblings: state.siblings.filter((_, i) => i !== index),
     }));
-    toast({
-      variant: "destructive",
-      title:"Deleted",
-      description: 'Sibling deleted successfully',
-      
-    })
+    
 
     
   },
@@ -434,7 +427,7 @@ export interface IFetchUserStore {
   simulateError: (error: boolean) => void;
   users: IUser[];
   user: IUser | null;
-  getUsers: () => Promise<IUser[]>;
+  getUsers: (searchStr:string) => Promise<IUser[]>;
   getUserTableData: (users: IUser[]) => Users[];
   getSingleUserByEmail(email: string): Promise<IUser>;
   deleteImage: (imageUrl: string) => void;
@@ -468,12 +461,17 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
     }
   },
 
-  getUsers: async () => {
+  getUsers: async (searchStr:string) => {
     try {
-      set({ isProcessing: true, errorMsg: "" });
+      
+      if(!searchStr || searchStr === ""){
+        set({ isProcessing: true, errorMsg: "" });
+      }
+      
       const response = await apiClient.get(getUsers, {
         params: {
           limit: 10,
+          search:searchStr
         },
       });
       if (response.status === 200) {
@@ -498,7 +496,7 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
       id: (index + 1).toString(),
       name: `${user.personalInfo.firstName} ${user.personalInfo.lastName}`,
       email: user.contactInfo.email,
-      dob: user.personalInfo.dob,
+      dob: formatDate(user.personalInfo.dob, "dd MMM, yyyy") ,
       phoneNumber: user.contactInfo.phoneNumber,
       jobType: user.eduAndProfInfo.jobType,
       docId: user._id || ""

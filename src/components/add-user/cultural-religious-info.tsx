@@ -8,10 +8,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { culturalNdReligiousSchema } from '@/schema/cultural-religious-schema'
 import useUserStore from '@/stores/user-store'
 import { ICultureAndReligiousInfo } from '@/models/user-model'
-
+import { useToast } from '@/hooks/use-toast'  
 
 const CulturalNdReligiousInfo = () => {
-  const { addCultureAndReligiousInfo,cultureAndReligiousInfo } = useUserStore()
+  const {toast} = useToast()
+  const { addCultureAndReligiousInfo,cultureAndReligiousInfo ,handleNext} = useUserStore()
 
   const form = useForm({
       resolver: zodResolver(culturalNdReligiousSchema),
@@ -26,6 +27,13 @@ const CulturalNdReligiousInfo = () => {
 
   const onSubmit = (data: FieldValues) => {
     addCultureAndReligiousInfo(data as ICultureAndReligiousInfo)
+    toast({
+      variant: "success",
+      title:"Saved",
+      description: 'Cultural & Religious Information saved successfully',
+    })
+    handleNext()
+
   }
   return (
     <FormProvider {...form}>

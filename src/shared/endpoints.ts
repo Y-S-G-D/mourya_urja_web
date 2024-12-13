@@ -10,6 +10,7 @@ export const totalUsersCount = `${userEndPoint}//totalUsersCount`
 export const browseProfiles = `${userEndPoint}/find-new-connections`
 export const deleteUser = `${userEndPoint}/delete-user`
 export const userApproval = `${userEndPoint}/user-approval`
+export const isUserExist = `${userEndPoint}/is-email-exist`
 
 
 export const employeeEndPoint =  '/employee';
@@ -32,6 +33,8 @@ export const getConnections = `${userEndPoint}/connections`
 export const addComment = `${userEndPoint}/add-comment`
 export const getComments = `${userEndPoint}/get-comments`
 
+export const forgotPassword = '/forgotPassword'
+export const resetPassword = `${forgotPassword}/reset-password`
 
 // fetch all employees
 export const allEmployeesEndpoint = '/all-employee'
