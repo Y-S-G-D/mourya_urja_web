@@ -78,7 +78,7 @@ const PersonalInformation = () => {
     handleNext()
   };
 
-  if(isProcessing) return <div>Loading...</div>
+  // if(isProcessing) return <div>Loading...</div>
 
   
   return ( 
@@ -328,8 +328,8 @@ const PersonalInformation = () => {
                 </FormItem>
               )}
             />
-             <ImageView params={{ profileImages: personalInfo.profileImages }}/>
-            <Button type="submit">Save</Button>
+            <ImageView params={{ profileImages: personalInfo.profileImages }}/>
+            <Button className="w-24" type="submit">Save</Button>
              
           </form>
         

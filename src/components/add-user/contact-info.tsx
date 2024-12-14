@@ -1,53 +1,66 @@
-import React from 'react';
-import { useForm, FormProvider, FieldValues } from 'react-hook-form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { userContactSchema } from '@/schema/user-contact-schema';
-import useUserStore from '@/stores/user-store'; 
-import { IContactInfo , IAddress } from '@/models/user-model';
-import { useToast } from '@/hooks/use-toast';
+import React from "react";
+import { useForm, FormProvider, FieldValues } from "react-hook-form";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { userContactSchema } from "@/schema/user-contact-schema";
+import useUserStore from "@/stores/user-store";
+import { IContactInfo, IAddress } from "@/models/user-model";
+import { useToast } from "@/hooks/use-toast";
 
+const ContactInfo = ({ isEditing }: { isEditing: boolean }) => {
+  const { toast } = useToast();
 
-const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
-  const { toast}  = useToast();
-  
-  const { contactInfo, residenceInfo , permanentInfo,saveAllContactInfo, handleNext} = useUserStore();
+  const {
+    contactInfo,
+    residenceInfo,
+    permanentInfo,
+    saveAllContactInfo,
+    handleNext,
+    handleBack,
+    activeStep,
+  } = useUserStore();
 
   const form = useForm({
     resolver: zodResolver(userContactSchema),
     defaultValues: {
-      phoneNumber: contactInfo.phoneNumber ||'',
-      email: contactInfo.email || '',
+      phoneNumber: contactInfo.phoneNumber || "",
+      email: contactInfo.email || "",
       residenceAddress: {
-        address: residenceInfo.address|| '',
-        locality: residenceInfo.locality || '',
-        city: residenceInfo.city || '',
-        district: residenceInfo.district || '',
-        state:residenceInfo.state || '',
-        pincode: residenceInfo.pincode || ''
+        address: residenceInfo.address || "",
+        locality: residenceInfo.locality || "",
+        city: residenceInfo.city || "",
+        district: residenceInfo.district || "",
+        state: residenceInfo.state || "",
+        pincode: residenceInfo.pincode || "",
       },
       permanentAddress: {
-        address: permanentInfo.address || '',
-        locality: permanentInfo.address || '',
-        city: permanentInfo.city || '',
-        district: permanentInfo.district || '',
-        state: permanentInfo.state || '',
-        pincode: permanentInfo.pincode ||''
+        address: permanentInfo.address || "",
+        locality: permanentInfo.address || "",
+        city: permanentInfo.city || "",
+        district: permanentInfo.district || "",
+        state: permanentInfo.state || "",
+        pincode: permanentInfo.pincode || "",
       },
-      copyAddress: false
-    }
+      copyAddress: false,
+    },
   });
 
-  const watchCopyAddress = form.watch('copyAddress');
+  const watchCopyAddress = form.watch("copyAddress");
 
   const onSubmit = (data: FieldValues) => {
     const contacts: IContactInfo = {
       phoneNumber: data.phoneNumber,
-      email: data.email
+      email: data.email,
     };
     const residentialAddress: IAddress = {
       address: data.residenceAddress.address,
@@ -55,32 +68,29 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
       city: data.residenceAddress.city,
       district: data.residenceAddress.district,
       state: data.residenceAddress.state,
-      pincode: data.residenceAddress.pincode
-    }
+      pincode: data.residenceAddress.pincode,
+    };
     const permanentAddress: IAddress = {
       address: data.permanentAddress.address,
       locality: data.permanentAddress.locality,
       city: data.permanentAddress.city,
       district: data.permanentAddress.district,
       state: data.permanentAddress.state,
-      pincode: data.permanentAddress.pincode
-    }
+      pincode: data.permanentAddress.pincode,
+    };
     saveAllContactInfo(contacts, residentialAddress, permanentAddress);
     toast({
       variant: "success",
-      title:"Saved",
-      description: 'Contact Information saved successfully',
-      
-    })
+      title: "Saved",
+      description: "Contact Information saved successfully",
+    });
     handleNext();
-
-    
   };
 
   React.useEffect(() => {
     if (watchCopyAddress) {
-      const residenceAddress = form.watch('residenceAddress');
-      form.setValue('permanentAddress', residenceAddress);
+      const residenceAddress = form.watch("residenceAddress");
+      form.setValue("permanentAddress", residenceAddress);
     }
   }, [watchCopyAddress, form]);
 
@@ -100,9 +110,15 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   <FormItem>
                     <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
                     <FormControl>
-                      <Input {...field} id="phoneNumber" placeholder="Enter Phone Number" />
+                      <Input
+                        {...field}
+                        id="phoneNumber"
+                        placeholder="Enter Phone Number"
+                      />
                     </FormControl>
-                    <FormMessage>{form.formState.errors.phoneNumber?.message}</FormMessage>
+                    <FormMessage>
+                      {form.formState.errors.phoneNumber?.message}
+                    </FormMessage>
                   </FormItem>
                 )}
               />
@@ -113,9 +129,16 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   <FormItem>
                     <FormLabel htmlFor="email">Email</FormLabel>
                     <FormControl>
-                      <Input {...field} id="email" placeholder="Enter Email" readOnly = {isEditing} />
+                      <Input
+                        {...field}
+                        id="email"
+                        placeholder="Enter Email"
+                        readOnly={isEditing}
+                      />
                     </FormControl>
-                    <FormMessage>{form.formState.errors.email?.message}</FormMessage>
+                    <FormMessage>
+                      {form.formState.errors.email?.message}
+                    </FormMessage>
                   </FormItem>
                 )}
               />
@@ -128,11 +151,22 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="residenceAddress.address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="residenceAddress.address">Address</FormLabel>
+                      <FormLabel htmlFor="residenceAddress.address">
+                        Address
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="residenceAddress.address" placeholder="Enter Residence Address" />
+                        <Input
+                          {...field}
+                          id="residenceAddress.address"
+                          placeholder="Enter Residence Address"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.residenceAddress?.address?.message}</FormMessage>
+                      <FormMessage>
+                        {
+                          form.formState.errors.residenceAddress?.address
+                            ?.message
+                        }
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -141,11 +175,22 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="residenceAddress.locality"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="residenceAddress.locality">Locality</FormLabel>
+                      <FormLabel htmlFor="residenceAddress.locality">
+                        Locality
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="residenceAddress.locality" placeholder="Enter Locality" />
+                        <Input
+                          {...field}
+                          id="residenceAddress.locality"
+                          placeholder="Enter Locality"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.residenceAddress?.locality?.message}</FormMessage>
+                      <FormMessage>
+                        {
+                          form.formState.errors.residenceAddress?.locality
+                            ?.message
+                        }
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -154,11 +199,19 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="residenceAddress.city"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="residenceAddress.city">City</FormLabel>
+                      <FormLabel htmlFor="residenceAddress.city">
+                        City
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="residenceAddress.city" placeholder="Enter City" />
+                        <Input
+                          {...field}
+                          id="residenceAddress.city"
+                          placeholder="Enter City"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.residenceAddress?.city?.message}</FormMessage>
+                      <FormMessage>
+                        {form.formState.errors.residenceAddress?.city?.message}
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -167,11 +220,22 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="residenceAddress.district"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="residenceAddress.district">District</FormLabel>
+                      <FormLabel htmlFor="residenceAddress.district">
+                        District
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="residenceAddress.district" placeholder="Enter District" />
+                        <Input
+                          {...field}
+                          id="residenceAddress.district"
+                          placeholder="Enter District"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.residenceAddress?.district?.message}</FormMessage>
+                      <FormMessage>
+                        {
+                          form.formState.errors.residenceAddress?.district
+                            ?.message
+                        }
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -180,11 +244,19 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="residenceAddress.state"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="residenceAddress.state">State</FormLabel>
+                      <FormLabel htmlFor="residenceAddress.state">
+                        State
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="residenceAddress.state" placeholder="Enter State" />
+                        <Input
+                          {...field}
+                          id="residenceAddress.state"
+                          placeholder="Enter State"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.residenceAddress?.state?.message}</FormMessage>
+                      <FormMessage>
+                        {form.formState.errors.residenceAddress?.state?.message}
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -193,11 +265,22 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="residenceAddress.pincode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="residenceAddress.pincode">Pincode</FormLabel>
+                      <FormLabel htmlFor="residenceAddress.pincode">
+                        Pincode
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="residenceAddress.pincode" placeholder="Enter Pincode" />
+                        <Input
+                          {...field}
+                          id="residenceAddress.pincode"
+                          placeholder="Enter Pincode"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.residenceAddress?.pincode?.message}</FormMessage>
+                      <FormMessage>
+                        {
+                          form.formState.errors.residenceAddress?.pincode
+                            ?.message
+                        }
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -218,7 +301,9 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                         ref={field.ref}
                       />
                     </FormControl>
-                    <FormLabel className="ml-2">Same as Residence Address</FormLabel>
+                    <FormLabel className="ml-2">
+                      Same as Residence Address
+                    </FormLabel>
                   </FormItem>
                 )}
               />
@@ -231,11 +316,22 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="permanentAddress.address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="permanentAddress.address">Address</FormLabel>
+                      <FormLabel htmlFor="permanentAddress.address">
+                        Address
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="permanentAddress.address" placeholder="Enter Permanent Address" />
+                        <Input
+                          {...field}
+                          id="permanentAddress.address"
+                          placeholder="Enter Permanent Address"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.permanentAddress?.address?.message}</FormMessage>
+                      <FormMessage>
+                        {
+                          form.formState.errors.permanentAddress?.address
+                            ?.message
+                        }
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -244,11 +340,22 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="permanentAddress.locality"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="permanentAddress.locality">Locality</FormLabel>
+                      <FormLabel htmlFor="permanentAddress.locality">
+                        Locality
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="permanentAddress.locality" placeholder="Enter Locality" />
+                        <Input
+                          {...field}
+                          id="permanentAddress.locality"
+                          placeholder="Enter Locality"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.permanentAddress?.locality?.message}</FormMessage>
+                      <FormMessage>
+                        {
+                          form.formState.errors.permanentAddress?.locality
+                            ?.message
+                        }
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -257,11 +364,19 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="permanentAddress.city"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="permanentAddress.city">City</FormLabel>
+                      <FormLabel htmlFor="permanentAddress.city">
+                        City
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="permanentAddress.city" placeholder="Enter City" />
+                        <Input
+                          {...field}
+                          id="permanentAddress.city"
+                          placeholder="Enter City"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.permanentAddress?.city?.message}</FormMessage>
+                      <FormMessage>
+                        {form.formState.errors.permanentAddress?.city?.message}
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -270,11 +385,22 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="permanentAddress.district"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="permanentAddress.district">District</FormLabel>
+                      <FormLabel htmlFor="permanentAddress.district">
+                        District
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="permanentAddress.district" placeholder="Enter District" />
+                        <Input
+                          {...field}
+                          id="permanentAddress.district"
+                          placeholder="Enter District"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.permanentAddress?.district?.message}</FormMessage>
+                      <FormMessage>
+                        {
+                          form.formState.errors.permanentAddress?.district
+                            ?.message
+                        }
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -283,11 +409,19 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="permanentAddress.state"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="permanentAddress.state">State</FormLabel>
+                      <FormLabel htmlFor="permanentAddress.state">
+                        State
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="permanentAddress.state" placeholder="Enter State" />
+                        <Input
+                          {...field}
+                          id="permanentAddress.state"
+                          placeholder="Enter State"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.permanentAddress?.state?.message}</FormMessage>
+                      <FormMessage>
+                        {form.formState.errors.permanentAddress?.state?.message}
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -296,17 +430,39 @@ const ContactInfo = ({isEditing}:{isEditing:boolean}) => {
                   name="permanentAddress.pincode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="permanentAddress.pincode">Pincode</FormLabel>
+                      <FormLabel htmlFor="permanentAddress.pincode">
+                        Pincode
+                      </FormLabel>
                       <FormControl>
-                        <Input {...field} id="permanentAddress.pincode" placeholder="Enter Pincode" />
+                        <Input
+                          {...field}
+                          id="permanentAddress.pincode"
+                          placeholder="Enter Pincode"
+                        />
                       </FormControl>
-                      <FormMessage>{form.formState.errors.permanentAddress?.pincode?.message}</FormMessage>
+                      <FormMessage>
+                        {
+                          form.formState.errors.permanentAddress?.pincode
+                            ?.message
+                        }
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
               </div>
             </div>
-            <Button type="submit">Save</Button>
+            <div className="space-x-6 ">
+              <Button className="w-24" type="submit">
+                Save
+              </Button>
+              <Button
+                variant={"secondary"}
+                disabled={activeStep === 0}
+                onClick={handleBack}
+              >
+                Back
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>

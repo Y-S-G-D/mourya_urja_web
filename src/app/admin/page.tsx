@@ -6,9 +6,10 @@ import { User, Users, ClipboardCheck } from "lucide-react";
 import { GenderRatioChart } from "@/components/gender-ratio-chart";
 import { AgeDistributionChart } from "@/components/age-distribution-chart";
 import { TopLocationsChart } from "@/components/top-locations-chart";
-import { NewRegistrationChart } from "@/components/new-registration-chart";
+import { JobTypeChart } from "@/components/job-type-chart";
 import { useDashboardStore } from "@/stores/dashboard-store";
 import { DashboardModel } from "@/models/dashboard-model";
+import DashboardSkeleton from "@/components/skeleton-loaders/dashboard-loader";
 
 
 export interface AgeDistributionChart{
@@ -72,12 +73,12 @@ const Dashboard = () => {
   }, [fetchDashboardData]);
 
   if (isLoading) {
-    return <h1 className="text-3xl font-semibold">Loading...</h1>;
+    return <DashboardSkeleton/>
   }
  
-
+ console.log(dashboardData?.JOB_TYPES);
   return (
-    <div className=" pt-20 flex flex-1 flex-col gap-4 p-4">
+    <div className="px-20 pt-20 flex flex-1 flex-col gap-4 p-4">
       <div className="grid auto-rows-min gap-4 sm:grid-cols-2 md:grid-cols-3">
         {topSectionData.map((data, index) => {
           return (
@@ -101,7 +102,7 @@ const Dashboard = () => {
       </div>
       <div className="grid auto-rows-min gap-8 md:grid-cols-2 my-4">
         <TopLocationsChart topCities={dashboardData?.TOP_CITIES ?? []}/>
-        <NewRegistrationChart />
+        <JobTypeChart jobTypeData={dashboardData?.JOB_TYPES ?? []} />
       </div>
     </div>
   );

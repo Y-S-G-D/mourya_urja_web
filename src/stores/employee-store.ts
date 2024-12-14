@@ -13,7 +13,7 @@ interface IEmployeeStore {
   simulateError:(error:boolean)=>void;
   successMsg: string | null;
   isUpdateSuccess: boolean;
-  getEmployees: () => Promise<IEmployee[]>;
+  getEmployees: (searchStr?:string) => Promise<IEmployee[]>;
   employees: IEmployee[];
   employee: IEmployee | null;
   updateEmployee: (employee: IEmployee) => void;
@@ -27,7 +27,7 @@ interface IEmployeeStore {
 
 // Just a minute a am guiding vinita for mobile app
 export const useEmployeeStore = create<IEmployeeStore>((set) => ({
-  isProcessing: false,
+  isProcessing: true,
   errorMsg: null,
   isUpdateSuccess: false,
   successMsg: null,
@@ -68,10 +68,16 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
       set({ isProcessing: false, errorMsg: errorMessage(e) ,showError:true });
     }
   },
-  getEmployees: async () => {
+  getEmployees: async (searchStr) => {
     try {
-      set({isProcessing:true,errorMsg:null,successMsg:null})
-      const response = await apiClient.get(allEmployeesEndpoint);
+      if(searchStr === "" || !searchStr){
+        set({isProcessing:true,errorMsg:null,successMsg:null})
+      }
+      
+      const response = await apiClient.get(allEmployeesEndpoint,{params:{
+        search: searchStr ?? "",
+        limit:20
+      }});
       if(response.status === 200){
         const fetchedEmployees:IEmployee[] = response.data.data;
         set({isProcessing:false,successMsg:response.data.message,employees:fetchedEmployees})

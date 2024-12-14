@@ -4,7 +4,7 @@ import { Users,ClipboardCheck, Plus } from 'lucide-react'
 import { GenderRatioChart } from '@/components/gender-ratio-chart'
 import { AgeDistributionChart } from '@/components/age-distribution-chart'
 import { TopLocationsChart } from '@/components/top-locations-chart'
-import { NewRegistrationChart } from '@/components/new-registration-chart'
+import { NewRegistrationChart } from '@/components/job-type-chart'
 import { Button } from '@/components/ui/button'
 
 const topSectionData = [

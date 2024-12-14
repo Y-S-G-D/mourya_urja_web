@@ -64,4 +64,13 @@ export default class LocalStorage {
       console.log("localStorage is not available.");
     }
   }
+
+  public addAccessRoutes(routes: string[]): void {
+    if (this.isLocalStorageAvailable()) {
+      const accessRoutes = JSON.stringify(routes);
+      localStorage.setItem("accessRoutes", accessRoutes);
+    } else {
+      console.log("localStorage is not available.");
+    }
+  }
 }

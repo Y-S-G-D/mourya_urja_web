@@ -82,7 +82,7 @@ const UsersPage = () => {
   return (
     <section>
       <Navbar bgColor={"bg-primary"} />
-      <div className=" pt-24 flex flex-1 flex-col gap-4 p-4 px-8">
+      <div className=" pt-24 flex flex-1 flex-col gap-4 p-4 px-20">
         <h1 className="text-3xl font-semibold">Manage Users</h1>
         <Breadcrumb>
           <BreadcrumbList>
@@ -117,16 +117,20 @@ const UsersPage = () => {
           </Button>
         </div>
         <div className="container mx-auto pb-10 px-4">
-          {isProcessing && <TableLoader />}
-          {usersTableData.length > 0 || errorMsg.length > 0 ? (
+          {/* {isProcessing && <TableLoader />} */}
+          {isProcessing ? <TableLoader /> : usersTableData.length > 0 ? (
             <DataTable columns={columns} data={usersTableData} />
           ) : (
-            <TableLoader />
+            <h1 className="text-center text-lg text-primary mt-40">
+              {
+                `No users found :(`
+              }
+            </h1>
           )}
           <Dialog open={showError} onOpenChange={simulateError}>
             <ErrorDialog
               title="Request Failed"
-              message="We couldn't process your request. Please check your connection and try again."
+              message={errorMsg}
               onRetry={() => {
                 simulateError(false);
                 fetchUsers();
@@ -137,7 +141,7 @@ const UsersPage = () => {
               retryButtonText="Try Again"
               cancelButtonText="Close"
             />
-          </Dialog>
+          </Dialog >
         </div>
       </div>
     </section>

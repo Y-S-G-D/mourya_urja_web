@@ -14,7 +14,7 @@ export interface IDashboardStore{
 
 export const useDashboardStore = create<IDashboardStore>((set) => ({
     dashboardData: null,
-    isLoading: false,
+    isLoading: true,
     errMsg: null,
     getDashboardData: async () => {
         try{

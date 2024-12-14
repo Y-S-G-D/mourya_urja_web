@@ -25,7 +25,7 @@ const FinishSection: React.FC = () => {
 
         <div className="text-center flex flex-col items-center">
           <div className="relative h-20 w-20 rounded-full bg-destructive items-center flex justify-center">
-            <CheckCheck size={48} className="text-primary" />
+            <CheckCheck size={48} className="text-primary-foreground" />
             <div className="absolute -z-10 h-10 w-10 rounded-full bg-sidebar-primary animate-ripple" />
           </div>
           <h2 className="pt-4 text-4xl text-primary font-bold">Error</h2>

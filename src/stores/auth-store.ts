@@ -71,6 +71,9 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
                 expires: 7 * 24 * 60 * 60 * 1000  // expire in 7 days
             })
             LocalStorage.getInstance().addLoginInfo(response.data.data)
+            if(role === 'admin' || role === 'employee'){
+                LocalStorage.getInstance().addAccessRoutes(response.data.data.access)
+            }
             set({ data: date, isLoading: false, isSuccess: true,isLoggedin:true })
             window.location.reload()
         }

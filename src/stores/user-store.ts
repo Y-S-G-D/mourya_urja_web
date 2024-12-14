@@ -299,7 +299,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
     } catch (e) {
       const error = e as Error ;
       console.log("Error saving user", e );
-      set({ errorMsg: `${error.message} Failed to save user. Please try again later.` });
+      set({ errorMsg: `${error.message} Failed to save user. Please try again later.`, isProcessing:false});
       toast({
         variant: "destructive",
         title:"Failed",
@@ -323,7 +323,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
     //   URL.createObjectURL(file)
     // );
    
-    set({ personalInfo: personalInfo });
+    set({ personalInfo: personalInfo , isProcessing:false});
     // toast({
     //   variant: "success",
     //   title:"Saved",
@@ -436,7 +436,7 @@ export interface IFetchUserStore {
 }
 
 export const useFetchUserStore = create<IFetchUserStore>((set) => ({
-  isProcessing: false,
+  isProcessing: true,
   errorMsg: "",
   successMsg: "",
   showError: false,

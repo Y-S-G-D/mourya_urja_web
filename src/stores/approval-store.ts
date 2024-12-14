@@ -15,7 +15,7 @@ export interface IApprovalStore {
 export const useApprovalStore = create<IApprovalStore>((set,get) => ({
   users: [],
   errMsg: null,
-  isProcessing: false,
+  isProcessing: true,
   getPendingApprovals: async () => {
     try {
       const response = await apiClient.get(getUsers,{

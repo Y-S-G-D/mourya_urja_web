@@ -50,7 +50,7 @@ export function GenderRatioChart({maleCount,femaleCount}:{maleCount:number,femal
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className=" mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
+          className=" mx-auto aspect-square max-h-[300px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
             <ChartTooltip

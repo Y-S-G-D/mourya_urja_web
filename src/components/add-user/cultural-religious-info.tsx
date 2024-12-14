@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast'
 
 const CulturalNdReligiousInfo = () => {
   const {toast} = useToast()
-  const { addCultureAndReligiousInfo,cultureAndReligiousInfo ,handleNext} = useUserStore()
+  const { addCultureAndReligiousInfo,cultureAndReligiousInfo ,handleNext,handleBack} = useUserStore()
 
   const form = useForm({
       resolver: zodResolver(culturalNdReligiousSchema),
@@ -119,9 +119,14 @@ const CulturalNdReligiousInfo = () => {
                   />
 
               </div>
-              <Button type='submit'>
+              <div className="space-x-6 ">
+              <Button className="w-24" type="submit">
                 Save
               </Button>
+              <Button variant={"secondary"} onClick={handleBack}>
+                Back
+              </Button>
+            </div>
            </form>
          </CardContent>
        </Card>

@@ -21,7 +21,7 @@ import { Dialog } from "@/components/ui/dialog";
 import ErrorDialog from "./dialogs/error-dialog";
 import { EyeOff, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { toast } from "@/hooks/use-toast";
+// import { toast } from "@/hooks/use-toast";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -48,12 +48,7 @@ const LoginForm: React.FC = () => {
   function onSubmit(values: z.infer<typeof loginSchema>) {
     const type = selectedLoginType.toLowerCase();
     login(values.email, values.password, type);
-    toast({
-      variant: "success",
-      title: "Success",
-      description: "Login Successful",
-     
-    })
+    
     // form.reset()  // Clear the form values after successful submission.
   }
 

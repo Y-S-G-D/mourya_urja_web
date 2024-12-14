@@ -12,6 +12,6 @@ export interface DashboardModel {
   MALE_FEMALE_USERS_RATIO: unknown;
   AGE_DISTRIBUTION: AgeDistributionChart[];
   TOP_CITIES: TopCity[];
-  TOP_JOB_TYPES: TopJobType[];
+  JOB_TYPES: TopJobType[];
 
 }
