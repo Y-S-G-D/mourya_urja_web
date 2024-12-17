@@ -70,13 +70,13 @@ export async function middleware(request: NextRequest) {
   }
 
   /// implement access page logic
-  if(access_token && (role?.value === "admin" || role?.value === "employee")){
+  if(access_token && (role?.value === "employee")){
     
     // const previousPageUrl = request.headers.get("referer")?.split("/").pop()
     // console.log("previous page url",previousPageUrl)
     const pageAccessList = pageAccess?.value.split(",")
-    if(pageAccessList && pageAccessList.includes(url)){
-      console.log("Allow access",url)
+    if((pageAccessList ?? []).length === 0 || !(pageAccessList ?? []).includes(url)){
+      return NextResponse.redirect(new URL("/401-access", request.url));
     }
 
   }
