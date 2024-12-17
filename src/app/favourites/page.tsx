@@ -8,7 +8,6 @@ import Footer from '@/components/Footer'
 
 const LikesPage = () => {
 
-  
   return (
     <div>
       <Navbar bgColor={'bg-primary'}/>
@@ -28,12 +27,8 @@ const LikesPage = () => {
             </BreadcrumbList>
         </Breadcrumb>
         <LikesTabs/>
-        <Footer/>
-
-
-
       </section>
-    
+      <Footer/>
     </div>
   )
 }

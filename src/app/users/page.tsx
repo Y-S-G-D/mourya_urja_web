@@ -4,7 +4,7 @@ import { columns, Users } from "./columns";
 import { DataTable } from "@/app/admin/employees/data-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Filter, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -22,12 +22,13 @@ import { Dialog } from "@/components/ui/dialog";
 import ErrorDialog from "@/components/dialogs/error-dialog";
 
 const UsersPage = () => {
+
   const router = useRouter();
 
   const {
     getUsers,
     getUserTableData,
-    isProcessing,
+    isLoading: isProcessing,
     showError,
     simulateError,
     errorMsg,
@@ -97,12 +98,12 @@ const UsersPage = () => {
         </Breadcrumb>
         <Separator />
 
-        <div className="flex justify-between px-4 py-4">
+        <div className="flex justify-around px-4 py-6 my-4 bg-secondary/50 rounded-lg">
           <Input 
             onChange={(e) => {
               searchDebounce(e.target.value);
             }}
-          placeholder="Search here.." className="w-1/2" />
+          placeholder="Search here.." className="w-1/2 bg-white border border-sidebar-primary" />
           <Button
             onClick={() => {
               router.push("/add-users");
@@ -111,12 +112,12 @@ const UsersPage = () => {
             <Plus />
             Add New User
           </Button>
-          <Button variant="secondary">
+          {/* <Button variant="secondary">
             <Filter />
             Filter
-          </Button>
+          </Button> */}
         </div>
-        <div className="container mx-auto pb-10 px-4">
+        <div className="container  mx-auto pb-10 px-4">
           {/* {isProcessing && <TableLoader />} */}
           {isProcessing ? <TableLoader /> : usersTableData.length > 0 ? (
             <DataTable columns={columns} data={usersTableData} />

@@ -13,6 +13,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useFetchUserStore } from "@/stores/user-store";
+import { useState ,FC} from "react";
+import { Dialog } from "@/components/ui/dialog";
+import DeleteConfirmationDialog from "@/components/dialogs/delete-confirmation-dialog";
 
 
 // This type is used to define the shape of our data.
@@ -75,43 +78,55 @@ export const columns: ColumnDef<Users>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const user = row.original
-      
-      const store = useFetchUserStore.getState()
- 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id)}
-            >
-              Copy User ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <a href={`/add-users/${user.email}`}>View User</a>
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-            onClick={() => {
-              const confirm = window.confirm("Are you sure you want to delete this user?");
-              if (confirm) {
-                store.deleteUserByEmail(user.email)
-
-              }
-            }}
-              className="text-destructive hover:!text-destructive hover:!bg-red-100">
-              Delete User
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
+     
+      return <ActionsCell row={row} />;
     },
   },
 ];
+
+const ActionsCell: FC<{ row: { original: Users } }> = ({ row }) => {
+  const user = row.original;
+  const store = useFetchUserStore.getState();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem
+          onClick={() => navigator.clipboard.writeText(user.id)}
+        >
+          Copy Employee ID
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+        <a href={`/add-users/${user.email}`}>View User</a>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => setIsDialogOpen(true)}
+          className="text-destructive hover:!text-destructive hover:!bg-red-100"
+        >
+          Delete Employee
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DeleteConfirmationDialog
+          message={`Are you sure you want to delete ${user.name}?`}
+          onNo={() => setIsDialogOpen(false)}
+          onYes={() => {
+            store.deleteUserByEmail(user.email)
+            setIsDialogOpen(false)
+            window.location.reload()
+          }}
+        />
+      </Dialog>
+    </DropdownMenu>
+  );
+};
+

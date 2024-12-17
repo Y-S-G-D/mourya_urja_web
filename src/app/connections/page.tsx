@@ -18,6 +18,7 @@ import { useConnectionStore } from "@/stores/connection-store";
 import { useRouter } from "next/navigation";
 import { useCommentStore } from "@/stores/comments-store";
 import Footer from "@/components/Footer";
+import UserNotFound from "@/components/skeleton-loaders/user-not-found";
 
 const ConnectionsPage = () => {
   const router = useRouter()
@@ -42,7 +43,7 @@ const ConnectionsPage = () => {
         <h1 className="text-4xl font-bold text-primary mb-4">
           Your Connections
         </h1>
-        <div className="w-full grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6 px-6 lg:px-12">
+        {connections.length > 0 ? <div className="w-full grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6 px-6 lg:px-12">
           {connections.map((connection, index) => (
               console.log("connection  ID", connection),
             <div
@@ -80,7 +81,7 @@ const ConnectionsPage = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div>:<UserNotFound title="Connections Not Found :(" desc="Make your connections from exploring profiles."/>}
       </section>
       <Footer/>
     </main>

@@ -82,7 +82,7 @@ const ContactInfo = ({ isEditing }: { isEditing: boolean }) => {
     toast({
       variant: "success",
       title: "Saved",
-      description: "Contact Information saved successfully",
+      description: `Contact Information saved successfully`,
     });
     handleNext();
   };
@@ -455,13 +455,13 @@ const ContactInfo = ({ isEditing }: { isEditing: boolean }) => {
               <Button className="w-24" type="submit">
                 Save
               </Button>
-              <Button
+              {isEditing?<></>:<Button
                 variant={"secondary"}
                 disabled={activeStep === 0}
                 onClick={handleBack}
               >
                 Back
-              </Button>
+              </Button>}
             </div>
           </form>
         </CardContent>

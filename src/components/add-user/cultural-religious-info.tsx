@@ -10,7 +10,7 @@ import useUserStore from '@/stores/user-store'
 import { ICultureAndReligiousInfo } from '@/models/user-model'
 import { useToast } from '@/hooks/use-toast'  
 
-const CulturalNdReligiousInfo = () => {
+const CulturalNdReligiousInfo = ({isEditing}:{isEditing:boolean}) => {
   const {toast} = useToast()
   const { addCultureAndReligiousInfo,cultureAndReligiousInfo ,handleNext,handleBack} = useUserStore()
 
@@ -123,9 +123,9 @@ const CulturalNdReligiousInfo = () => {
               <Button className="w-24" type="submit">
                 Save
               </Button>
-              <Button variant={"secondary"} onClick={handleBack}>
+              {isEditing?<></>:<Button variant={"secondary"} onClick={handleBack}>
                 Back
-              </Button>
+              </Button>}
             </div>
            </form>
          </CardContent>

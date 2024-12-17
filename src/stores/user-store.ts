@@ -77,14 +77,14 @@ export interface IUserStore {
   removeProfileImageFromPersonalInfo: (fileName:string) => void;
 }
 
-const extractFileNameFromURL = (imageUrl: string) => {
-  if(!imageUrl.includes("amazonaws.com")){
-    return imageUrl;
-  }
-  const parsedUrl = new URL(imageUrl);
-  const fileName = parsedUrl.pathname.split("/").pop();
-  return fileName || "";
-}
+// const extractFileNameFromURL = (imageUrl: string) => {
+//   if(!imageUrl.includes("amazonaws.com")){
+//     return imageUrl;
+//   }
+//   const parsedUrl = new URL(imageUrl);
+//   const fileName = parsedUrl.pathname.split("/").pop();
+//   return fileName || "";
+// }
 
 // Removed incorrect declaration of useUserStore
 
@@ -280,12 +280,15 @@ const useUserStore = create<IUserStore>((set, get) => ({
     //     throw new Error("User already Exists with this email");
     //   } 
 
-      const imageFileNames = get().personalInfo.profileImages.map((image) => {
-        return extractFileNameFromURL(image);
-      })
+      // const imageFileNames = get().personalInfo.profileImages.map((image) => {
+      //   return extractFileNameFromURL(image);
+      // })
+
+
       const fileNames = await get().uploadImages();
     
-      user.personalInfo.profileImages = [...fileNames,...imageFileNames];
+      user.personalInfo.profileImages = fileNames;
+
 
       const response = await apiClient.post(registerUser, user);
       set({isProcessing: false, successMsg: response.data.message });
@@ -420,7 +423,7 @@ export default useUserStore;
 // ============================================================== ///
 
 export interface IFetchUserStore {
-  isProcessing: boolean;
+  isLoading: boolean;
   errorMsg: string;
   showError: boolean;
   successMsg: string | null;
@@ -436,7 +439,7 @@ export interface IFetchUserStore {
 }
 
 export const useFetchUserStore = create<IFetchUserStore>((set) => ({
-  isProcessing: true,
+  isLoading: true,
   errorMsg: "",
   successMsg: "",
   showError: false,
@@ -448,16 +451,17 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
 
   deleteUserByEmail: async (email) => {
     try {
-      set({isProcessing:true});
+      set({isLoading:true});
       const response = await apiClient.delete(`${deleteUser}/${email}`);
       console.log("Response is ",response);
       if(response.status === 200){
-        set({successMsg: response.data.message, isProcessing:false,});
+        set({successMsg: response.data.message, isLoading:false,});
         window.location.reload();
       }
     }catch (e){
       console.log(e)
-      set({errorMsg:"Failed to delete user. Please try again later.",isProcessing:false})
+      const error = e as Error;
+      set({errorMsg: error.message??"Failed to delete user. Please try again later.",isLoading:false})
     }
   },
 
@@ -465,7 +469,7 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
     try {
       
       if(!searchStr || searchStr === ""){
-        set({ isProcessing: true, errorMsg: "" });
+        set({ isLoading: true, errorMsg: "" });
       }
       
       const response = await apiClient.get(getUsers, {
@@ -475,8 +479,9 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
         },
       });
       if (response.status === 200) {
+        console.log("Response is ", response.data.data);
         const fetchedUsers: IUser[] = response.data.data;
-        set({ users: fetchedUsers, isProcessing: false });
+        set({ users: fetchedUsers, isLoading: false });
         return fetchedUsers;
       }
       return [];
@@ -485,7 +490,7 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
       set({
         showError: true,
         errorMsg: "Failed to get users. Please try again later.",
-        isProcessing: false,
+        isLoading: false,
       });
       return [];
     }
@@ -506,17 +511,17 @@ export const useFetchUserStore = create<IFetchUserStore>((set) => ({
 
   getSingleUserByEmail: async (email) => {
     try {
-      set({ isProcessing: true, errorMsg: "" });
+      set({ isLoading: true, errorMsg: "" });
       const response = await apiClient.get(`${userByEmail}/${email}`);
       if (response.status === 200) {
-        set({ user: response.data.data, isProcessing: false });
+        set({ user: response.data.data, isLoading: false });
         return response.data.data;
       }
     } catch (e) {
       console.log("Error fetching user by email", e);
       set({
         errorMsg: "Failed to get user. Please try again later.",
-        isProcessing: false,
+        isLoading: false,
       });
     }
   },

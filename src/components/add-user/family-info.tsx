@@ -25,7 +25,7 @@ import useUserStore from "@/stores/user-store";
 import { IFamilyInfo } from "@/models/user-model";
 import { useToast } from "@/hooks/use-toast";
 
-const FamilyInfo = () => {
+const FamilyInfo = ({isEditing}:{isEditing:boolean}) => {
   const { toast } = useToast();
   const { familyInfo, siblings, addFamilyInfo, handleNext, handleBack } =
     useUserStore();
@@ -201,10 +201,10 @@ const FamilyInfo = () => {
               <Button className="w-24" type="submit">
                 Save
               </Button>
-              <Button variant={"secondary"} onClick={handleBack}>
+              {isEditing?<></>:<Button variant={"secondary"} onClick={handleBack}>
                 Back
-              </Button>
-            </div>{" "}
+              </Button>}
+            </div>
           </form>
         </CardContent>
       </Card>

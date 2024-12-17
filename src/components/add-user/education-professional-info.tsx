@@ -23,7 +23,7 @@ import useUserStore from "@/stores/user-store";
 import { IEducationalAndProfessionInfo } from "@/models/user-model";
 import { useToast } from "@/hooks/use-toast";
 
-const EducationNdProfessionalInfo = () => {
+const EducationNdProfessionalInfo = ({isEditing}:{isEditing:boolean}) => {
   const { toast } = useToast();
   const { eduAndProfInfo, addEduAndProfInfo, handleNext, handleBack } =
     useUserStore();
@@ -45,7 +45,7 @@ const EducationNdProfessionalInfo = () => {
     toast({
       variant: "success",
       title: "Saved",
-      description: "Education & Profession Information saved successfully",
+      description: `Education & Profession Information saved successfully`,
     });
     handleNext();
   };
@@ -189,9 +189,9 @@ const EducationNdProfessionalInfo = () => {
               <Button className="w-24" type="submit">
                 Save
               </Button>
-              <Button variant={"secondary"} onClick={handleBack}>
+              {isEditing?<></>:<Button variant={"secondary"} onClick={handleBack}>
                 Back
-              </Button>
+              </Button>}
             </div>
           </form>
         </CardContent>

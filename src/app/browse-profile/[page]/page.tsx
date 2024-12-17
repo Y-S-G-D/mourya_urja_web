@@ -33,12 +33,14 @@ const BrowseProfilePage = ({params}:{params:Promise<Params>}) => {
   const { getBrowseProfiles , browseProfiles} = useBrowseProfilesStore();
   const {addToFavourite} = useFavouriteStore();
 
-  const [isLiked, setIsLiked] = React.useState(false);
+  const[likedIndex,setLikeIndex] = React.useState<number>(-1);
+
+  // const [isLiked, setIsLiked] = React.useState(false);
   const [selectedPage, setSelectedPage] = React.useState(1);    
 
-  const handleLike = (id:string | null) => {
+  const handleLike = (id:string | null,index:number) => {
     if(!id) return;
-    setIsLiked(!isLiked);
+    setLikeIndex(index);
     addToFavourite(id);
 
   }
@@ -53,6 +55,7 @@ const BrowseProfilePage = ({params}:{params:Promise<Params>}) => {
   useEffect(() => {
      fetchBrowseProfiles();
   },[fetchBrowseProfiles])
+
 
   return (
     <main>
@@ -94,9 +97,9 @@ const BrowseProfilePage = ({params}:{params:Promise<Params>}) => {
             >
               <UserBasicInfo data={profile} />
                 <div 
-                  onClick={()=>handleLike(profile._id ?? null)}
+                  onClick={()=>handleLike(profile._id ?? null,index)}
                   className="absolute  top-6 right-6 p-2 cursor-pointer bg-accent rounded-full border border-border hover:bg-secondary">
-                  {isLiked?<FaHeart className="text-red-500" />:<FaRegHeart  className="text-primary hover:text-secondary-foreground" />}
+                  {likedIndex === index ?<FaHeart className="text-red-500" />:<FaRegHeart  className="text-primary hover:text-secondary-foreground" />}
                 </div>
                 <div 
                   onClick={()=> {

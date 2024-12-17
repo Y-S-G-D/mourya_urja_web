@@ -21,7 +21,8 @@ const PersonalInformation = () => {
   const {toast} = useToast();
 
   const {personalInfo , addPersonalInfo ,  handleNext } = useUserStore()
-  const {isProcessing } = useFetchUserStore();
+
+  const {isLoading: isProcessing } = useFetchUserStore();
 
   
 
@@ -72,13 +73,13 @@ const PersonalInformation = () => {
     toast({
       variant: "success",
       title:"Saved",
-      description: 'Personal Information saved successfully',
+      description: `Personal Information saved successfully`,
       
     })
     handleNext()
   };
 
-  // if(isProcessing) return <div>Loading...</div>
+  //  if(isProcessing ) return <div>Loading...</div>
 
   
   return ( 
@@ -307,6 +308,7 @@ const PersonalInformation = () => {
                 </FormItem>
               )}
             />
+            <p className="my-2 text-sm text-gray-500">For e.g: Hobbies1,Hobbies2</p>
             </div>
             
             <FormField

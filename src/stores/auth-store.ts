@@ -54,7 +54,6 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
             
         )
         
-        console.log(response)      
         if(response.status === 200){
 
             const date = response.data.message;
@@ -72,7 +71,10 @@ export const useAuthStore = create<IAuthStore>((set,) => ({
             })
             LocalStorage.getInstance().addLoginInfo(response.data.data)
             if(role === 'admin' || role === 'employee'){
-                LocalStorage.getInstance().addAccessRoutes(response.data.data.access)
+                const pageAccessList = response.data.data.access
+                Cookies.set("access_page",pageAccessList,{expires
+                    :7 * 24 * 60 * 60 * 1000,
+                })
             }
             set({ data: date, isLoading: false, isSuccess: true,isLoggedin:true })
             window.location.reload()

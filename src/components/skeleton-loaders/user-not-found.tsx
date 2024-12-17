@@ -1,12 +1,12 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
+
 
 const UserNotFound = ({title,desc}:{title:string,desc?:string}) => {
 
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[500px] bg-gray-50 px-4">
-      <div className="max-w-lg text-center">
+    <div className=" my-10 max-w-7xl mx-auto  flex w-full flex-col items-center justify-center min-h-[500px] bg-gray-50 px-4">
+      <div className="text-center">
         {/* <img
           src="/images/user-not-found.svg" // Replace with your custom illustration
           alt="User Not Found"

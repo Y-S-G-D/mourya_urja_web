@@ -4,6 +4,7 @@ import ProfileCard from './profile-card'
 import { LikeType } from '@/utils/enums/likeType-enum'
 
 import { useFavouriteStore } from '@/stores/faviroute-store';
+import  UserNotFound from "@/components/skeleton-loaders/user-not-found";
 
 const WhomYouLiked = () => {
 
@@ -20,8 +21,8 @@ const WhomYouLiked = () => {
     return <div>Loading...</div>
   }
 
-  if(favourites.length === 0){
-    return <div className='text-center items-center' >No one liked you yet</div>
+  if(favourites.length === 0) {
+    return <UserNotFound title="User Not Found :(" desc="Seems like you have not liked any one yet."/>
   }
 
   return (

@@ -23,17 +23,21 @@ import { useRouter } from "next/navigation";
 import { useBrowseProfilesStore } from "@/stores/browse-profiles-store";
 import { IUser } from "@/models/user-model";
 import {useFavouriteStore} from "@/stores/faviroute-store";
+import UserNotFound from "@/components/skeleton-loaders/user-not-found";
 
 const BrowseProfilePage = () => {
   const router = useRouter();
-  const { getBrowseProfiles , browseProfiles} = useBrowseProfilesStore();
+
+  const { getBrowseProfiles , browseProfiles,isProcessing} = useBrowseProfilesStore();
+
   const {addToFavourite} = useFavouriteStore();
 
-  const [isLiked, setIsLiked] = React.useState(false);
+    const[likedIndex,setLikeIndex] = React.useState<number>(-1);
+  
 
-  const handleLike = (id:string | null) => {
+  const handleLike = (id:string | null,index:number) => {
     if(!id) return;
-    setIsLiked(!isLiked);
+    setLikeIndex(index)
     addToFavourite(id);
 
   }
@@ -79,17 +83,17 @@ const BrowseProfilePage = () => {
           </div>
         </div>
 
-        <div className="w-full grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6 px-6 lg:px-12">
-          {browseProfiles.map((profile : IUser, index) => (
+        {isProcessing? <></> :browseProfiles.length > 0 ? <div className="w-full grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6 px-6 lg:px-12">
+          { browseProfiles.map((profile : IUser, index) => (
             <div
               key={index}
               className="relative p-4 bg-white border border-secondary rounded-2xl shadow-lg  group hover:bg-primary hover:text-accent transition duration-500"
             >
               <UserBasicInfo data={profile} />
                 <div 
-                  onClick={()=>handleLike(profile._id ?? null)}
+                  onClick={()=>handleLike(profile._id ?? null,index)}
                   className="absolute  top-6 right-6 p-2 cursor-pointer bg-accent rounded-full border border-border hover:bg-secondary">
-                  {isLiked?<FaHeart className="text-red-500" />:<FaRegHeart  className="text-primary hover:text-secondary-foreground" />}
+                  {likedIndex ===  index ?<FaHeart className="text-red-500" />:<FaRegHeart  className="text-primary hover:text-secondary-foreground" />}
                 </div>
                 <div 
                   onClick={()=> {
@@ -102,7 +106,7 @@ const BrowseProfilePage = () => {
                 
             </div>
           ))}
-        </div>
+        </div>:<UserNotFound title="Profiles Not found :(" desc="There is no any profiles available for browsing."/>}
         <PaginationButton page = {1}/>
       </section>
       <Footer/>

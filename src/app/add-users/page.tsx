@@ -23,7 +23,7 @@ import useUserStore from "@/stores/user-store";
 import FinishSection from "@/components/add-user/finish-section";
 
 const AddUserForm = () => {
-  const { saveUser, activeStep, handleBack, handleNext, isProcessing } =
+  const { saveUser, activeStep,handleNext, isProcessing } =
     useUserStore();
 
   const steps = [
@@ -38,22 +38,22 @@ const AddUserForm = () => {
   const renderComponent = () => {
     const stepContent = [
       <div key="personalInfo">
-        <PersonalInformation />
+        <PersonalInformation  />
       </div>,
       <div key="contactInfo">
         <ContactInfo isEditing={false} />
       </div>,
       <div key="education&professional">
-        <EducationNdProfessionalInfo />
+        <EducationNdProfessionalInfo isEditing={false} />
       </div>,
       <div key="cultural">
-        <CulturalNdReligiousInfo />
+        <CulturalNdReligiousInfo isEditing={false}/>
       </div>,
       <div key="familyInfo">
-        <FamilyInfo />
+        <FamilyInfo isEditing={false}/>
       </div>,
       <div key="spouseExpectations">
-        <SpouseExpectations />
+        <SpouseExpectations  isEditing={false}/>
       </div>,
     ];
     return <React.Fragment>{stepContent[activeStep]}</React.Fragment>;
@@ -85,14 +85,6 @@ const AddUserForm = () => {
         {activeStep === steps.length ? (
           <React.Fragment>
             <FinishSection />
-            {/* <div>
-          
-        </div> */}
-            {/* <div className="mt-2 mb-1">All steps completed - you&apos;re finished</div>
-        <div className="flex flex-row pt-2">
-        <div className="flex-1" />
-        <Button className="btn" onClick={handleReset}>Reset</Button>
-        </div> */}
           </React.Fragment>
         ) : (
           <React.Fragment>
@@ -131,15 +123,6 @@ const AddUserForm = () => {
                 //   Next
                 // </Button>
               )}
-
-              {/* <Button
-          onClick={activeStep ===steps.length-1 ? () =>{
-            saveUser()
-            handleNext()
-            
-          } : handleNext}>
-          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-        </Button> */}
             </div>
           </React.Fragment>
         )}

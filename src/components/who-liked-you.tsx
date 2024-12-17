@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect } from 'react'
 import ProfileCard from './profile-card'
 import { LikeType } from '@/utils/enums/likeType-enum'
+import UserNotFound from "@/components/skeleton-loaders/user-not-found";
 
 import { useFavouriteStore } from '@/stores/faviroute-store';
 
@@ -22,9 +23,7 @@ const WhoLikedYouContent = () => {
   }
 
   if(favourites.length === 0){
-    return <div
-      className='text-center text-lg'
-    >No one has liked you yet</div>
+    return <UserNotFound title="User Not Found :(" desc="Seems like no one has liked you yet."/>
   }
 
   return (

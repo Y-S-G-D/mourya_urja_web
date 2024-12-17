@@ -9,7 +9,7 @@ import { Textarea } from "../ui/textarea";
 import useUserStore from "@/stores/user-store";
 import { useToast } from "@/hooks/use-toast";
 
-const SpouseExpectations = () => {
+const SpouseExpectations = ({isEditing}:{isEditing:boolean}) => {
   const { toast } = useToast();
   const { spouseExpectation, addSpouseInfo,handleBack } = useUserStore();
 
@@ -57,9 +57,9 @@ const SpouseExpectations = () => {
               <Button className="w-24" type="submit">
                 Save
               </Button>
-              <Button variant={"secondary"} onClick={handleBack}>
+              {isEditing?<></>:<Button variant={"secondary"} onClick={handleBack}>
                 Back
-              </Button>
+              </Button>}
             </div>
           </form>
         </CardContent>
