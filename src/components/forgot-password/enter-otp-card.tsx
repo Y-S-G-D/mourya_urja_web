@@ -4,12 +4,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import React from 'react'
 import { TbPasswordMobilePhone } from "react-icons/tb";
-import { ForgotStateEnum } from '@/utils/enums/forgot-state-enum';
-import { useForgotStateStore } from '@/stores/forgot-password-store';
+// import { ForgotStateEnum } from '@/utils/enums/forgot-state-enum';
+// import { useForgotStateStore } from '@/stores/forgot-password-store';
 
 
 const EnterOTPCard = () => {
-  const { handleState } = useForgotStateStore()
+  // const { handleState } = useForgotStateStore()
   return (
     <div className='max-w-2xl items-center justify-center flex flex-col w-full bg-background shadow-md rounded-lg md:h-[80vh] h-[60vh]'>
         <div className='bg-accent p-4 rounded-full'>
@@ -26,7 +26,7 @@ const EnterOTPCard = () => {
           </div>
         </div>
         <Button 
-          onClick={() => handleState(ForgotStateEnum.SetPassword)}
+         
           className='my-4 w-24'>Verify</Button>
 
         <div className='flex items-center'>
