@@ -17,7 +17,7 @@ interface IBrowseProfilesStore {
 }
 
 export const useBrowseProfilesStore = create<IBrowseProfilesStore>((set) => ({
-    isProcessing: false,
+    isProcessing: true,
     isSuccess: false,
     errorMsg: null,
     showError: false,

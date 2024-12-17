@@ -74,7 +74,7 @@ export default function BasicInfoSection({image,name,city,dob,height,jobType}:{i
           <Card className="flex flex-col items-center justify-center p-4 space-y-2">
             <span className="text-2xl">💼</span>
             <CardTitle className="text-sm font-light">JOB:</CardTitle>
-            <p className="text-brown-800 font-bold">{jobType}</p>
+            <p className="text-brown-800 font-bold">{jobType.toLocaleUpperCase()}</p>
           </Card>
 
         </div>

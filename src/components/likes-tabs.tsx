@@ -23,17 +23,21 @@ const LikesTabs = () => {
   
   return (
     <Tabs 
-        className='w-full self-center flex flex-col my-8'
+        className='w-full self-center flex flex-col my-8 '
         defaultValue={LikeType.WhoLikedYou}>
         <TabsList 
             className='grid grid-cols-2 gap-8 max-w-4xl w-full  mx-auto bg-background h-12  px-6'>
             <TabsTrigger value={LikeType.WhoLikedYou}>Who liked You</TabsTrigger>
             <TabsTrigger value={LikeType.WhomYouLiked}>Whom you liked</TabsTrigger>
         </TabsList>
-        <TabsContent value={LikeType.WhoLikedYou}>
+        <TabsContent 
+            className='min-h-96'
+          value={LikeType.WhoLikedYou}>
             <WhoLikedYouContent/>
         </TabsContent>
-        <TabsContent value={LikeType.WhomYouLiked}>
+        <TabsContent
+         className='min-h-96' 
+         value={LikeType.WhomYouLiked}>
            <WhomYouLiked/>
 
         </TabsContent>

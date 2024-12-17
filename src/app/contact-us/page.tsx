@@ -29,17 +29,17 @@ const ContactUsPage = () => {
           <ContactInfo 
             icon={MdLocationOn}
             title="Our Office Address"
-            lines={["XYZ City-800450", "Bihar, India"]}
+            lines={["URJA MAURYA PARIWAR SEVA SANSTHAN", "Aarya Bihar Colony","Bochachak, Ward No-03","Phulwarisharif,Patna, Bihar - 801505"]}
           />
           <ContactInfo 
             icon={MdPhone}
             title="Call Us Anytime"
-            lines={["(+91) - 92409 26742", "+91- 65692 58955"]}
+            lines={["(+91) - NA", "+91- NA"]}
           />
           <ContactInfo 
             icon={MdEmail}
             title="Send An Email"
-            lines={["info@gmail.com",]}
+            lines={["mauryaurjamatrimony@gmail.com",]}
           />
         </div>
         <ContactForm/>

@@ -24,6 +24,7 @@ import { useBrowseProfilesStore } from "@/stores/browse-profiles-store";
 import { IUser } from "@/models/user-model";
 import {useFavouriteStore} from "@/stores/faviroute-store";
 import UserNotFound from "@/components/skeleton-loaders/user-not-found";
+import BrowseProfileSkeletonLoader from "@/components/skeleton-loaders/browse-profile-loader";
 
 const BrowseProfilePage = () => {
   const router = useRouter();
@@ -83,7 +84,7 @@ const BrowseProfilePage = () => {
           </div>
         </div>
 
-        {isProcessing? <></> :browseProfiles.length > 0 ? <div className="w-full grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6 px-6 lg:px-12">
+        {isProcessing? <BrowseProfileSkeletonLoader/> :browseProfiles.length > 0 ? <div className="w-full grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6 px-6 lg:px-12">
           { browseProfiles.map((profile : IUser, index) => (
             <div
               key={index}

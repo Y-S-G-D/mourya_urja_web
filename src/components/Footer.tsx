@@ -49,9 +49,13 @@ const Footer = () => {
         <div className="flex flex-col items-left mb-8">
           <h1 className="text-xl text-sidebar-primary">Contacts</h1>
           <div className="mt-2">
-          <p className="mx-2 py-1">Phone: +91 12345 67890</p>
-          <p className="mx-2 py-1">Email: service@xyz.in,  info@xyz.com </p>
-          <p className="mx-2 py-1">Address: XYZ Road, ABC City, 12345
+          {/* <p className="mx-2 py-1">Phone: +91 12345 67890</p> */}
+          <p className="mx-2 py-1">Email:  mauryaurjamatrimony@gmail.com </p>
+          <p className="mx-2 py-1">Address: URJA MAURYA PARIWAR SEVA SANSTHAN
+Aarya Bihar Colony,
+Bochachak, Ward No-03,
+Phulwarisharif,
+Patna, Bihar - 801505
           </p>
           </div>
           

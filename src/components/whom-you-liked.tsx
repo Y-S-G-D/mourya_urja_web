@@ -5,6 +5,7 @@ import { LikeType } from '@/utils/enums/likeType-enum'
 
 import { useFavouriteStore } from '@/stores/faviroute-store';
 import  UserNotFound from "@/components/skeleton-loaders/user-not-found";
+import FavouriteSkeletonLoader from './skeleton-loaders/favourite-skeleton-loader';
 
 const WhomYouLiked = () => {
 
@@ -18,7 +19,7 @@ const WhomYouLiked = () => {
   },[fetchFavourites])
 
   if(isProcessing){
-    return <div>Loading...</div>
+    return <FavouriteSkeletonLoader/>
   }
 
   if(favourites.length === 0) {

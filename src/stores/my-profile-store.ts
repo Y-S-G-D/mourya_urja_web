@@ -14,7 +14,7 @@ interface IMyProfileStore {
 }
 
 export const useMyProfileStore = create<IMyProfileStore>((set) => ({
-    isProcessing: false,
+    isProcessing: true,
     errorMsg: null,
     successMsg: null,
     userProfile: null,

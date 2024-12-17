@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/pagination";
 import { usePaginationStore } from "@/stores/pagination-store";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "./ui/skeleton";
 
 export function PaginationButton({ page }: { page: number }) {
   const { totalPages, getTotalPages, isProcessing, setCurrentPage } = usePaginationStore();
@@ -23,7 +24,7 @@ export function PaginationButton({ page }: { page: number }) {
     fetchTotalPages();
   }, [fetchTotalPages]);
 
-  if (isProcessing) return <div>Loading...</div>;
+  if (isProcessing) return <div className="h-40 flex items-center justify-center"> <Skeleton className="h-4 w-28 mx-4"/><Skeleton className="h-4 w-28 mx-4"/></div> ;
 
   // Generate page numbers array with ellipsis
   const getPageNumbers = () => {

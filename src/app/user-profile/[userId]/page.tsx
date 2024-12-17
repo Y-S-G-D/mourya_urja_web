@@ -15,13 +15,15 @@ import Footer from "@/components/Footer";
 import { SiblingDetailsCard } from "@/components/user-profile/sibling-details-card";
 import { useMyProfileStore } from "@/stores/my-profile-store";
 import PersonImage from "@/app/assets/person.jpeg"
+import { formatDate } from "@/utils/date";
+import UserProfileSkeletonLoader from "@/components/skeleton-loaders/user-profile-loader";
 
 interface UserProfileParams {
   userId: string;
 }
 
 const ViewUserProfile = ({ params }: { params: Promise<UserProfileParams> }) => {
-  const { userProfile, getMyProfile } = useMyProfileStore();
+  const { userProfile, getMyProfile,isProcessing } = useMyProfileStore();
   
   const fetchUserProfile = useCallback(async () => {
     const { userId } = await params;
@@ -33,25 +35,27 @@ const ViewUserProfile = ({ params }: { params: Promise<UserProfileParams> }) => 
     fetchUserProfile();
   }, [fetchUserProfile]);
 
+  
+
   return (
     <main>
       <Navbar bgColor={"bg-primary"} />
-      <section className="bg-secondary max-w-7xl w-full mx-auto pt-24 md:px-8 px-4 flex flex-col justify-center items-center">
+      {isProcessing?<UserProfileSkeletonLoader/>:<section className="bg-secondary max-w-7xl w-full mx-auto pt-24 md:px-8 px-4 flex flex-col justify-center items-center">
         <BasicInfoSection 
           image={userProfile?.personalInfo.profileImages[0] || PersonImage.src}
           height={userProfile?.personalInfo.height.toString() || ""}
-          jobType={userProfile?.eduAndProfInfo.jobType||""}
+          jobType={userProfile?.eduAndProfInfo.jobType || ""}
           city={userProfile?.residentialAddr.city || ""}
-          dob={userProfile?.personalInfo.dob || ""}
+          dob={userProfile?.personalInfo.dob ? formatDate(userProfile.personalInfo.dob, "dd MMM, yyyy") : ""}
           name={`${userProfile?.personalInfo.firstName || ""} ${userProfile?.personalInfo?.middleName || ""} ${userProfile?.personalInfo?.lastName || ""}`}
          />
         <div className="w-full my-4 flex lg:flex-row flex-col gap-4 ">
-          <AboutMeSection  aboutMe={userProfile?.personalInfo.aboutMe || ""}/>
+          <AboutMeSection aboutMe={userProfile?.personalInfo.aboutMe || ""}/>
           <HobbiesCard hobbies={userProfile?.personalInfo.hobbies || []}/>
         </div>
         <EducationAndProfessionCard eduAndProfInfo={userProfile?.eduAndProfInfo ?? null}/>
         <div className="w-full my-4 flex lg:flex-row flex-col gap-4">
-          <FamilyDetailsCard  familyInfo={userProfile?.familyInfo ?? null}/>
+          <FamilyDetailsCard familyInfo={userProfile?.familyInfo ?? null}/>
           <CulturalReligiousDetailsCard culturalInfo={userProfile?.cultureAndReligiousInfo ?? null}/>
         </div>
         <SiblingDetailsCard siblings={userProfile?.familyInfo.siblings ?? null}/>
@@ -64,7 +68,7 @@ const ViewUserProfile = ({ params }: { params: Promise<UserProfileParams> }) => 
             {userProfile?.spouseExpectation || ""}
           </p>
         </CardContent>
-      </section>
+      </section>}
       <Footer />
     </main>
   );
