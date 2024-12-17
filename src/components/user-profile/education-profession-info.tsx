@@ -20,7 +20,7 @@ const EducationAndProfessionCard = ({eduAndProfInfo}:{eduAndProfInfo:IEducationa
               <span className="font-semibold">Highest Education:</span> {eduAndProfInfo?.highestEducation || ""}
             </p>
             <p className="text-gray-600">
-              <span className="font-semibold">Other Educational Details:</span> {eduAndProfInfo?.otherEductionDetail || ""}
+              <span className="font-semibold">Other Educational Details:</span> {eduAndProfInfo?.otherEducation || ""}
             </p>
           </CardContent>
         </div>
@@ -44,7 +44,7 @@ const EducationAndProfessionCard = ({eduAndProfInfo}:{eduAndProfInfo:IEducationa
               <span className="font-semibold">Designation:</span> {eduAndProfInfo?.designation || ""}
             </p>
             <p className="text-gray-600">
-              <span className="font-semibold">Work Details:</span> {eduAndProfInfo?.workDetail || ""}
+              <span className="font-semibold">Work Details:</span> {eduAndProfInfo?.workDetails || ""}
             </p>
             <p className="text-gray-600">
               <span className="font-semibold">Income:</span> {`\u20b9${eduAndProfInfo?.income}.00` || ""}
