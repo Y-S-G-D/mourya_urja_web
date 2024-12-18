@@ -5,14 +5,14 @@ import React from 'react'
 import { MdLocationOn, MdPhone, MdEmail } from 'react-icons/md'
 
 const ContactInfo = ({ icon: Icon, title, lines }: { icon: React.ElementType; title: string; lines: string[] }) => (
-    <div className={`flex items-center bg-white rounded-lg shadow-md py-4 px-6 transition-all duration-300 hover:shadow-lg `}>
-      <div className="bg-primary text-white p-4 rounded-lg mr-6">
+    <div className={`flex items-center bg-white rounded-lg shadow-md w-full py-4 px-6 transition-all duration-300 hover:shadow-lg `}>
+      <div className="bg-primary text-white p-4 rounded-lg mr-4">
         <Icon className="text-5xl" />
       </div>
       <div>
         <h3 className={`text-xl font-bold text-darkcolor `}>{title}</h3>
         {lines.map((line, index) => (
-          <p key={index} className="text-gray-500 text-sm">{line}</p>
+          <p key={index} className="text-gray-500 text-xs w-full text-wrap  ">{line}</p>
         ))}
       </div>
     </div>

@@ -4,7 +4,7 @@ import { Employees, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ToggleActiveInActive } from "@/components/toggle-active-inactive";
+// import { ToggleActiveInActive } from "@/components/toggle-active-inactive";
 import { Plus } from "lucide-react";
 import {
   Breadcrumb,
@@ -84,7 +84,7 @@ const EmployeesPage = () => {
       <Separator />
 
       <div className="flex justify-between px-4 py-4">
-        <ToggleActiveInActive />
+        {/* <ToggleActiveInActive /> */}
         <Input 
           onChange={(e) => {
             searchDebounce(e.target.value);

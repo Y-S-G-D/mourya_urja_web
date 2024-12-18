@@ -1,24 +1,18 @@
 'use client'
 import Image from "next/image";
 import { Card,  CardTitle,  } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 // import { FaCity, FaUserFriends, FaRulerVertical, FaBriefcase } from "react-icons/fa";
 // import Person from "@/app/assets/person.jpeg";
 import { Playfair } from "next/font/google";
 import React from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+// import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const playfair = Playfair({subsets:["latin"]})
 
 
 
 export default function BasicInfoSection({image,name,city,dob,height,jobType}:{image:string,name:string,city:string,dob:string,height:string,jobType:string}) {
-
-  const [isLiked, setIsLiked] = React.useState(false);
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-  }
 
   return (
     <div className="w-full flex flex-col md:flex-row  justify-between rounded-lg ">
@@ -31,11 +25,11 @@ export default function BasicInfoSection({image,name,city,dob,height,jobType}:{i
           height={400} // Set image height (adjust as needed)
           className="rounded-lg object-cover"
         />
-        <div 
+        {/* <div 
             onClick={handleLike}
             className="absolute  top-6 right-6 p-2 cursor-pointer bg-accent rounded-full border border-border">
             {isLiked?<FaHeart className="text-red-500" />:<FaRegHeart  className="text-foreground" />}
-        </div>
+        </div> */}
       </div>
 
       {/* Right side - Profile Details */}
@@ -43,12 +37,12 @@ export default function BasicInfoSection({image,name,city,dob,height,jobType}:{i
         {/* Name and Status */}
         <h1 className={`text-3xl md:text-5xl font-bold ${playfair.className}`}>{name}</h1>
         <div className="flex justify-center md:justify-start items-center space-x-2 mt-2">
-          <Badge variant="secondary" className="bg-yellow-500 text-white px-2 py-1">
+          {/* <Badge variant="secondary" className="bg-yellow-500 text-white px-2 py-1">
             100 Likes
           </Badge>
           <Badge variant="secondary" className="bg-teal-500 text-white px-2 py-1">
              2 Connections
-          </Badge>
+          </Badge> */}
         </div>
 
         {/* Details Section */}

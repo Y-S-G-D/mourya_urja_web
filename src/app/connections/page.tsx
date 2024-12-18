@@ -5,7 +5,7 @@ import {
    Eye,
   MessageSquarePlus,
 } from "lucide-react";
-import { FaHeart } from "react-icons/fa6"; // Filled Heart icon
+import { MdDelete } from "react-icons/md"; // Filled Heart icon
 import {
   Sheet,
   SheetTrigger,
@@ -52,8 +52,12 @@ const ConnectionsPage = () => {
              > 
               <UserBasicInfo  data={connection.user}/>
               <div className="flex items-center gap-4 justify-center">
-                <div className="p-2 cursor-pointer bg-accent rounded-full border border-border">
-                  <FaHeart className="text-red-500" />
+                <div 
+                  onClick={() => {
+                    // deleteConnection(connection.user._id ?? "")
+                  }}
+                  className="p-2 cursor-pointer bg-accent rounded-full border border-border">
+                  <MdDelete className="text-red-500" />
                 </div>
                 <div 
                   onClick={() => {

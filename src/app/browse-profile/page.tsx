@@ -25,6 +25,7 @@ import { IUser } from "@/models/user-model";
 import {useFavouriteStore} from "@/stores/faviroute-store";
 import UserNotFound from "@/components/skeleton-loaders/user-not-found";
 import BrowseProfileSkeletonLoader from "@/components/skeleton-loaders/browse-profile-loader";
+import { toast } from "@/hooks/use-toast";
 
 const BrowseProfilePage = () => {
   const router = useRouter();
@@ -34,17 +35,42 @@ const BrowseProfilePage = () => {
   const {addToFavourite} = useFavouriteStore();
 
     const[likedIndex,setLikeIndex] = React.useState<number>(-1);
+
+    // add debounce for search
+     const timeoutRef = React.useRef<number | undefined>(undefined);
+    
+      const searchDebounce = React.useCallback((searchTerm: string) => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+        timeoutRef.current = window.setTimeout(() => {
+         getBrowseProfiles({page:1,limit:20,searchStr:searchTerm});
+        }, 500); // 500ms debounce time
+      }, [getBrowseProfiles]);
+    
+      useEffect(() => {
+        return () => {
+          if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+          }
+        };
+      }, []);
   
 
   const handleLike = (id:string | null,index:number) => {
     if(!id) return;
     setLikeIndex(index)
     addToFavourite(id);
+    toast({
+      title: "Profile Liked",
+      description: "Profile has been added to your favourite list",
+      variant: "success",
+    })
 
   }
 
   const fetchBrowseProfiles = useCallback( async () => {
-     await getBrowseProfiles({page:1,limit:20});
+     await getBrowseProfiles({page:1,limit:20,searchStr:""});
   },[getBrowseProfiles])
 
      
@@ -70,7 +96,7 @@ const BrowseProfilePage = () => {
           </Breadcrumb>
 
           <div className="flex justify-between">
-            <SearchForm />
+            <SearchForm debounceFn={searchDebounce}/>
             <Sheet>
               
              <SheetTrigger asChild >
@@ -92,7 +118,7 @@ const BrowseProfilePage = () => {
             >
               <UserBasicInfo data={profile} />
                 <div 
-                  onClick={()=>handleLike(profile._id ?? null,index)}
+                  onClick={()=> handleLike(profile._id ?? null,index)}
                   className="absolute  top-6 right-6 p-2 cursor-pointer bg-accent rounded-full border border-border hover:bg-secondary">
                   {likedIndex ===  index ?<FaHeart className="text-red-500" />:<FaRegHeart  className="text-primary hover:text-secondary-foreground" />}
                 </div>

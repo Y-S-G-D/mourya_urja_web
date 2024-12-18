@@ -7,10 +7,12 @@ import { LikeType } from "@/utils/enums/likeType-enum";
 import { FaHeart } from "react-icons/fa6";
 import { ConnectionModel } from "@/models/connection-model";
 import { useFavouriteStore } from "@/stores/faviroute-store";
+import { toast } from "@/hooks/use-toast";
 
 export default function ProfileCard({ likeType,favourite }: { likeType: LikeType,favourite:ConnectionModel }) {
 
   const {removeFromFavourite,acceptRequest} = useFavouriteStore();
+
   return (
     <Card className="relative group transition-all duration-500 hover:scale-105 mx-auto rounded-xl p-2 shadow-sm overflow-hidden border border-secondary bg-background text-foreground">
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -57,6 +59,12 @@ export default function ProfileCard({ likeType,favourite }: { likeType: LikeType
               onClick={()=>{
                 console.log(favourite.userId)
                 acceptRequest(favourite.userId ?? "")
+                window.location.reload()
+                toast({
+                  title:"Request Accepted",
+                  description: "User added to your connection list",
+                  variant: "success",})
+
               }}
               className="w-24 bg-sidebar-primary">Accept</Button>
             <Button variant={"destructive"}>
@@ -68,6 +76,13 @@ export default function ProfileCard({ likeType,favourite }: { likeType: LikeType
             <div 
               onClick={()=>{
                 removeFromFavourite(favourite._id ?? "")
+                toast({
+                  title: "Removed from favourite",
+                  description: "User removed from favourite list",
+                  variant: "success",
+                  duration: 5000,
+                  
+                })
               }}
               className="absolute bottom-4  right-2 px-2 py-1">
               <FaHeart className="text-red-500 text-2xl" />

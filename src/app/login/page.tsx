@@ -6,6 +6,7 @@ import Login from '../assets/matrimonial_login.png'
 import LoginForm from '../../components/LoginForm'
 import { UserType } from '@/utils/enums/userType-enum'
 import { useLoginTypeStore } from '@/stores/login-type-store'
+import { websiteName } from '@/shared/constant'
 
 // interface IUserType{
 //   id:string
@@ -34,8 +35,8 @@ const LoginPage = () => {
         {/* <div className={merienda.className}> */}
           <h1 className="text-5xl  uppercase font-bold">Login</h1>
         {/* </div> */}
-        <p className="text-base mb-5 text-card-foreground">Welcome to Mourya Urja Matrimonial.</p>
-        <p className="text-[.65rem] mb-2  text-card-foreground">Note*: Please Select your role first to login into Mourya Urja Matrimonial.</p>
+        <p className="text-base mb-5 text-card-foreground">{`Welcome to ${websiteName}`}.</p>
+        <p className="text-xs mb-2  text-card-foreground">{`Note*: Please Select your role first to login into ${websiteName}.`}</p>
 
         {/* User Type Tab */}
         <div className="flex">

@@ -48,6 +48,10 @@ const LoginForm: React.FC = () => {
   function onSubmit(values: z.infer<typeof loginSchema>) {
     const type = selectedLoginType.toLowerCase();
     login(values.email, values.password, type);
+
+
+
+    
     
     // form.reset()  // Clear the form values after successful submission.
   }
